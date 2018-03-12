@@ -41,6 +41,7 @@ namespace FHSales.views
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
 
+
             while (reader.Read())
             {
                 purchase.ID = reader["ID"].ToString();
