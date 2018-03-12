@@ -1,0 +1,23 @@
+﻿<controls:MetroWindow x:Class="FHSales.LogIn"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"       
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:FHSales"
+        mc:Ignorable="d"
+        Title="LogIn" Height="352.5" Width="867.75" Loaded="MetroWindow_Loaded" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Controls:MetroWindow.Background>
+        <ImageBrush ImageSource="images/fh capsule fh juice for web site banner.jpg"/>
+    </Controls:MetroWindow.Background>
+    <Grid>
+        <Label x:Name="label" Content="Username:" HorizontalAlignment="Left" Margin="537,202,0,0" VerticalAlignment="Top" FontSize="16" Width="123" HorizontalContentAlignment="Right" Foreground="Black" FontWeight="Bold" FontFamily="Arial Black" Height="30"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="31" Margin="665,202,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" FontSize="16" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label1" Content="Password:" HorizontalAlignment="Left" Margin="535,237,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Arial Black" Height="32" HorizontalContentAlignment="Right" Width="125"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Height="31" Margin="665,238,0,0" VerticalAlignment="Top" Width="185" FontSize="16" FontFamily="Consolas" VerticalContentAlignment="Center" KeyDown="txtPassword_KeyDown"/>
+        <Button x:Name="btnLogin" Content="Log In" HorizontalAlignment="Left" Margin="665,274,0,0" VerticalAlignment="Top" Width="185" Height="36" Click="btnLogin_Click"/>
+
+    </Grid>
+</controls:MetroWindow>

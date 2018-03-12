@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="FHSales.views.Users"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+             Dialog:DialogParticipation.Register="{Binding}"
+             xmlns:local="clr-namespace:FHSales.views"
+             mc:Ignorable="d" 
+             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="White" FontFamily="Consolas" Loaded="UserControl_Loaded">
+    <Grid>
+        <DataGrid x:Name="dgvRegisteredUsers" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="185" Width="380" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Firstname" Binding="{Binding Firstname}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Lastname" Binding="{Binding Lastname}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Account Type" Binding="{Binding UserType}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Username" Binding="{Binding Username}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="label" Content="First name:" HorizontalAlignment="Left" Margin="465,10,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="15"/>
+        <TextBox x:Name="txtFirstName" HorizontalAlignment="Left" Height="28" Margin="571,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label1" Content="Last name:" HorizontalAlignment="Left" Margin="474,43,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="15"/>
+        <TextBox x:Name="txtLastName" HorizontalAlignment="Left" Height="28" Margin="571,43,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label2" Content="Username:" HorizontalAlignment="Left" Margin="482,82,0,0" VerticalAlignment="Top" FontSize="15" FontFamily="Consolas"/>
+        <TextBox x:Name="txtUsername" HorizontalAlignment="Left" Height="28" Margin="571,82,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label3" Content="Password:" HorizontalAlignment="Left" Margin="491,115,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <PasswordBox x:Name="txtPassword" HorizontalAlignment="Left" Height="28" Margin="571,115,0,0" VerticalAlignment="Top" Width="206" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label4" Content="Acccount Type:" HorizontalAlignment="Left" Margin="441,148,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <ComboBox x:Name="cmbActType" HorizontalAlignment="Left" Margin="571,148,0,0" VerticalAlignment="Top" Width="206" FontSize="15" FontFamily="Consolas" Height="28" VerticalContentAlignment="Center" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
+
+        <Button x:Name="btnEditDirectSales" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
+                            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" Click="btnEditDirectSales_Click" BorderBrush="Black"/>
+
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="642,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="642,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="712,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
+
+    </Grid>
+</UserControl>

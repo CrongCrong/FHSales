@@ -1,0 +1,35 @@
+﻿<controls:MetroWindow x:Class="FHSales.DirectSalesDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:local="clr-namespace:FHSales"
+        mc:Ignorable="d"
+        Title="DIRECT SALES" Height="439.948" Width="519.924" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Background="#FF5E35B1" FontFamily="Consolas" Loaded="MetroWindow_Loaded">
+    <Grid>
+        <Label x:Name="label" Content="Delivery Date:" HorizontalAlignment="Left" Margin="89,29,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <DatePicker x:Name="deliveryDateDS" HorizontalAlignment="Left" Margin="227,29,0,0" VerticalAlignment="Top" Width="211" Height="29" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label1" Content="Client Name:" HorizontalAlignment="Left" Margin="106,63,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="txtClientName" Controls:TextBoxHelper.Watermark="Client name" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="227,63,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label2" Content="Quantity:" HorizontalAlignment="Left" Margin="133,97,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="227,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontFamily="Consolas" FontSize="16"/>
+        <Label x:Name="label3" Content="Cash/Bank:" HorizontalAlignment="Left" Margin="124,131,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <ComboBox x:Name="cmbCashBank" HorizontalAlignment="Left" Margin="227,131,0,0" VerticalAlignment="Top" Width="211" ItemsSource="{Binding BankModel}" DisplayMemberPath="BankName" SelectedValuePath="ID" Height="29" FontFamily="Consolas" FontSize="16"/>
+        <Label x:Name="label4" Content="Courier:" HorizontalAlignment="Left" Margin="142,166,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <ComboBox x:Name="cmbCourier" HorizontalAlignment="Left" Margin="227,165,0,0" VerticalAlignment="Top" Width="211" ItemsSource="{Binding CourierModel}" DisplayMemberPath="CourierName" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas" Height="30"/>
+        <Label x:Name="label5" Content="Expenses:" HorizontalAlignment="Left" Margin="133,200,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="txtExpenses" Controls:TextBoxHelper.Watermark="Courier expense" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="227,200,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontFamily="Consolas" FontSize="16"/>
+
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="369,336,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="369,336,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Click="btnUpdate_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" FontSize="10"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" Margin="439,336,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Click="btnClose_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3"/>
+        <Label x:Name="label6" Content="Total Price:" HorizontalAlignment="Left" Margin="106,234,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="txtTotalPrice" Controls:TextBoxHelper.Watermark="Total price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="227,234,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="211" FontFamily="Consolas" FontSize="16"/>
+    </Grid>
+</controls:MetroWindow>

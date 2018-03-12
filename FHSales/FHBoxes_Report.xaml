@@ -1,0 +1,32 @@
+﻿<controls:MetroWindow x:Class="FHSales.FHBoxes_Report"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:FHSales"
+        mc:Ignorable="d"
+        Title="FH BOXES REPORT" Height="300" Width="644.846" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" Background="#7e57c2">
+    <Grid>
+        <Label x:Name="label" Content="Date from:" HorizontalAlignment="Left" Margin="42,55,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <DatePicker x:Name="dateFrom" HorizontalAlignment="Left" Margin="145,57,0,0" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16" Height="27"/>
+        <Label x:Name="label1" Content="Date to:" HorizontalAlignment="Left" Margin="281,57,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <DatePicker x:Name="dateTo" HorizontalAlignment="Left" Margin="366,57,0,0" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
+        <Label x:Name="label2" Content="Bank/Cash:" HorizontalAlignment="Left" Margin="42,89,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <ComboBox x:Name="cmbCashBank" HorizontalAlignment="Left" Margin="145,89,0,0" VerticalAlignment="Top" Width="162" ItemsSource="{Binding BankModel}" DisplayMemberPath="BankName" SelectedValuePath="ID" FontFamily="Consolas" FontSize="16" Height="29"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="80,196,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black" />
+        <Button x:Name="btnGenerate" Content="Generate" HorizontalAlignment="Left" Margin="10,196,0,0" 
+            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnGenerate_Click" BorderBrush="Black" />
+        <Label x:Name="label3" Content="Report Date:" HorizontalAlignment="Left" Margin="24,21,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <ComboBox x:Name="cmbReportDate" HorizontalAlignment="Left" Margin="145,21,0,0" VerticalAlignment="Top" Width="162" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ReportDate}" DisplayMemberPath="DateReport" SelectedValuePath="DateReport" SelectionChanged="cmbReportDate_SelectionChanged" Height="29"/>
+        <Label x:Name="label4" Content="Year from:" HorizontalAlignment="Left" Margin="42,55,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <TextBox x:Name="txtYearFrom" HorizontalAlignment="Left" Height="29" Margin="145,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
+        <Label x:Name="label5" Content="Year To:" HorizontalAlignment="Left" Margin="281,55,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <TextBox x:Name="txtYearTo" HorizontalAlignment="Left" Height="31" Margin="366,57,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
+        <Label x:Name="label6" Content="Chart Type:" HorizontalAlignment="Left" Margin="33,123,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
+        <ComboBox x:Name="cmbChartType" HorizontalAlignment="Left" Margin="145,123,0,0" VerticalAlignment="Top" Width="162" ItemsSource="{Binding ChartType}" DisplayMemberPath="Type" SelectedValuePath="Type" Height="29"/>
+
+    </Grid>
+</controls:MetroWindow>
