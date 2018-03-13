@@ -119,13 +119,13 @@
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
 
-                    <controls:HamburgerMenuIconItem x:Name="menuDrugstores" Label="Drugstores">
+                    <!-- <controls:HamburgerMenuIconItem x:Name="menuDrugstores" Label="Drugstores">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FHDrugstores />
                         </controls:HamburgerMenuIconItem.Tag>
                        
-                    </controls:HamburgerMenuIconItem>
+                    </controls:HamburgerMenuIconItem> -->
 
 
                     <controls:HamburgerMenuIconItem x:Name="menuPurchaseorder" Label="Purchase Orders">

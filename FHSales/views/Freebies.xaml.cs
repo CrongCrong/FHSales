@@ -35,15 +35,20 @@ namespace FHSales.views
         {
             dgvFreebies.ItemsSource = loadDataGridDetails();
             btnUpdate.Visibility = Visibility.Hidden;
-            string t = UserTypeModel.GetDescription(UserTypeEnum.DIRECTSALES_VIEW);
-
-            if (t.Equals(UserModel.UserType))
+            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.DIRECTSALES_ADMIN) ||
+                (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
+            {
+                btnEdit.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Visible;
+                btnUpdate.Visibility = Visibility.Visible;
+                btnCancel.Visibility = Visibility.Visible;
+            }
+            else
             {
                 btnEdit.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;
-                //btnSearch.Visibility = Visibility.Hidden;
+                btnUpdate.Visibility = Visibility.Hidden;
                 btnCancel.Visibility = Visibility.Hidden;
-                //btnReset.Visibility = Visibility.Hidden;
             }
         }
 

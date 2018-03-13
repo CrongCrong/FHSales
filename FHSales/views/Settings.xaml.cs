@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FHSales.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,11 @@ namespace FHSales.views
 
         private void content_Loaded(object sender, RoutedEventArgs e)
         {
-
+            if ((Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.ADMIN))
+            {
+                menuUsers.IsEnabled = false;
+                
+            }
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

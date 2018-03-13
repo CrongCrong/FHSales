@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
+using System.Data.SqlTypes;
 
 namespace FHSales.views
 {
@@ -24,8 +25,33 @@ namespace FHSales.views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            searchDateFrom.IsEnabled = false;
+            searchDateTo.IsEnabled = false;
+            searchProduct.IsEnabled = false;
+            searchDrugstore.IsEnabled = false;
+            searchDR.IsEnabled = false;
+            searchPO.IsEnabled = false;
+            searchSI.IsEnabled = false;
             dgvPO.ItemsSource = loadDataGridDetails();
+            loadDrugstoreOnCombo();
+            loadProductOnCombo();
             btnUpdate.Visibility = Visibility.Hidden;
+
+            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.PO_VIEW) ||
+                (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
+            {
+                btnEdit.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Visible;
+                btnUpdate.Visibility = Visibility.Hidden;
+                btnCancel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                btnEdit.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Hidden;
+                btnUpdate.Visibility = Visibility.Hidden;
+                btnCancel.Visibility = Visibility.Hidden;
+            }
         }
 
         private List<PurchaseOrderModel> loadDataGridDetails()
@@ -48,10 +74,33 @@ namespace FHSales.views
                 purchase.PONumber = reader["ponumber"].ToString();
                 purchase.SINumber = reader["sinumber"].ToString();
                 purchase.DRNumber = reader["drnumber"].ToString();
-                DateTime dte = DateTime.Parse(reader["paymentdate"].ToString());
-                purchase.PaymentDate = dte.ToShortDateString();
-                dte = DateTime.Parse(reader["deliverydate"].ToString());
-                purchase.DeliveryDate = dte.ToShortDateString();
+
+                string temp = reader["paymentdate"].ToString();
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    DateTime dte = DateTime.Parse(temp);
+                    if(dte.Year == 0001)
+                    {
+                        purchase.PaymentDate = "";
+                    }else
+                    {
+                        purchase.PaymentDate = dte.ToShortDateString();
+                    }
+                    
+                }
+                temp = reader["deliverydate"].ToString();
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    DateTime dte = DateTime.Parse(temp);
+                    if (dte.Year == 0001)
+                    {
+                        purchase.DeliveryDate = "";
+                    }
+                    else
+                    {
+                        purchase.DeliveryDate = dte.ToShortDateString();
+                    }
+                }
                 purchase.Quantity = reader["quantity"].ToString();
                 purchase.DrugstoreID = reader["drugstoreID"].ToString();
                 purchase.ProductID = reader["productID"].ToString();
@@ -68,10 +117,11 @@ namespace FHSales.views
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             purchaseOrderModel = dgvPO.SelectedItem as PurchaseOrderModel;
-
-            if(purchaseOrderModel != null)
+            enableDisableControls(true);
+            if (purchaseOrderModel != null)
             {
                 btnUpdate.Visibility = Visibility.Visible;
+                btnCancel.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
 
                 txtPO.Text = purchaseOrderModel.PONumber;
@@ -112,17 +162,167 @@ namespace FHSales.views
             parameters.Add(txtPO.Text);
             parameters.Add(txtSI.Text);
             parameters.Add(txtDR.Text);
-            DateTime date = DateTime.Parse(paymentDate.Text);
-            parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
-            date = DateTime.Parse(deliveryDate.Text);
-            parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
+            if (!string.IsNullOrEmpty(paymentDate.Text))
+            {
+                DateTime date = DateTime.Parse(paymentDate.Text);
+                parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
+            }
+            else
+            {
+                parameters.Add("0000-00-00");
+            }
+
+            if (!string.IsNullOrEmpty(deliveryDate.Text))
+            {
+                DateTime date = DateTime.Parse(deliveryDate.Text);
+                parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
+            }
+            else
+            {
+                parameters.Add("0000-00-00");
+            }
+
             parameters.Add(txtQuantity.Text);
             parameters.Add(comboDrugstore.SelectedValue.ToString());
             parameters.Add(comboProduct.SelectedValue.ToString());
-
             conDB.AddRecordToDatabase(queryString, parameters);
 
             conDB.closeConnection();
+        }
+
+        private void updateRecord(PurchaseOrderModel pom)
+        {
+            conDB = new ConnectionDB();
+
+            string queryString = "UPDATE dbfh.tblpurchaseorder SET ponumber = ?, sinumber = ?, drnumber = ?, paymentdate = ?" +
+                ", deliverydate = ?, quantity = ?, drugstoreID = ?, productID = ? WHERE ID = ?";
+
+            List<string> parameters = new List<string>();
+            parameters.Add(txtPO.Text);
+            parameters.Add(txtSI.Text);
+            parameters.Add(txtDR.Text);
+            if (!string.IsNullOrEmpty(paymentDate.Text))
+            {
+                DateTime date = DateTime.Parse(paymentDate.Text);
+                parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
+            }
+            else
+            {
+                parameters.Add("0000-00-00");
+            }
+            if (!string.IsNullOrEmpty(deliveryDate.Text))
+            {
+                DateTime date = DateTime.Parse(deliveryDate.Text);
+                parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
+            }
+            else
+            {
+                parameters.Add("0000-00-00");
+            }
+            parameters.Add(txtQuantity.Text);
+            parameters.Add(comboDrugstore.SelectedValue.ToString());
+            parameters.Add(comboProduct.SelectedValue.ToString());
+            parameters.Add(pom.ID);
+            conDB.AddRecordToDatabase(queryString, parameters);
+
+            conDB.closeConnection();
+        }
+
+        private List<PurchaseOrderModel> search()
+        {
+            conDB = new ConnectionDB();
+            List<PurchaseOrderModel> lstPurchase = new List<PurchaseOrderModel>();
+            PurchaseOrderModel purchaseOrderMod = new PurchaseOrderModel();
+
+            string queryString = "SELECT dbfh.tblpurchaseorder.ID, ponumber, sinumber, drnumber, paymentdate, deliverydate, " +
+                "quantity, drugstoreID, productID, dbfh.tbldrugstores.description, dbfh.tblproducts.description FROM "+
+                "((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON dbfh.tblpurchaseorder.drugstoreID = dbfh.tbldrugstores.ID)" +
+                " INNER JOIN dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = dbfh.tblproducts.ID) WHERE dbfh.tblpurchaseorder.isDeleted = 0";
+
+            List<string> parameters = new List<string>();
+
+            if (checkDate.IsChecked.Value)
+            {
+                queryString += " AND (deliverydate BETWEEN ? AND ?)";
+                DateTime sdate = DateTime.Parse(searchDateFrom.Text);
+                parameters.Add(sdate.Year + "/" + sdate.Month + "/" + sdate.Day);
+                sdate = DateTime.Parse(searchDateTo.Text);
+                parameters.Add(sdate.Year + "/" + sdate.Month + "/" + sdate.Day);
+            }
+
+            if (checkCategory.IsChecked.Value)
+            {
+                queryString += " AND (dbfh.tblpurchaseorder.productID = ?)";
+                parameters.Add(searchProduct.SelectedValue.ToString());
+            }
+
+            if (checkDrugstore.IsChecked.Value)
+            {
+                queryString += " AND (dbfh.tblpurchaseorder.drugstoreID = ?";
+                parameters.Add(searchDrugstore.SelectedValue.ToString());
+            }
+
+            if (chkDRNumber.IsChecked.Value)
+            {
+                queryString += " AND (drnumber = ?)";
+                parameters.Add(searchDR.Text);
+            }
+            if (chkPONumber.IsChecked.Value)
+            {
+                queryString += " AND (ponumber = ?)";
+                parameters.Add(searchPO.Text);
+            }
+            if (chkSINumber.IsChecked.Value)
+            {
+                queryString += " AND (sinumber = ?)";
+                parameters.Add(searchSI.Text);
+            }
+
+            queryString += " ORDER BY dbfh.tblpurchaseorder.deliverydate DESC";
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
+
+            while (reader.Read())
+            {
+                purchaseOrderMod.ID = reader["ID"].ToString();
+                purchaseOrderMod.DRNumber = reader["drnumber"].ToString();
+                purchaseOrderMod.SINumber = reader["sinumber"].ToString();
+                purchaseOrderMod.PONumber = reader["ponumber"].ToString();
+                string temp = reader["paymentdate"].ToString();
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    DateTime dte = DateTime.Parse(temp);
+                    if (dte.Year == 0001)
+                    {
+                        purchaseOrderMod.PaymentDate = "";
+                    }
+                    else
+                    {
+                        purchaseOrderMod.PaymentDate = dte.ToShortDateString();
+                    }
+
+                }
+                temp = reader["deliverydate"].ToString();
+                if (!string.IsNullOrEmpty(temp))
+                {
+                    DateTime dte = DateTime.Parse(temp);
+                    if (dte.Year == 0001)
+                    {
+                        purchaseOrderMod.DeliveryDate = "";
+                    }
+                    else
+                    {
+                        purchaseOrderMod.DeliveryDate = dte.ToShortDateString();
+                    }
+                }
+                purchaseOrderMod.DrugstoreID = reader["drugstoreID"].ToString();
+                purchaseOrderMod.ProductID = reader["productID"].ToString();
+                purchaseOrderMod.Quantity = reader["quantity"].ToString();
+                lstPurchase.Add(purchaseOrderMod);
+                purchaseOrderMod = new PurchaseOrderModel();
+            }
+
+            return lstPurchase;
         }
 
         private async Task<bool> checkFields()
@@ -142,14 +342,7 @@ namespace FHSales.views
             {
                 await window.ShowMessageAsync("DR Number", "Please select DR number.");
             }
-            else if (string.IsNullOrEmpty(paymentDate.Text))
-            {
-                await window.ShowMessageAsync("Payment Date", "Please select payment date.");
-            }
-            else if (string.IsNullOrEmpty(deliveryDate.Text))
-            {
-                await window.ShowMessageAsync("Delivery Date", "Please select delivery date.");
-            }
+            
             else
             {
                 ifAllCorrect = true;
@@ -158,64 +351,253 @@ namespace FHSales.views
             return ifAllCorrect;
         }
 
-        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
 
+            if (checkDate.IsChecked.Value || checkCategory.IsChecked.Value || checkDrugstore.IsChecked.Value ||
+                chkDRNumber.IsChecked.Value || chkSINumber.IsChecked.Value || chkPONumber.IsChecked.Value)
+            {
+                if (string.IsNullOrEmpty(searchDateFrom.Text) && string.IsNullOrEmpty(searchDateTo.Text) && checkDate.IsChecked.Value)
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if(checkCategory.IsChecked.Value && searchProduct.SelectedItem == null)
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if(checkDrugstore.IsChecked.Value && searchDrugstore.SelectedItem == null)
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if(chkDRNumber.IsChecked.Value && string.IsNullOrEmpty(searchDR.Text))
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if(chkPONumber.IsChecked.Value && string.IsNullOrEmpty(searchPO.Text))
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if(chkSINumber.IsChecked.Value && string.IsNullOrEmpty(searchSI.Text))
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }
+                else
+                {
+                    dgvPO.ItemsSource = search();
+                }
+            }
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)
         {
-
+            checkDate.IsChecked = false;
+            checkCategory.IsChecked = false;
+            checkDrugstore.IsChecked = false;
+            chkDRNumber.IsChecked = false;
+            chkSINumber.IsChecked = false;
+            chkPONumber.IsChecked = false;
+            dgvPO.ItemsSource = loadDataGridDetails();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
-
+            clearFields();
+            btnUpdate.Visibility = Visibility.Hidden;
+            btnSave.Visibility = Visibility.Visible;
         }
 
-        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-
+            bool bl = await checkFields();
+            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            if (bl)
+            {
+                updateRecord(purchaseOrderModel);
+                clearFields();
+                await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
+                dgvPO.ItemsSource = loadDataGridDetails();
+            }
         }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
+       
+        private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
-
+            bool bl = await checkFields();
+            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            if (bl)
+            {
+                saveRecord();
+                clearFields();
+                await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
+                dgvPO.ItemsSource = loadDataGridDetails();
+            }
         }
 
         private void checkDate_Checked(object sender, RoutedEventArgs e)
         {
-
+            searchDateFrom.IsEnabled = true;
+            searchDateTo.IsEnabled = true;
         }
 
         private void checkCategory_Checked(object sender, RoutedEventArgs e)
         {
-
+            searchProduct.IsEnabled = true;
         }
 
         private void checkDrugstore_Checked(object sender, RoutedEventArgs e)
         {
-
+            searchDrugstore.IsEnabled = true;
         }
 
         private void checkDate_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            searchDateFrom.IsEnabled = false;
+            searchDateTo.IsEnabled = false;
         }
 
         private void checkCategory_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            searchProduct.IsEnabled = false;
         }
 
         private void checkDrugstore_Unchecked(object sender, RoutedEventArgs e)
         {
-
+            searchDrugstore.IsEnabled = false;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void loadDrugstoreOnCombo()
+        {
+            conDB = new ConnectionDB();
+
+            string queryString = "SELECT ID, drugstore, description FROM dbfh.tbldrugstores WHERE isDeleted = 0";
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+            comboDrugstore.Items.Clear();
+            searchDrugstore.Items.Clear();
+            while (reader.Read())
+            {
+                DrugstoreModel drg = new DrugstoreModel();
+                drg.ID = reader["ID"].ToString();
+                drg.DrugstoreName = reader["drugstore"].ToString();
+                drg.Description = reader["description"].ToString();
+
+                comboDrugstore.Items.Add(drg);
+                searchDrugstore.Items.Add(drg);
+            }
+            conDB.closeConnection();
+        }
+
+        private void loadProductOnCombo()
+        {
+            conDB = new ConnectionDB();
+            ProductModel prod = new ProductModel();
+
+            string queryString = "SELECT ID, productname, description FROM dbfh.tblproducts WHERE isDeleted = 0";
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+
+            comboProduct.Items.Clear();
+            searchProduct.Items.Clear();
+
+            while (reader.Read())
+            {
+                prod.ID = reader["ID"].ToString();
+                prod.ProductName = reader["productname"].ToString();
+                prod.Description = reader["description"].ToString();
+
+                comboProduct.Items.Add(prod);
+                searchProduct.Items.Add(prod);
+                prod = new ProductModel();
+            }
+
+            conDB.closeConnection();
+        }
+
+        private void clearFields()
+        {
+            txtPO.Text = "";
+            txtSI.Text = "";
+            txtDR.Text = "";
+            paymentDate.Text = "";
+            deliveryDate.Text = "";
+            txtQuantity.Text = "";
+            txtPO.IsEnabled = true;
+            txtSI.IsEnabled = true;
+            txtDR.IsEnabled = true;
+            paymentDate.IsEnabled = true;
+            deliveryDate.IsEnabled = true;
+            txtQuantity.IsEnabled = true;
+            comboDrugstore.IsEnabled = true;
+            comboProduct.IsEnabled = true;
+            comboDrugstore.SelectedItem = null;
+            comboProduct.SelectedItem = null;
+        }
+
+        private void btnView_Click(object sender, RoutedEventArgs e)
+        {
+            purchaseOrderModel = dgvPO.SelectedItem as PurchaseOrderModel;
+            
+            if(purchaseOrderModel != null)
+            {
+                txtDR.Text = purchaseOrderModel.DRNumber;
+                txtSI.Text = purchaseOrderModel.SINumber;
+                txtPO.Text = purchaseOrderModel.PONumber;
+                txtQuantity.Text = purchaseOrderModel.Quantity;
+                deliveryDate.Text = purchaseOrderModel.DeliveryDate;
+                paymentDate.Text = purchaseOrderModel.PaymentDate;
+                foreach (DrugstoreModel dsm in comboDrugstore.Items)
+                {
+                    if (dsm.ID.Equals(purchaseOrderModel.DrugstoreID))
+                    {
+                        comboDrugstore.SelectedItem = dsm;
+                    }
+                }
+
+                foreach (ProductModel prM in comboProduct.Items)
+                {
+                    if (prM.ID.Equals(purchaseOrderModel.ProductID))
+                    {
+                        comboProduct.SelectedItem = prM;
+                    }
+                }
+                btnSave.Visibility = Visibility.Hidden;
+                btnUpdate.Visibility = Visibility.Hidden;
+                //btnCancel.Visibility = Visibility.Hidden;
+
+                enableDisableControls(false);
+            }
+        }
+
+        private void enableDisableControls(bool b)
+        {
+            txtDR.IsEnabled = b;
+            txtSI.IsEnabled = b;
+            txtPO.IsEnabled = b;
+            txtQuantity.IsEnabled = b;
+            paymentDate.IsEnabled = b;
+            deliveryDate.IsEnabled = b;
+            comboDrugstore.IsEnabled = b;
+            comboProduct.IsEnabled = b;
+        }
+
+        private void chkSINumber_Checked(object sender, RoutedEventArgs e)
+        {
+            searchSI.IsEnabled = true;
+        }
+
+        private void chkPONumber_Checked(object sender, RoutedEventArgs e)
+        {
+            searchPO.IsEnabled = true;
+        }
+
+        private void chkSINumber_Unchecked(object sender, RoutedEventArgs e)
+        {
+            searchSI.IsEnabled = false;
+        }
+
+        private void chkPONumber_Unchecked(object sender, RoutedEventArgs e)
+        {
+            searchPO.IsEnabled = false;
         }
     }
 }

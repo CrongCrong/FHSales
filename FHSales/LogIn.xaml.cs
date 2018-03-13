@@ -40,7 +40,7 @@ namespace FHSales
             conDB = new ConnectionDB();
            //ser = new UserModel();
             bool ifCorrect = false;
-            string queryString = "SELECT dbfh.tblusers.ID, username, aes_decrypt(dbfh.tblusers.password, ?) as pas, firstname, lastname, dbfh.tblusertypes.type AS usertype " +
+            string queryString = "SELECT dbfh.tblusers.ID, username, aes_decrypt(dbfh.tblusers.password, ?) as pas, firstname, lastname, dbfh.tblusers.usertype " +
                 "FROM (dbfh.tblusers INNER JOIN dbfh.tblusertypes ON dbfh.tblusers.usertype = dbfh.tblusertypes.ID) " +
                 "WHERE aes_decrypt(dbfh.tblusers.password, ?) = ? AND username = ? AND dbfh.tblusers.isDeleted = 0";
 

@@ -44,7 +44,14 @@ namespace FHSales.views
             loadDrugstoreOnCombo();
             loadProductOnCombo();
 
-            if (!UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_ADMIN) || !UserModel.UserType.Equals(UserTypeEnum.ADMIN))
+            if ((Convert.ToInt32(UserModel.UserType) == (int) UserTypeEnum.DIRECTSALES_ADMIN) || 
+                (Convert.ToInt32(UserModel.UserType) == (int) UserTypeEnum.ADMIN))
+            {
+                btnEdit.Visibility = Visibility.Visible;
+                btnSave.Visibility = Visibility.Visible;
+                btnUpdate.Visibility = Visibility.Visible;
+                btnCancel.Visibility = Visibility.Visible;
+            }else
             {
                 btnEdit.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;
