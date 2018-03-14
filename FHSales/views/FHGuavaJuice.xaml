@@ -51,19 +51,19 @@
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
 
 
-        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="642,190,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31"/>
+        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="647,190,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" HorizontalContentAlignment="Right" Background="Blue" Foreground="White"/>
         <DatePicker x:Name="deliveryDateDS" HorizontalAlignment="Left" Margin="780,190,0,0" VerticalAlignment="Top" Width="253" Height="31" FontSize="16" FontFamily="Consolas"/>
-        <Label x:Name="label2" Content="Client Name:" HorizontalAlignment="Left" Margin="659,227,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label2" Content="Client Name:" HorizontalAlignment="Left" Margin="647,227,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
         <TextBox x:Name="txtClientName" Controls:TextBoxHelper.Watermark="Client name" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,227,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas"/>
-        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="686,261,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="647,261,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" Width="133" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,261,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" PreviewTextInput="txtQuantity_PreviewTextInput"/>
-        <Label x:Name="label4" Content="Cash/Bank:" HorizontalAlignment="Left" Margin="677,295,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label4" Content="Cash/Bank:" HorizontalAlignment="Left" Margin="647,295,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" Width="133" HorizontalContentAlignment="Right"/>
         <ComboBox x:Name="cmbCashBank" HorizontalAlignment="Left" Margin="780,295,0,0" VerticalAlignment="Top" Width="253" ItemsSource="{Binding BankModel}" DisplayMemberPath="BankName" SelectedValuePath="ID" Height="29" FontFamily="Consolas" FontSize="16"/>
-        <Label x:Name="label5" Content="Courier:" HorizontalAlignment="Left" Margin="695,329,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="30"/>
+        <Label x:Name="label5" Content="Courier:" HorizontalAlignment="Left" Margin="647,329,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="30" Background="Blue" Foreground="White" HorizontalContentAlignment="Right" Width="133"/>
         <ComboBox x:Name="cmbCourier" HorizontalAlignment="Left" Margin="780,329,0,0" VerticalAlignment="Top" Width="253" ItemsSource="{Binding CourierModel}" DisplayMemberPath="CourierName" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas" Height="30"/>
-        <Label x:Name="label6" Content="Expenses:" HorizontalAlignment="Left" Margin="686,364,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label6" Content="Expenses:" HorizontalAlignment="Left" Margin="647,364,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" HorizontalContentAlignment="Right" Width="133"/>
         <TextBox x:Name="txtExpenses" Controls:TextBoxHelper.Watermark="Courier expense" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,364,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16"/>
-        <Label x:Name="label7" Content="Total Price:" HorizontalAlignment="Left" Margin="659,398,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
+        <Label x:Name="label7" Content="Total Price:" HorizontalAlignment="Left" Margin="647,398,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" HorizontalContentAlignment="Right" Width="133"/>
         <TextBox x:Name="txtTotalPrice" Controls:TextBoxHelper.Watermark="Total price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,398,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" PreviewTextInput="txtTotalPrice_PreviewTextInput"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,432,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>

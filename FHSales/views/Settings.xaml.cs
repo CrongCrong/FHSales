@@ -38,8 +38,7 @@ namespace FHSales.views
         {
             if ((Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.ADMIN))
             {
-                menuUsers.IsEnabled = false;
-                
+                menuUsers.IsEnabled = false;             
             }
         }
 

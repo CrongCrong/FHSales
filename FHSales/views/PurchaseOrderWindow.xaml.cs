@@ -61,9 +61,9 @@ namespace FHSales.views
             PurchaseOrderModel purchase = new PurchaseOrderModel();
 
             string queryString = "SELECT tblpurchaseorder.ID, ponumber, sinumber, drnumber, paymentdate, deliverydate, " +
-                "quantity, drugstoreID, productID FROM ((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON tblpurchaseorder.drugstoreID = tbldrugstores.ID)" +
+                "quantity, drugstoreID, productID, isPaid, amount FROM ((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON tblpurchaseorder.drugstoreID = tbldrugstores.ID)" +
                 " INNER JOIN dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = tblproducts.ID) " +
-                "WHERE dbfh.tblpurchaseorder.isDeleted = 0";
+                "WHERE dbfh.tblpurchaseorder.isDeleted = 0 order by tblpurchaseorder.ID DESC";
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
 
@@ -104,6 +104,15 @@ namespace FHSales.views
                 purchase.Quantity = reader["quantity"].ToString();
                 purchase.DrugstoreID = reader["drugstoreID"].ToString();
                 purchase.ProductID = reader["productID"].ToString();
+                purchase.isPaid = reader["isPaid"].ToString();
+                purchase.Amount = Convert.ToDouble(reader["amount"].ToString()).ToString("N0");
+                if (purchase.isPaid.Equals("1"))
+                {
+                    purchase.boolPaid = true;
+                }else
+                {
+                    purchase.boolPaid = false;
+                }
                 lstPurchaseOrder.Add(purchase);
                 purchase = new PurchaseOrderModel();
             }
@@ -130,7 +139,8 @@ namespace FHSales.views
                 paymentDate.Text = purchaseOrderModel.PaymentDate;
                 deliveryDate.Text = purchaseOrderModel.DeliveryDate;
                 txtQuantity.Text = purchaseOrderModel.Quantity;
-
+                chkPaid.IsChecked = purchaseOrderModel.boolPaid;
+                txtAmount.Text = purchaseOrderModel.Amount;
                 foreach (DrugstoreModel dsm in comboDrugstore.Items)
                 {
                     if (dsm.ID.Equals(purchaseOrderModel.DrugstoreID))
@@ -155,7 +165,7 @@ namespace FHSales.views
             conDB = new ConnectionDB();
 
             string queryString = "INSERT INTO dbfh.tblpurchaseorder (ponumber, sinumber, drnumber, paymentdate, deliverydate," +
-                " quantity, drugstoreID, productID, isDeleted) VALUES (?,?,?,?,?,?,?,?,0)";
+                " quantity, drugstoreID, productID, amount, isPaid, isDeleted) VALUES (?,?,?,?,?,?,?,?,?,?,0)";
 
             List<string> parameters = new List<string>();
 
@@ -185,6 +195,15 @@ namespace FHSales.views
             parameters.Add(txtQuantity.Text);
             parameters.Add(comboDrugstore.SelectedValue.ToString());
             parameters.Add(comboProduct.SelectedValue.ToString());
+            parameters.Add(txtAmount.Text);
+            if (chkPaid.IsChecked.Value)
+            {
+                parameters.Add("1");
+            }
+            else
+            {
+                parameters.Add("0");
+            }
             conDB.AddRecordToDatabase(queryString, parameters);
 
             conDB.closeConnection();
@@ -195,7 +214,7 @@ namespace FHSales.views
             conDB = new ConnectionDB();
 
             string queryString = "UPDATE dbfh.tblpurchaseorder SET ponumber = ?, sinumber = ?, drnumber = ?, paymentdate = ?" +
-                ", deliverydate = ?, quantity = ?, drugstoreID = ?, productID = ? WHERE ID = ?";
+                ", deliverydate = ?, quantity = ?, drugstoreID = ?, productID = ? , isPaid = ?, amount = ? WHERE ID = ?";
 
             List<string> parameters = new List<string>();
             parameters.Add(txtPO.Text);
@@ -222,6 +241,16 @@ namespace FHSales.views
             parameters.Add(txtQuantity.Text);
             parameters.Add(comboDrugstore.SelectedValue.ToString());
             parameters.Add(comboProduct.SelectedValue.ToString());
+            
+            if (chkPaid.IsChecked.Value)
+            {
+                parameters.Add("1");
+            }else
+            {
+                parameters.Add("0");
+            }
+            parameters.Add(txtAmount.Text);
+
             parameters.Add(pom.ID);
             conDB.AddRecordToDatabase(queryString, parameters);
 
@@ -235,7 +264,7 @@ namespace FHSales.views
             PurchaseOrderModel purchaseOrderMod = new PurchaseOrderModel();
 
             string queryString = "SELECT dbfh.tblpurchaseorder.ID, ponumber, sinumber, drnumber, paymentdate, deliverydate, " +
-                "quantity, drugstoreID, productID, dbfh.tbldrugstores.description, dbfh.tblproducts.description FROM "+
+                "quantity, drugstoreID, productID, dbfh.tbldrugstores.description, dbfh.tblproducts.description, isPaid, amount FROM "+
                 "((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON dbfh.tblpurchaseorder.drugstoreID = dbfh.tbldrugstores.ID)" +
                 " INNER JOIN dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = dbfh.tblproducts.ID) WHERE dbfh.tblpurchaseorder.isDeleted = 0";
 
@@ -278,6 +307,15 @@ namespace FHSales.views
                 parameters.Add(searchSI.Text);
             }
 
+            if (chkPaymentDate.IsChecked.Value)
+            {
+                queryString += " AND (paymentdate BETWEEN ? AND ?)";
+                DateTime sdate = DateTime.Parse(searchPayDateFrom.Text);
+                parameters.Add(sdate.Year + "/" + sdate.Month + "/" + sdate.Day);
+                sdate = DateTime.Parse(searchPayDateTo.Text);
+                parameters.Add(sdate.Year + "/" + sdate.Month + "/" + sdate.Day);
+            }
+
             queryString += " ORDER BY dbfh.tblpurchaseorder.deliverydate DESC";
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
@@ -318,6 +356,16 @@ namespace FHSales.views
                 purchaseOrderMod.DrugstoreID = reader["drugstoreID"].ToString();
                 purchaseOrderMod.ProductID = reader["productID"].ToString();
                 purchaseOrderMod.Quantity = reader["quantity"].ToString();
+                purchaseOrderMod.isPaid = reader["isPaid"].ToString();
+                purchaseOrderMod.Amount = Convert.ToDouble(reader["amount"].ToString()).ToString("N0");
+                if (purchaseOrderMod.isPaid.Equals("1"))
+                {
+                    purchaseOrderMod.boolPaid = true;
+                }
+                else
+                {
+                    purchaseOrderMod.boolPaid = false;
+                }
                 lstPurchase.Add(purchaseOrderMod);
                 purchaseOrderMod = new PurchaseOrderModel();
             }
@@ -341,6 +389,9 @@ namespace FHSales.views
             else if (string.IsNullOrEmpty(txtDR.Text))
             {
                 await window.ShowMessageAsync("DR Number", "Please select DR number.");
+            }else if (string.IsNullOrEmpty(txtAmount.Text))
+            {
+                await window.ShowMessageAsync("Amount", "Please select DR number.");
             }
             
             else
@@ -356,7 +407,8 @@ namespace FHSales.views
             MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
 
             if (checkDate.IsChecked.Value || checkCategory.IsChecked.Value || checkDrugstore.IsChecked.Value ||
-                chkDRNumber.IsChecked.Value || chkSINumber.IsChecked.Value || chkPONumber.IsChecked.Value)
+                chkDRNumber.IsChecked.Value || chkSINumber.IsChecked.Value || chkPONumber.IsChecked.Value ||
+                chkPaymentDate.IsChecked.Value)
             {
                 if (string.IsNullOrEmpty(searchDateFrom.Text) && string.IsNullOrEmpty(searchDateTo.Text) && checkDate.IsChecked.Value)
                 {
@@ -376,6 +428,10 @@ namespace FHSales.views
                 }else if(chkSINumber.IsChecked.Value && string.IsNullOrEmpty(searchSI.Text))
                 {
                     await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }else if (chkPaymentDate.IsChecked.Value && (string.IsNullOrEmpty(searchPayDateFrom.Text))
+                    && (string.IsNullOrEmpty(searchDateTo.Text)))
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
                 }
                 else
                 {
@@ -392,7 +448,9 @@ namespace FHSales.views
             chkDRNumber.IsChecked = false;
             chkSINumber.IsChecked = false;
             chkPONumber.IsChecked = false;
+            chkPaymentDate.IsChecked = false;
             dgvPO.ItemsSource = loadDataGridDetails();
+
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -400,6 +458,8 @@ namespace FHSales.views
             clearFields();
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
+            chkPaid.IsChecked = false;
+            chkPaid.IsEnabled = true;
         }
 
         private async void btnUpdate_Click(object sender, RoutedEventArgs e)
@@ -408,10 +468,16 @@ namespace FHSales.views
             MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             if (bl)
             {
-                updateRecord(purchaseOrderModel);
-                clearFields();
-                await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-                dgvPO.ItemsSource = loadDataGridDetails();
+                MessageDialogResult result = await window.ShowMessageAsync("Purchase Order", "Is this transaction still UNPAID?", MessageDialogStyle.AffirmativeAndNegative);
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    updateRecord(purchaseOrderModel);
+                    clearFields();
+                    await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
+                    dgvPO.ItemsSource = loadDataGridDetails();
+                }
+
+                   
             }
         }
        
@@ -521,9 +587,11 @@ namespace FHSales.views
             paymentDate.Text = "";
             deliveryDate.Text = "";
             txtQuantity.Text = "";
+            txtAmount.Text = "";
             txtPO.IsEnabled = true;
             txtSI.IsEnabled = true;
             txtDR.IsEnabled = true;
+            txtAmount.IsEnabled = true;
             paymentDate.IsEnabled = true;
             deliveryDate.IsEnabled = true;
             txtQuantity.IsEnabled = true;
@@ -531,6 +599,10 @@ namespace FHSales.views
             comboProduct.IsEnabled = true;
             comboDrugstore.SelectedItem = null;
             comboProduct.SelectedItem = null;
+            chkPaid.IsChecked = false;
+            chkPaid.IsEnabled = true;
+            btnUpdate.Visibility = Visibility.Hidden;
+            btnSave.Visibility = Visibility.Visible;
         }
 
         private void btnView_Click(object sender, RoutedEventArgs e)
@@ -545,6 +617,15 @@ namespace FHSales.views
                 txtQuantity.Text = purchaseOrderModel.Quantity;
                 deliveryDate.Text = purchaseOrderModel.DeliveryDate;
                 paymentDate.Text = purchaseOrderModel.PaymentDate;
+                txtAmount.Text = purchaseOrderModel.Amount;
+                if (purchaseOrderModel.boolPaid)
+                {
+                    chkPaid.IsChecked = true;
+                }else
+                {
+                    chkPaid.IsChecked = false;
+                }
+
                 foreach (DrugstoreModel dsm in comboDrugstore.Items)
                 {
                     if (dsm.ID.Equals(purchaseOrderModel.DrugstoreID))
@@ -578,6 +659,8 @@ namespace FHSales.views
             deliveryDate.IsEnabled = b;
             comboDrugstore.IsEnabled = b;
             comboProduct.IsEnabled = b;
+            chkPaid.IsEnabled = b;
+            txtAmount.IsEnabled = b;
         }
 
         private void chkSINumber_Checked(object sender, RoutedEventArgs e)

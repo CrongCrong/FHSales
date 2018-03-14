@@ -31,5 +31,14 @@ namespace FHSales.Classes
         public string DrugstoreID { get; set; }
 
         public string ProductID { get; set; }
+
+        public string isPaid { get; set; }
+
+        public bool boolPaid { get; set; }
+
+        public string Amount { get; set; }
+
+        public string Paid { get; set; }
+
     }
 }

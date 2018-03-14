@@ -18,9 +18,9 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="label" Content="Category:" HorizontalAlignment="Left" Margin="487,127,0,0" VerticalAlignment="Top" FontSize="15" Width="121" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label" Content="Category:" HorizontalAlignment="Left" Margin="492,127,0,0" VerticalAlignment="Top" FontSize="15" Width="121" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" />
         <TextBox x:Name="txtCategory" HorizontalAlignment="Left" Height="28" Margin="613,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="164" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
-        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="487,160,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Width="121"/>
+        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="492,160,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Width="121" Background="Blue" Foreground="White" />
         <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="613,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="164" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" Click="btnEditDirectSales_Click" BorderBrush="Black"/>
