@@ -67,7 +67,6 @@ namespace FHSales.views
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
 
-
             while (reader.Read())
             {
                 purchase.ID = reader["ID"].ToString();
@@ -85,8 +84,7 @@ namespace FHSales.views
                     }else
                     {
                         purchase.PaymentDate = dte.ToShortDateString();
-                    }
-                    
+                    }                    
                 }
                 temp = reader["deliverydate"].ToString();
                 if (!string.IsNullOrEmpty(temp))
@@ -116,11 +114,8 @@ namespace FHSales.views
                 lstPurchaseOrder.Add(purchase);
                 purchase = new PurchaseOrderModel();
             }
-
             conDB.closeConnection();
-
             return lstPurchaseOrder;
-
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -392,8 +387,7 @@ namespace FHSales.views
             }else if (string.IsNullOrEmpty(txtAmount.Text))
             {
                 await window.ShowMessageAsync("Amount", "Please select DR number.");
-            }
-            
+            }            
             else
             {
                 ifAllCorrect = true;
@@ -475,9 +469,7 @@ namespace FHSales.views
                     clearFields();
                     await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
                     dgvPO.ItemsSource = loadDataGridDetails();
-                }
-
-                   
+                }                
             }
         }
        
