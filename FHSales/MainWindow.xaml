@@ -133,7 +133,9 @@
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:PurchaseOrderWindow />
                         </controls:HamburgerMenuIconItem.Tag>
-
+                        <controls:HamburgerMenuIconItem.Icon>
+                            <Image Source="images/purchase-order-clipart96.png"/>
+                        </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
                 </controls:HamburgerMenuItemCollection>
             </controls:HamburgerMenu.ItemsSource>

@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -51,10 +51,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>33FFDF0F6EB22073405522D4993E94C6F9D026A6</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>6AEA766599A0A14CD7C4E9079E00D2C7F1CD5323</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FHSales_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FHSales_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -308,6 +308,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="images\fh capsule fh juice for web site banner.jpg" />
+    <Resource Include="images\purchase-order-clipart96.png" />
     <Content Include="Reports\FHBOTTLES_ALL_YEAR_CASHBANK.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -395,6 +396,7 @@
     <Content Include="Reports\FHBOXES_ALL_YEAR_PIE.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="FHSales_1_TemporaryKey.pfx" />
     <None Include="FHSales_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\DataSources\FHSales.Classes.DirectSalesModel.datasource" />

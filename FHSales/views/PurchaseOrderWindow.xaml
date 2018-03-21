@@ -78,8 +78,8 @@
         <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
         <CheckBox x:Name="checkCategory" Content="Product:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
         <ComboBox x:Name="searchProduct" HorizontalAlignment="Left" Margin="131,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
-        <CheckBox x:Name="checkDrugstore" Content="Drugstore:" HorizontalAlignment="Left" Margin="320,98,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDrugstore_Checked" Unchecked="checkDrugstore_Unchecked" />
-        <ComboBox x:Name="searchDrugstore" HorizontalAlignment="Left" Margin="441,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
+        <CheckBox x:Name="checkDrugstore" Content="Drugstore:" HorizontalAlignment="Left" Margin="340,99,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDrugstore_Checked" Unchecked="checkDrugstore_Unchecked" />
+        <ComboBox x:Name="searchDrugstore" HorizontalAlignment="Left" Margin="461,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
 
         <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="490,208,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
@@ -95,13 +95,13 @@
         <DatePicker x:Name="paymentDate" HorizontalAlignment="Left" Margin="793,369,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="7"/>
         <Button x:Name="btnView" Content="View" HorizontalAlignment="Left" Margin="93,549,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnView_Click" />
-        <CheckBox x:Name="chkDRNumber" Content="DR Number:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="13" HorizontalContentAlignment="Right" Width="116" Height="29"/>
+        <CheckBox x:Name="chkDRNumber" Content="DR Number:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="13" HorizontalContentAlignment="Right" Width="116" Height="29" Checked="chkDRNumber_Checked" Unchecked="chkDRNumber_Unchecked"/>
         <TextBox x:Name="searchDR" HorizontalAlignment="Left" Height="28" Margin="131,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
-        <CheckBox x:Name="chkSINumber" Content="SI Number:" HorizontalAlignment="Left" Margin="320,130,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="116" Height="28" FontFamily="Consolas" FontSize="13" Checked="chkSINumber_Checked" Unchecked="chkSINumber_Unchecked"/>
-        <TextBox x:Name="searchSI" HorizontalAlignment="Left" Height="28" Margin="441,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
+        <CheckBox x:Name="chkSINumber" Content="SI Number:" HorizontalAlignment="Left" Margin="340,130,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="116" Height="28" FontFamily="Consolas" FontSize="13" Checked="chkSINumber_Checked" Unchecked="chkSINumber_Unchecked"/>
+        <TextBox x:Name="searchSI" HorizontalAlignment="Left" Height="28" Margin="461,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
         <CheckBox x:Name="chkPONumber" Content="PO Number:" HorizontalAlignment="Left" Margin="10,194,0,0" VerticalAlignment="Top" Width="116" HorizontalContentAlignment="Right" Height="28" FontFamily="Consolas" FontSize="13" Checked="chkPONumber_Checked" Unchecked="chkPONumber_Unchecked"/>
         <TextBox x:Name="searchPO" HorizontalAlignment="Left" Height="28" Margin="131,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
-        <CheckBox x:Name="chkPaymentDate" Content="Payment Date:" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right"/>
+        <CheckBox x:Name="chkPaymentDate" Content="Payment Date:" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="chkPaymentDate_Checked" Unchecked="chkPaymentDate_Unchecked"/>
         <DatePicker x:Name="searchPayDateFrom" HorizontalAlignment="Left" Margin="131,163,0,0" VerticalAlignment="Top" Width="184"/>
         <Label x:Name="label8_Copy" Content="-" HorizontalAlignment="Left" Margin="315,163,0,0" VerticalAlignment="Top"/>
         <DatePicker x:Name="searchPayDateTo" HorizontalAlignment="Left" Margin="330,163,0,0" VerticalAlignment="Top" Width="179"/>

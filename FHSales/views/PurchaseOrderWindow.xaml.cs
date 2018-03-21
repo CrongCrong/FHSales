@@ -674,5 +674,27 @@ namespace FHSales.views
         {
             searchPO.IsEnabled = false;
         }
+
+        private void chkDRNumber_Checked(object sender, RoutedEventArgs e)
+        {
+            searchDR.IsEnabled = true;
+        }
+
+        private void chkDRNumber_Unchecked(object sender, RoutedEventArgs e)
+        {
+            searchDR.IsEnabled = false;
+        }
+
+        private void chkPaymentDate_Checked(object sender, RoutedEventArgs e)
+        {
+            searchPayDateFrom.IsEnabled = true;
+            searchPayDateTo.IsEnabled = true;
+        }
+
+        private void chkPaymentDate_Unchecked(object sender, RoutedEventArgs e)
+        {
+            searchPayDateFrom.IsEnabled = false;
+            searchPayDateTo.IsEnabled = false;
+        }
     }
 }
