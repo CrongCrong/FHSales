@@ -26,6 +26,8 @@ namespace FHSales.Classes
 
         public DrugstoreModel Drugstore { get; set; }
 
+        public string DrugstoreName { get; set; }
+
         public ProductModel Product { get; set; }
 
         public string DrugstoreID { get; set; }

@@ -61,7 +61,7 @@ namespace FHSales.views
             PurchaseOrderModel purchase = new PurchaseOrderModel();
 
             string queryString = "SELECT tblpurchaseorder.ID, ponumber, sinumber, drnumber, paymentdate, deliverydate, " +
-                "quantity, drugstoreID, productID, isPaid, amount FROM ((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON tblpurchaseorder.drugstoreID = tbldrugstores.ID)" +
+                "quantity, drugstoreID, productID, isPaid, amount, dbfh.tbldrugstores.description FROM ((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON tblpurchaseorder.drugstoreID = tbldrugstores.ID)" +
                 " INNER JOIN dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = tblproducts.ID) " +
                 "WHERE dbfh.tblpurchaseorder.isDeleted = 0 order by tblpurchaseorder.ID DESC";
 
@@ -73,7 +73,7 @@ namespace FHSales.views
                 purchase.PONumber = reader["ponumber"].ToString();
                 purchase.SINumber = reader["sinumber"].ToString();
                 purchase.DRNumber = reader["drnumber"].ToString();
-
+                purchase.DrugstoreName = reader["description"].ToString();
                 string temp = reader["paymentdate"].ToString();
                 if (!string.IsNullOrEmpty(temp))
                 {

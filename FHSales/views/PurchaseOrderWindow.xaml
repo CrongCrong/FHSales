@@ -33,19 +33,31 @@
                 <DataGridTextColumn Header="PO No." Binding="{Binding PONumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Drugstore" Binding="{Binding DrugstoreName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="QTY" Binding="{Binding Quantity}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Amount" Binding="{Binding Amount}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+
                 <DataGridTextColumn Header="SI No." Binding="{Binding SINumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
+                
+                <!--
                 <DataGridTextColumn Header="DR No." Binding="{Binding DRNumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
+                
                 <DataGridTextColumn Header="Payment Date" Binding="{Binding PaymentDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Qty" Binding="{Binding Quantity}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
-
-                </DataGridTextColumn>
-
+                -->
                 <DataGridTextColumn Header="Delivery Date" Binding="{Binding DeliveryDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
