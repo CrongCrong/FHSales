@@ -34,6 +34,8 @@ namespace FHSales.Classes
 
         public string ProductID { get; set; }
 
+        public string ProductName { get; set; }
+
         public string isPaid { get; set; }
 
         public bool boolPaid { get; set; }
@@ -41,6 +43,10 @@ namespace FHSales.Classes
         public string Amount { get; set; }
 
         public string Paid { get; set; }
+
+        public string PaymentDueDate { get; set; }
+
+        public string Terms { get; set; }
 
     }
 }

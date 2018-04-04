@@ -40,6 +40,12 @@ namespace FHSales.views
             {
                 menuUsers.IsEnabled = false;             
             }
+            if ((Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.ADMIN) 
+                || (Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.PO_VIEW))
+            {
+                menuDrugstores.IsEnabled = false;
+            }
+
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)

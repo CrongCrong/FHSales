@@ -22,6 +22,8 @@ namespace FHSales
         BankModel bankModel;
         ReportDate reportDate;
         string strFHProduct;
+        List<PurchaseOrderModel> lstPurchaseOrderModels;
+
         public ReportForm(BankModel bm, ReportDate rd, string s)
         {
             reportDate = rd;
@@ -37,445 +39,462 @@ namespace FHSales
             InitializeComponent();
         }
 
+        public ReportForm(List<PurchaseOrderModel> lstPurchMods)
+        {
+            lstPurchaseOrderModels = lstPurchMods;
+            InitializeComponent();
+        }
+
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (strFHProduct.Equals("FHBOXES"))
+            if (!string.IsNullOrEmpty(strFHProduct))
             {
-                #region FH BOXES REPORT
-                if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
+                if (strFHProduct.Equals("FHBOXES"))
                 {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
+                    #region FH BOXES REPORT
+                    if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
                     {
-                        localReport.ReportPath = "Reports/FHBOXES_ALL_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBoxes());
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+                            localReport.ReportPath = "Reports/FHBOXES_ALL_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBoxes());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHBOXESALLPIE.rdlc";
+                            rds = new ReportDataSource("DataSet2", getDirectSalesModelAllBoxes());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
                     }
-                    else
+                    else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
                     {
-                        localReport.ReportPath = "Reports/FHBOXESALLPIE.rdlc";
-                        rds = new ReportDataSource("DataSet2", getDirectSalesModelAllBoxes());
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+
+                            localReport.ReportPath = "Reports/FHBOXES_ALL_YEAR_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBoxes());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHBOXES_ALL_YEAR_PIE.rdlc";
+                            rds = new ReportDataSource("DataSet2", getDirectSalesModelAllYearBoxes());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
                     }
 
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
+                    #endregion
                 }
-                else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
+                else if (strFHProduct.Equals("FHBOTTLES"))
                 {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
+                    #region FH BOTTLES REPORT
+                    if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
                     {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
 
-                        localReport.ReportPath = "Reports/FHBOXES_ALL_YEAR_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBoxes());
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+                            localReport.ReportPath = "Reports/FHBOTTLES_ALL_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBottles());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHBOTTLESALLPIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBottles());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
                     }
-                    else
+                    else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
                     {
-                        localReport.ReportPath = "Reports/FHBOXES_ALL_YEAR_PIE.rdlc";
-                        rds = new ReportDataSource("DataSet2", getDirectSalesModelAllYearBoxes());
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+
+                            localReport.ReportPath = "Reports/FHBOTTLES_ALL_YEAR_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBottles());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHBOTTLES_ALL_YEAR_PIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBottles());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
                     }
 
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
+                    #endregion
                 }
+                else if (strFHProduct.Equals("FHGUAVA"))
+                {
+                    #region FH GUAVA REPORT
+                    if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
 
-                #endregion
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+                            localReport.ReportPath = "Reports/FHGUAVA_ALL_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuava());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHGUAVAALLPIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuava());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
+                    }
+                    else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+
+                            localReport.ReportPath = "Reports/FHGUAVA_ALL_YEAR_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuava());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHGUAVA_ALL_YEAR_PIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuava());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+                    }
+
+                    #endregion
+                }
+                else if (strFHProduct.Equals("FHGUYABANO"))
+                {
+                    #region FH GUYABANO REPORT
+                    if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+                            localReport.ReportPath = "Reports/FHGUYABANO_ALL_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuyabano());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHGUYABANOALLPIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuyabano());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
+                    }
+                    else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        ReportDataSource rds;
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+
+                            localReport.ReportPath = "Reports/FHGUYABANO_ALL_YEAR_CASHBANK.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuyabano());
+                        }
+                        else
+                        {
+                            localReport.ReportPath = "Reports/FHGUYABANO_ALL_YEAR_PIE.rdlc";
+                            rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuyabano());
+                        }
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+                    }
+                    #endregion
+                }
+                else if (strFHProduct.Equals("FREEBIES"))
+                {
+                    #region FREEBIES
+
+                    ReportDataSource rds = new ReportDataSource();
+                    if (reportDate.DateReport.Equals("BY MONTH"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+                            localReport.ReportPath = "Reports/FREEBIES_ALL.rdlc";
+                            rds = new ReportDataSource("DataSet1", getFreebiesRecords());
+                        }
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
+                    }
+                    else if (reportDate.DateReport.Equals("BY YEAR"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+                        if (reportDate.ReportType.Equals("BAR"))
+                        {
+
+                            localReport.ReportPath = "Reports/FREEBIES_ALL_YEAR.rdlc";
+                            rds = new ReportDataSource("DataSet1", getFreebiesRecordsYear());
+                        }
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+                    }
+
+                    #endregion
+                }
+                else if (strFHProduct.Equals("DRUGSTORES"))
+                {
+                    #region DRUGSTORE
+                    ReportDataSource rds = new ReportDataSource();
+                    if (reportDate.DateReport.Equals("BY MONTH"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+
+                        if (reportDate.ifAllDrugstore && reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_ALL_ALLPRODUCT.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllDrugstoreAllProduct());
+                            }
+                        }
+                        else if (reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_ALL_PERPRODUCT.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductAllDrugstores());
+                            }
+                        }
+                        else if (!reportDate.ifAllDrugstore && reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_PER_ALLPRODUCT.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllProductPerDrugstores());
+                            }
+                        }
+                        else if (!reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_PER_PERPRODUCT.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductPerDrugstores());
+                            }
+                        }
+
+
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
+                    }
+                    else if (reportDate.DateReport.Equals("BY YEAR"))
+                    {
+                        reportViewer.Reset();
+                        reportViewer.ProcessingMode = ProcessingMode.Local;
+                        LocalReport localReport = reportViewer.LocalReport;
+
+                        if (reportDate.ifAllDrugstore && reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+
+                                localReport.ReportPath = "Reports/DRUGSTORE_ALL_ALLPRODUCT_YEAR.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllDrugstoreAllProductYear());
+                            }
+
+
+                        }
+                        else if (reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+
+                                localReport.ReportPath = "Reports/DRUGSTORE_ALL_PERPRODUCT_YEAR.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductAllDrugstoresYear());
+                            }
+                        }
+                        else if (!reportDate.ifAllDrugstore && reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_PER_ALLPRODUCT_YEAR.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllProductPerDrugstoresYear());
+                            }
+                        }
+                        else if (!reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
+                        {
+                            if (reportDate.ReportType.Equals("BAR"))
+                            {
+                                localReport.ReportPath = "Reports/DRUGSTORE_PER_PERPRODUCT_YEAR.rdlc";
+                                rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductPerDrugstoresYear());
+                            }
+                        }
+
+                        System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                        ps.Landscape = true;
+                        ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                        ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                        reportViewer.SetPageSettings(ps);
+
+                        reportViewer.LocalReport.DataSources.Add(rds);
+
+                        reportViewer.RefreshReport();
+
+                    }
+
+
+                    #endregion
+                }
             }
-            else if (strFHProduct.Equals("FHBOTTLES"))
+
+            if(lstPurchaseOrderModels != null)
             {
-                #region FH BOTTLES REPORT
-                if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-                        localReport.ReportPath = "Reports/FHBOTTLES_ALL_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBottles());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHBOTTLESALLPIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllBottles());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-                else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-
-                        localReport.ReportPath = "Reports/FHBOTTLES_ALL_YEAR_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBottles());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHBOTTLES_ALL_YEAR_PIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearBottles());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-                }
-
-                #endregion
-            }
-            else if (strFHProduct.Equals("FHGUAVA"))
-            {
-                #region FH GUAVA REPORT
-                if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-                        localReport.ReportPath = "Reports/FHGUAVA_ALL_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuava());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHGUAVAALLPIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuava());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-                else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-
-                        localReport.ReportPath = "Reports/FHGUAVA_ALL_YEAR_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuava());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHGUAVA_ALL_YEAR_PIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuava());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-                }
-
-                #endregion
-            }
-            else if (strFHProduct.Equals("FHGUYABANO"))
-            {
-                #region FH GUYABANO REPORT
-                if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY MONTH"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-                        localReport.ReportPath = "Reports/FHGUYABANO_ALL_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuyabano());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHGUYABANOALLPIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllGuyabano());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-                else if (bankModel.ID.Equals("ALL") && reportDate.DateReport.Equals("BY YEAR"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    ReportDataSource rds;
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-
-                        localReport.ReportPath = "Reports/FHGUYABANO_ALL_YEAR_CASHBANK.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuyabano());
-                    }
-                    else
-                    {
-                        localReport.ReportPath = "Reports/FHGUYABANO_ALL_YEAR_PIE.rdlc";
-                        rds = new ReportDataSource("DataSet1", getDirectSalesModelAllYearGuyabano());
-                    }
-
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-                }
-                #endregion
-            }
-            else if (strFHProduct.Equals("FREEBIES"))
-            {
-                #region FREEBIES
-
-                ReportDataSource rds = new ReportDataSource();
-                if (reportDate.DateReport.Equals("BY MONTH"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-                        localReport.ReportPath = "Reports/FREEBIES_ALL.rdlc";
-                        rds = new ReportDataSource("DataSet1", getFreebiesRecords());
-                    }
-            
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-                else if (reportDate.DateReport.Equals("BY YEAR"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-                    
-                    if (reportDate.ReportType.Equals("BAR"))
-                    {
-
-                        localReport.ReportPath = "Reports/FREEBIES_ALL_YEAR.rdlc";
-                        rds = new ReportDataSource("DataSet1", getFreebiesRecordsYear());
-                    }
-                   
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-                }
-
-                #endregion
-            }
-            else if (strFHProduct.Equals("DRUGSTORES"))
-            {
-                #region DRUGSTORE
-                ReportDataSource rds = new ReportDataSource();
-                if (reportDate.DateReport.Equals("BY MONTH"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-
-                    if(reportDate.ifAllDrugstore && reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_ALL_ALLPRODUCT.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllDrugstoreAllProduct());
-                        }
-                    }else if(reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_ALL_PERPRODUCT.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductAllDrugstores());
-                        }
-                    }else if (!reportDate.ifAllDrugstore && reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_PER_ALLPRODUCT.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllProductPerDrugstores());
-                        }
-                    }else if (!reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_PER_PERPRODUCT.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductPerDrugstores());
-                        }
-                    }
-
-                    
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-                else if (reportDate.DateReport.Equals("BY YEAR"))
-                {
-                    reportViewer.Reset();
-                    reportViewer.ProcessingMode = ProcessingMode.Local;
-                    LocalReport localReport = reportViewer.LocalReport;
-
-                    if (reportDate.ifAllDrugstore && reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-
-                            localReport.ReportPath = "Reports/DRUGSTORE_ALL_ALLPRODUCT_YEAR.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllDrugstoreAllProductYear());
-                        }
-
-                       
-                    }
-                    else if (reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-
-                            localReport.ReportPath = "Reports/DRUGSTORE_ALL_PERPRODUCT_YEAR.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductAllDrugstoresYear());
-                        }
-                    }
-                    else if (!reportDate.ifAllDrugstore && reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_PER_ALLPRODUCT_YEAR.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesAllProductPerDrugstoresYear());
-                        }
-                    }
-                    else if (!reportDate.ifAllDrugstore && !reportDate.ifAllProducts)
-                    {
-                        if (reportDate.ReportType.Equals("BAR"))
-                        {
-                            localReport.ReportPath = "Reports/DRUGSTORE_PER_PERPRODUCT_YEAR.rdlc";
-                            rds = new ReportDataSource("DataSet1", getDrugstoreSalesPerProductPerDrugstoresYear());
-                        }
-                    }
-
-                    System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-                    ps.Landscape = true;
-                    ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-                    ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-                    reportViewer.SetPageSettings(ps);
-
-                    reportViewer.LocalReport.DataSources.Add(rds);
-
-                    reportViewer.RefreshReport();
-
-                }
-
-
-                #endregion               
+                generatePurchaseOrderReport(lstPurchaseOrderModels);
             }
 
 
@@ -1134,6 +1153,31 @@ namespace FHSales
             conDB.closeConnection();
 
             return lstDrugstore;
+        }
+
+        private void generatePurchaseOrderReport(List<PurchaseOrderModel> listPurchases)
+        {
+            ReportDataSource rds = new ReportDataSource();
+
+            rds = new ReportDataSource("PurchaseOrderDS", listPurchases);
+
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            LocalReport localReport = reportViewer.LocalReport;
+
+            localReport.ReportPath = "Reports/PURCHASE_ORDER.rdlc";
+            reportViewer.RefreshReport();
+
+            System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+            ps.Landscape = true;
+
+            ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+            ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+            reportViewer.SetPageSettings(ps);
+
+            reportViewer.LocalReport.DataSources.Add(rds);
+
+            // Refresh the report  
+            reportViewer.RefreshReport();
         }
     }
 }

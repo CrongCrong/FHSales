@@ -48,7 +48,7 @@
                 <DataGridTextColumn Header="SI No." Binding="{Binding SINumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
-                
+
                 <!--
                 <DataGridTextColumn Header="DR No." Binding="{Binding DRNumber}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
@@ -67,12 +67,12 @@
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="23,549,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
 
-        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="660,299,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="32" HorizontalContentAlignment="Right" Background="Blue" Foreground="White"/>
-        <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="793,299,0,0" VerticalAlignment="Top" Width="253" Height="32" FontSize="16" FontFamily="Consolas" TabIndex="5"/>
-        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="660,265,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
-        <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,265,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="4"/>
-        <Label x:Name="label" Content="Drugstore:" HorizontalAlignment="Left" Margin="660,197,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
-        <ComboBox x:Name="comboDrugstore" HorizontalAlignment="Left" Margin="793,197,0,0" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" Height="29" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="2"/>
+        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="660,246,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="32" HorizontalContentAlignment="Right" Background="Blue" Foreground="White"/>
+        <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="793,246,0,0" VerticalAlignment="Top" Width="253" Height="32" FontSize="16" FontFamily="Consolas" TabIndex="5" SelectedDateChanged="deliveryDate_SelectedDateChanged"/>
+        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="660,212,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,212,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="4"/>
+        <Label x:Name="label" Content="Drugstore:" HorizontalAlignment="Left" Margin="660,144,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <ComboBox x:Name="comboDrugstore" HorizontalAlignment="Left" Margin="793,144,0,0" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" Height="29" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="2"/>
 
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,549,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
@@ -81,8 +81,8 @@
 
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="968,549,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
-        <Label x:Name="label2" Content="Product:" HorizontalAlignment="Left" Margin="660,231,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
-        <ComboBox x:Name="comboProduct" HorizontalAlignment="Left" Margin="793,231,0,0" VerticalAlignment="Top" Width="253" Height="29" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="3"/>
+        <Label x:Name="label2" Content="Product:" HorizontalAlignment="Left" Margin="660,178,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <ComboBox x:Name="comboProduct" HorizontalAlignment="Left" Margin="793,178,0,0" VerticalAlignment="Top" Width="253" Height="29" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="3"/>
 
         <CheckBox x:Name="checkDate" Content="Delvry Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
         <DatePicker x:Name="searchDateFrom" HorizontalAlignment="Left" Margin="131,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184"/>
@@ -97,14 +97,14 @@
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
         <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="560,208,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnReset_Click" />
-        <Label x:Name="label4" Content="PO Number:" HorizontalAlignment="Left" Margin="660,163,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
-        <TextBox x:Name="txtPO" Controls:TextBoxHelper.Watermark="PO Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="1" />
-        <Label x:Name="label4_Copy" Content="SI Number:" HorizontalAlignment="Left" Margin="660,403,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
-        <TextBox x:Name="txtSI" Controls:TextBoxHelper.Watermark="SI Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,403,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="8" />
-        <Label x:Name="label4_Copy1" Content="DR Number:" HorizontalAlignment="Left" Margin="660,335,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
-        <TextBox x:Name="txtDR" Controls:TextBoxHelper.Watermark="DR Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="6" />
-        <Label x:Name="label4_Copy2" Content="Payment Date:" HorizontalAlignment="Left" Margin="660,369,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
-        <DatePicker x:Name="paymentDate" HorizontalAlignment="Left" Margin="793,369,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="7"/>
+        <Label x:Name="label4" Content="PO Number:" HorizontalAlignment="Left" Margin="660,110,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <TextBox x:Name="txtPO" Controls:TextBoxHelper.Watermark="PO Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="1" />
+        <Label x:Name="label4_Copy" Content="SI Number:" HorizontalAlignment="Left" Margin="660,385,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <TextBox x:Name="txtSI" Controls:TextBoxHelper.Watermark="SI Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="9" />
+        <Label x:Name="label4_Copy1" Content="DR Number:" HorizontalAlignment="Left" Margin="660,283,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <TextBox x:Name="txtDR" Controls:TextBoxHelper.Watermark="DR Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="6" />
+        <Label x:Name="label4_Copy2" Content="Payment Date:" HorizontalAlignment="Left" Margin="660,317,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <DatePicker x:Name="paymentDate" HorizontalAlignment="Left" Margin="793,317,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="7" />
         <Button x:Name="btnView" Content="View" HorizontalAlignment="Left" Margin="93,549,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnView_Click" />
         <CheckBox x:Name="chkDRNumber" Content="DR Number:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="13" HorizontalContentAlignment="Right" Width="116" Height="29" Checked="chkDRNumber_Checked" Unchecked="chkDRNumber_Unchecked"/>
@@ -118,8 +118,10 @@
         <Label x:Name="label8_Copy" Content="-" HorizontalAlignment="Left" Margin="315,163,0,0" VerticalAlignment="Top"/>
         <DatePicker x:Name="searchPayDateTo" HorizontalAlignment="Left" Margin="330,163,0,0" VerticalAlignment="Top" Width="179"/>
         <CheckBox x:Name="chkPaid" Content="Paid" HorizontalAlignment="Left" Margin="793,498,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="15"/>
-        <Label x:Name="label4_Copy3" Content="Amount:" HorizontalAlignment="Left" Margin="660,437,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
-        <TextBox x:Name="txtAmount" Controls:TextBoxHelper.Watermark="Amount" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,437,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="8" />
+        <Label x:Name="label4_Copy3" Content="Amount:" HorizontalAlignment="Left" Margin="660,419,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <TextBox x:Name="txtAmount" Controls:TextBoxHelper.Watermark="Amount" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="10" />
+        <Label x:Name="label4_Copy4" Content="Payment Due Date:" HorizontalAlignment="Left" Margin="660,351,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="13" Width="133" Height="29"/>
+        <DatePicker x:Name="paymentDueDate" HorizontalAlignment="Left" Margin="793,351,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="8"/>
 
     </Grid>
 </UserControl>

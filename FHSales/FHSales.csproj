@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>4</ApplicationRevision>
+    <ApplicationRevision>7</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -307,6 +307,10 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="images\speclogo-transparent.fw.png" />
+    <Content Include="Reports\PURCHASE_ORDER.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="images\fh capsule fh juice for web site banner.jpg" />
     <Resource Include="images\purchase-order-clipart96.png" />
     <Content Include="Reports\FHBOTTLES_ALL_YEAR_CASHBANK.rdlc">
@@ -402,6 +406,7 @@
     <None Include="Properties\DataSources\FHSales.Classes.DirectSalesModel.datasource" />
     <None Include="Properties\DataSources\FHSales.Classes.DrugstoresSalesModel.datasource" />
     <None Include="Properties\DataSources\FHSales.Classes.FreebiesModel.datasource" />
+    <None Include="Properties\DataSources\FHSales.Classes.PurchaseOrderModel.datasource" />
     <None Include="Properties\DataSources\FHSales.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\FHSales.Properties.Settings.datasource" />
     <None Include="Properties\Settings.settings">

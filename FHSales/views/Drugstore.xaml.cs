@@ -38,6 +38,7 @@ namespace FHSales.views
                 await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                 txtDrugstore.Text = "";
                 txtDescription.Text = "";
+                txtdues.Text = "";
                 dgvDrugstore.ItemsSource = loadDataGridDetails();
             }
         }
@@ -50,6 +51,7 @@ namespace FHSales.views
             dgvDrugstore.ItemsSource = loadDataGridDetails();
             txtDrugstore.Text = "";
             txtDescription.Text = "";
+            txtdues.Text = "";
             recordID = "";
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
@@ -93,6 +95,10 @@ namespace FHSales.views
             {
                 await window.ShowMessageAsync("DESCRIPTION", "Please provide drugstore description");
             }
+            else if (string.IsNullOrEmpty(txtdues.Text))
+            {
+                await window.ShowMessageAsync("DUES", "Please provide days of payment due");
+            }
             else
             {
                 ifAllCorrect = true;
@@ -105,7 +111,7 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
 
-            string queryString = "SELECT ID, drugstore, description FROM dbfh.tbldrugstores WHERE isDeleted = 0";
+            string queryString = "SELECT ID, drugstore, description, paymentdue FROM dbfh.tbldrugstores WHERE isDeleted = 0";
 
             DrugstoreModel drugstore = new DrugstoreModel();
             List<DrugstoreModel> lstDrugstore = new List<DrugstoreModel>();
@@ -117,6 +123,7 @@ namespace FHSales.views
                 drugstore.ID = reader["ID"].ToString();
                 drugstore.DrugstoreName = reader["drugstore"].ToString();
                 drugstore.Description = reader["description"].ToString();
+                drugstore.PaymentDue = reader["paymentdue"].ToString();
                 lstDrugstore.Add(drugstore);
                 drugstore = new DrugstoreModel();
             }
@@ -130,11 +137,11 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
 
-            string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, isDeleted) VALUES (?,?,0)";
+            string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, paymentdue, isDeleted) VALUES (?,?,0)";
             List<string> parameters = new List<string>();
             parameters.Add(txtDrugstore.Text);
             parameters.Add(txtDescription.Text);
-
+            parameters.Add(txtdues.Text);
             conDB.AddRecordToDatabase(queryString, parameters);
 
             conDB.closeConnection();
@@ -144,10 +151,11 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
 
-            string queryString = "UPDATE dbfh.tbldrugstores SET drugstore = ?, description = ? WHERE ID = ?";
+            string queryString = "UPDATE dbfh.tbldrugstores SET drugstore = ?, description = ?, paymentdue = ? WHERE ID = ?";
             List<string> parameters = new List<string>();
             parameters.Add(txtDrugstore.Text);
             parameters.Add(txtDescription.Text);
+            parameters.Add(txtdues.Text);
             parameters.Add(strID);
 
             conDB.AddRecordToDatabase(queryString, parameters);

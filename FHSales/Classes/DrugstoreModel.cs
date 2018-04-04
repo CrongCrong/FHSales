@@ -8,5 +8,6 @@
 
         public string Description { get; set; }
 
+        public string PaymentDue { get; set; }
     }
 }
