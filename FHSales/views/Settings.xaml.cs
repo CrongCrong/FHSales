@@ -40,8 +40,11 @@ namespace FHSales.views
             {
                 menuUsers.IsEnabled = false;             
             }
-            if ((Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.ADMIN) 
-                || (Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.PO_VIEW))
+            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN) 
+                || (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.PO_VIEW))
+            {
+                menuDrugstores.IsEnabled = true;
+            }else
             {
                 menuDrugstores.IsEnabled = false;
             }

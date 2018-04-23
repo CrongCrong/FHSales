@@ -348,7 +348,7 @@ namespace FHSales.views
             PurchaseOrderModel purchaseOrderMod = new PurchaseOrderModel();
 
             string queryString = "SELECT dbfh.tblpurchaseorder.ID, ponumber, sinumber, drnumber, paymentdate, deliverydate, " +
-                "quantity, drugstoreID, productID, dbfh.tbldrugstores.description, dbfh.tblproducts.description, isPaid, amount FROM "+
+                "quantity, drugstoreID, productID, dbfh.tbldrugstores.description, dbfh.tbldrugstores.description as 'drugstorename', dbfh.tblproducts.description, isPaid, amount FROM " +
                 "((dbfh.tblpurchaseorder INNER JOIN dbfh.tbldrugstores ON dbfh.tblpurchaseorder.drugstoreID = dbfh.tbldrugstores.ID)" +
                 " INNER JOIN dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = dbfh.tblproducts.ID) WHERE dbfh.tblpurchaseorder.isDeleted = 0";
 
@@ -371,7 +371,7 @@ namespace FHSales.views
 
             if (checkDrugstore.IsChecked.Value)
             {
-                queryString += " AND (dbfh.tblpurchaseorder.drugstoreID = ?";
+                queryString += " AND (dbfh.tblpurchaseorder.drugstoreID = ?)";
                 parameters.Add(searchDrugstore.SelectedValue.ToString());
             }
 
@@ -410,6 +410,7 @@ namespace FHSales.views
                 purchaseOrderMod.DRNumber = reader["drnumber"].ToString();
                 purchaseOrderMod.SINumber = reader["sinumber"].ToString();
                 purchaseOrderMod.PONumber = reader["ponumber"].ToString();
+                purchaseOrderMod.DrugstoreName = reader["drugstorename"].ToString();
                 string temp = reader["paymentdate"].ToString();
                 if (!string.IsNullOrEmpty(temp))
                 {
@@ -764,10 +765,6 @@ namespace FHSales.views
                     pom.PaymentDueDate = "";
                 }
                 pom.PONumber = reader["ponumber"].ToString();
-
-                
-
-
                 lstPurchaseOrderModel.Add(pom);
                 pom = new PurchaseOrderModel();
             }
