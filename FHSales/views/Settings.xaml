@@ -20,6 +20,10 @@
                     <MenuItem Header="_Add/Edit" Click="MenuItem_Click_1" />
                 </MenuItem>
 
+                <MenuItem x:Name="menuSalesOffice" Header="Sales Office" FontFamily="Consolas" FontSize="20">
+                    <MenuItem Header="_Add/Edit" Click="MenuItem_Click_6" />
+                </MenuItem>
+                
                 <MenuItem x:Name="menuDrugstores" Header="Drugstore" FontFamily="Consolas" FontSize="20">
                     <MenuItem Header="_Add/Edit" Click="MenuItem_Click_5" />
                 </MenuItem>

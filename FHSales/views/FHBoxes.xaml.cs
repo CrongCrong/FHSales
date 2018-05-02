@@ -30,6 +30,8 @@ namespace FHSales.views
 
         ConnectionDB conDB;
         DirectSalesModel selected;
+        public List<ProductModel> lstProductModel = new List<ProductModel>();
+
 
         private void btnEditDirectSales_Click(object sender, RoutedEventArgs e)
         {
@@ -50,6 +52,8 @@ namespace FHSales.views
 
                 loadCashBankonCombo(selected);
                 loadCourierCombo(selected);
+                loadProductsOnList(selected.ID);
+                loadOfficeSalesCombo(selected);
             }
         }
 
@@ -63,13 +67,14 @@ namespace FHSales.views
             dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
             loadCashBankonCombo();
             loadCourierCombo();
+            loadOfficeSalesCombo();
             btnUpdate.Visibility = Visibility.Hidden;
             if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.DIRECTSALES_ADMIN) ||
                 (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
             {
                 btnEditDirectSales.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Visible;
-                btnUpdate.Visibility = Visibility.Visible;
+                btnUpdate.Visibility = Visibility.Hidden;
                 btnCancel.Visibility = Visibility.Visible;
             }
             else
@@ -88,7 +93,8 @@ namespace FHSales.views
 
             if (bl)
             {
-                saveDirectSalesRecord();
+                int id = saveDirectSalesRecord();
+                saveProductsOnList(id.ToString());
                 await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                 dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
                 clearFields();
@@ -131,6 +137,53 @@ namespace FHSales.views
             lblRecords.Content = lstDirectSales.Count + " RECORDS FOUND.";
             return lstDirectSales;
 
+        }
+
+        private void loadOfficeSalesCombo()
+        {
+            conDB = new ConnectionDB();
+            SalesOfficeModel office = new SalesOfficeModel();
+
+            string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+            cmbSalesOffice.Items.Clear();
+            while (reader.Read())
+            {
+                office.ID = reader["ID"].ToString();
+                office.OfficeName = reader["officename"].ToString();
+                office.Description = reader["description"].ToString();
+                cmbSalesOffice.Items.Add(office);
+                office = new SalesOfficeModel();
+            }
+
+            conDB.closeConnection();
+        }
+
+        private void loadOfficeSalesCombo(DirectSalesModel dsm)
+        {
+            conDB = new ConnectionDB();
+            SalesOfficeModel office = new SalesOfficeModel();
+
+            string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+            cmbSalesOffice.Items.Clear();
+            while (reader.Read())
+            {
+                office.ID = reader["ID"].ToString();
+                office.OfficeName = reader["officename"].ToString();
+                office.Description = reader["description"].ToString();
+
+                cmbSalesOffice.Items.Add(office);
+                if (dsm.OfficeSalesID.Equals(office.ID))
+                {
+                    cmbSalesOffice.SelectedItem = office;
+                }
+                office = new SalesOfficeModel();
+            }
+
+            conDB.closeConnection();
         }
 
         private void loadCashBankonCombo()
@@ -236,10 +289,10 @@ namespace FHSales.views
             conDB.closeConnection();
         }
 
-        private void saveDirectSalesRecord()
+        private int saveDirectSalesRecord()
         {
             conDB = new ConnectionDB();
-
+            int x = 0;
             string queryString = "INSERT INTO dbfh.tbldirectsales (clientname, quantity, cashbankID, courierID, totalprice, " +
                 "deliverydate, expenses, salestypeID, isDeleted) VALUES (?,?,?,?,?,?,?,?,0)";
 
@@ -255,8 +308,16 @@ namespace FHSales.views
             parameters.Add("1");
 
             conDB.AddRecordToDatabase(queryString, parameters);
-            conDB.closeConnection();
 
+            MySqlDataReader reader = conDB.getSelectConnection("select ID from dbfh.tbldirectsales order by ID desc limit 1", null);
+
+            while (reader.Read())
+            {
+                x = Convert.ToInt32(reader["ID"].ToString());
+            }
+
+            conDB.closeConnection();
+            return x;
         }
 
         private void updateDirectSalesRecord(DirectSalesModel directSalesModel)
@@ -280,6 +341,55 @@ namespace FHSales.views
             conDB.AddRecordToDatabase(queryString, parameters);
             conDB.closeConnection();
 
+        }
+
+        private void saveProductsOnList(string ID)
+        {
+            string query = "";
+            conDB = new ConnectionDB();
+            foreach(ProductModel p in lstProductModel)
+            {
+                query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, isDeleted) VALUES (?,?,?,0)";
+                List<string> parameters = new List<string>();
+
+                parameters.Add(p.ID);
+                parameters.Add(ID);
+                parameters.Add(p.Quantity);
+
+                conDB.AddRecordToDatabase(query, parameters);
+            }
+
+        }
+
+        private void loadProductsOnList(string ID)
+        {
+            conDB = new ConnectionDB();
+            lstProductModel = new List<ProductModel>();
+            ProductModel prodM = new ProductModel();
+
+            string queryString = "SELECT dbfh.tblproductsordered.ID, productID, salesID, qty, description " +
+                "FROM((dbfh.tblproductsordered INNER JOIN dbfh.tblproducts ON " +
+                "dbfh.tblproductsordered.productID = dbfh.tblproducts.ID) " +
+                "INNER JOIN dbfh.tbldirectsales ON dbfh.tblproductsordered.salesID = dbfh.tbldirectsales.ID) " +
+                "WHERE dbfh.tblproducts.isDeleted = 0 AND dbfh.tbldirectsales.isDeleted = 0 AND dbfh.tblproductsordered.isDeleted = 0" +
+                " AND dbfh.tblproductsordered.salesID = ?";
+
+            List<string> parameters = new List<string>();
+            parameters.Add(ID);
+
+            MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
+
+            while (reader.Read())
+            {
+                prodM.ID = reader["ID"].ToString();
+                prodM.ProductName = reader["description"].ToString();
+                prodM.Quantity = reader["qty"].ToString();
+
+                lstProductModel.Add(prodM);
+                prodM = new ProductModel();
+            }
+            
+            conDB.closeConnection();
         }
 
         private List<DirectSalesModel> search()
@@ -400,7 +510,7 @@ namespace FHSales.views
             if (btnUpdate.Visibility == Visibility.Hidden)
             {
                 clearFields();
-
+                lstProductModel = new List<ProductModel>();
             }
             else
             {
@@ -408,6 +518,7 @@ namespace FHSales.views
 
                 btnSave.Visibility = Visibility.Visible;
                 btnUpdate.Visibility = Visibility.Hidden;
+                lstProductModel = new List<ProductModel>();
             }
         }
 
@@ -562,5 +673,12 @@ namespace FHSales.views
                 btnCancel.Visibility = Visibility.Hidden;
             }
         }
+
+        private void btnProducts_Click(object sender, RoutedEventArgs e)
+        {
+            AddProducts addProd = new AddProducts(this, lstProductModel);
+            addProd.ShowDialog();
+        }
+
     }
 }

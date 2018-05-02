@@ -33,6 +33,8 @@ namespace FHSales.views
         Freebies _freebies = new Freebies();
         Products _products = new Products();
         Drugstore _drugstore = new Drugstore();
+        SalesOffice _salesOffice = new SalesOffice();
+
 
         private void content_Loaded(object sender, RoutedEventArgs e)
         {
@@ -48,7 +50,6 @@ namespace FHSales.views
             {
                 menuDrugstores.IsEnabled = false;
             }
-
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -79,6 +80,12 @@ namespace FHSales.views
         private void MenuItem_Click_5(object sender, RoutedEventArgs e)
         {
             content.Content = _drugstore;
+        }
+
+        private void MenuItem_Click_6(object sender, RoutedEventArgs e)
+        {
+            content.Content = _salesOffice;
+
         }
     }
 }

@@ -717,7 +717,7 @@ namespace FHSales.views
                 "dbfh.tblpurchaseorder.paymentduedate FROM ((dbfh.tblpurchaseorder INNER JOIN " +
                 "dbfh.tbldrugstores ON tblpurchaseorder.drugstoreID = tbldrugstores.ID) INNER JOIN " +
                 "dbfh.tblproducts ON dbfh.tblpurchaseorder.productID = tblproducts.ID) " +
-                "WHERE dbfh.tblpurchaseorder.isDeleted = 0 order by deliverydate ASC";
+                "WHERE dbfh.tblpurchaseorder.isDeleted = 0  AND dbfh.tblpurchaseorder.isPaid = 0 order by deliverydate ASC";
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
             string temp = "";

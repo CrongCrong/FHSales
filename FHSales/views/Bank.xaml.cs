@@ -68,15 +68,19 @@ namespace FHSales.views
         private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
             MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
-
-            updateRecord(recordID);
-            await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-            dgvBanks.ItemsSource = loadBankOnDataGrid();
-            txtBankName.Text = "";
-            txtDescription.Text = "";
-            recordID = "";
-            btnUpdate.Visibility = Visibility.Hidden;
-            btnSave.Visibility = Visibility.Visible;
+            bool x = await checkFields();
+            if (x)
+            {
+                updateRecord(recordID);
+                await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
+                dgvBanks.ItemsSource = loadBankOnDataGrid();
+                txtBankName.Text = "";
+                txtDescription.Text = "";
+                recordID = "";
+                btnUpdate.Visibility = Visibility.Hidden;
+                btnSave.Visibility = Visibility.Visible;
+            }
+           
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)

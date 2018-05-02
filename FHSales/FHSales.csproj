@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>8</ApplicationRevision>
+    <ApplicationRevision>9</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -97,6 +97,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddProducts.xaml.cs">
+      <DependentUpon>AddProducts.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\BankModel.cs" />
     <Compile Include="Classes\CategoryModel.cs" />
     <Compile Include="Classes\ChartType.cs" />
@@ -111,6 +114,7 @@
     <Compile Include="Classes\PurchaseOrderModel.cs" />
     <Compile Include="Classes\RegisteredUserModel.cs" />
     <Compile Include="Classes\ReportDate.cs" />
+    <Compile Include="Classes\SalesOfficeModel.cs" />
     <Compile Include="Classes\SalesReport.cs" />
     <Compile Include="Classes\UserModel.cs" />
     <Compile Include="Classes\UserTypeEnum.cs" />
@@ -178,12 +182,19 @@
     <Compile Include="views\PurchaseOrderWindow.xaml.cs">
       <DependentUpon>PurchaseOrderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\SalesOffice.xaml.cs">
+      <DependentUpon>SalesOffice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddProducts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DirectSalesDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -277,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\PurchaseOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\SalesOffice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

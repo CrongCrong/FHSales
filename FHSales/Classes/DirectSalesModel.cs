@@ -23,5 +23,7 @@
         public int TotalPrice { get; set; }
 
         public string Title  { get; set; }
+
+        public string OfficeSalesID { get; set; }
     }
 }

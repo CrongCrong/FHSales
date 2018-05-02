@@ -69,7 +69,7 @@
             <!--  Items  -->
             <controls:HamburgerMenu.ItemsSource>
                 <controls:HamburgerMenuItemCollection>
-                    <controls:HamburgerMenuIconItem x:Name="menuFHSales" Label="FH Boxes">
+                    <controls:HamburgerMenuIconItem x:Name="menuFHSales" Label="Direct Sales">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FHBoxes />
@@ -79,7 +79,7 @@
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
 
-                    <controls:HamburgerMenuIconItem x:Name="menuFHBottles" Label="FH Bottles">
+                    <!--<controls:HamburgerMenuIconItem x:Name="menuFHBottles" Label="FH Bottles">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FH_Bottles />
@@ -107,7 +107,7 @@
                         <controls:HamburgerMenuIconItem.Icon>
                             <Image Source="images/GUYaBANo.png"/>
                         </controls:HamburgerMenuIconItem.Icon>
-                    </controls:HamburgerMenuIconItem>
+                    </controls:HamburgerMenuIconItem> -->
 
                     <controls:HamburgerMenuIconItem x:Name="menuFreebies" Label="FH Freebies">
 
