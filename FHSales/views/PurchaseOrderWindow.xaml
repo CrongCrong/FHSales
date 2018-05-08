@@ -61,6 +61,9 @@
                 <DataGridTextColumn Header="Delivery Date" Binding="{Binding DeliveryDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
+                <DataGridTextColumn Header="Payment Due Date" Binding="{Binding PaymentDueDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 

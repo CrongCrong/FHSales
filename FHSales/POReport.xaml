@@ -1,0 +1,23 @@
+﻿<controls:MetroWindow x:Class="FHSales.POReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:FHSales"
+        mc:Ignorable="d"
+        Title="PO REPORT" Height="419.965" Width="490.221" ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" Background="#FF539C6A" >
+    <Grid>
+        <RadioButton x:Name="radioDeliveryDate" Content="By Delivery Date" HorizontalAlignment="Left" Margin="51,48,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Courier New" Checked="radioDeliveryDate_Checked"/>
+        <RadioButton x:Name="radioPaymentDate" Content="By Payment Due Date" HorizontalAlignment="Left" Margin="51,90,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Courier New" Checked="radioPaymentDate_Checked"/>
+        <DatePicker x:Name="dateFrom" HorizontalAlignment="Left" Margin="174,144,0,0" VerticalAlignment="Top" Height="30" FontFamily="Courier New" FontSize="18" Width="219"/>
+        <Label x:Name="label" Content="Date From:" HorizontalAlignment="Left" Margin="39,144,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Courier New" Width="130" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label_Copy" Content="Date To:" HorizontalAlignment="Left" Margin="42,179,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Courier New" HorizontalContentAlignment="Right" Width="127"/>
+        <DatePicker x:Name="dateTo" HorizontalAlignment="Left" Margin="174,179,0,0" VerticalAlignment="Top" Height="30" FontFamily="Courier New" FontSize="18" Width="219"/>
+        <CheckBox x:Name="chkAddPaid" Content="Include Paid" HorizontalAlignment="Left" Margin="51,241,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Courier New"/>
+        <Button x:Name="btnGenerate" Content="Generate" HorizontalAlignment="Left" Margin="383,290,0,0" 
+                VerticalAlignment="Top" Width="91" Height="91" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black" FontSize="14" Click="btnGenerate_Click"/>
+
+    </Grid>
+</controls:MetroWindow>

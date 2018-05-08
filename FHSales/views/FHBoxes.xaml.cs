@@ -46,7 +46,6 @@ namespace FHSales.views
 
                 deliveryDateDS.Text = selected.DeliveryDate;
                 txtClientName.Text = selected.ClientName;
-                txtQuantity.Text = selected.Quantity;
                 txtExpenses.Text = selected.Expenses.ToString();
                 txtTotalPrice.Text = selected.TotalPrice.ToString();
 
@@ -93,11 +92,18 @@ namespace FHSales.views
 
             if (bl)
             {
-                int id = saveDirectSalesRecord();
-                saveProductsOnList(id.ToString());
-                await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
-                dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
-                clearFields();
+                if(lstProductModel.Count <= 0)
+                {
+                    await window.ShowMessageAsync("SAVE ERROR", "PRODUCT LIST IS EMPTY.");
+                }else
+                {
+                    int id = saveDirectSalesRecord();
+                    saveProductsOnList(id.ToString());
+                    await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
+                    dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
+                    clearFields();
+                }
+                
             }
         }
 
@@ -108,7 +114,7 @@ namespace FHSales.views
             DirectSalesModel directSales = new DirectSalesModel();
 
             string queryString = "SELECT dbfh.tbldirectsales.ID, clientname, quantity, cashbankID, bankname, courierID, " +
-                "couriername, totalprice, deliverydate, expenses FROM((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
+                "couriername, totalprice, deliverydate, expenses, officeID FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
                 "dbfh.tbldirectsales.cashbankID = dbfh.tblbank.ID) INNER JOIN dbfh.tblcourier ON " +
                 "dbfh.tbldirectsales.courierID = dbfh.tblcourier.ID) WHERE dbfh.tbldirectsales.salestypeID = 1 AND dbfh.tbldirectsales.isDeleted = 0 ORDER BY deliverydate DESC";
 
@@ -124,7 +130,7 @@ namespace FHSales.views
                 directSales.CourierID = reader["courierID"].ToString();
                 directSales.CourierName = reader["couriername"].ToString();
                 directSales.TotalPrice = Convert.ToInt32(reader["totalprice"].ToString());
-
+                directSales.OfficeSalesID = reader["officeID"].ToString();
                 DateTime dte = DateTime.Parse(reader["deliveryDate"].ToString());
                 directSales.DeliveryDate = dte.ToShortDateString();
 
@@ -293,12 +299,11 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
             int x = 0;
-            string queryString = "INSERT INTO dbfh.tbldirectsales (clientname, quantity, cashbankID, courierID, totalprice, " +
-                "deliverydate, expenses, salestypeID, isDeleted) VALUES (?,?,?,?,?,?,?,?,0)";
+            string queryString = "INSERT INTO dbfh.tbldirectsales (clientname, cashbankID, courierID, totalprice, " +
+                "deliverydate, expenses, salestypeID, officeID, isDeleted) VALUES (?,?,?,?,?,?,?,?,0)";
 
             List<string> parameters = new List<string>();
             parameters.Add(txtClientName.Text);
-            parameters.Add(txtQuantity.Text);
             parameters.Add(cmbCashBank.SelectedValue.ToString());
             parameters.Add(cmbCourier.SelectedValue.ToString());
             parameters.Add(txtTotalPrice.Text);
@@ -306,7 +311,7 @@ namespace FHSales.views
             parameters.Add(delDate.Year + "-" + delDate.Month + "-" + delDate.Day);
             parameters.Add(txtExpenses.Text);
             parameters.Add("1");
-
+            parameters.Add(cmbSalesOffice.SelectedValue.ToString());
             conDB.AddRecordToDatabase(queryString, parameters);
 
             MySqlDataReader reader = conDB.getSelectConnection("select ID from dbfh.tbldirectsales order by ID desc limit 1", null);
@@ -323,19 +328,19 @@ namespace FHSales.views
         private void updateDirectSalesRecord(DirectSalesModel directSalesModel)
         {
             conDB = new ConnectionDB();
-            string queryString = "UPDATE dbfh.tbldirectsales SET deliverydate = ?, clientname = ?, quantity = ?, cashbankID = ?, " +
-                "courierID = ?, expenses = ?, totalprice = ? WHERE ID = ?";
+            string queryString = "UPDATE dbfh.tbldirectsales SET deliverydate = ?, clientname = ?, cashbankID = ?, " +
+                "courierID = ?, expenses = ?, totalprice = ?, officeID = ? WHERE ID = ?";
 
             List<string> parameters = new List<string>();
             DateTime date = DateTime.Parse(deliveryDateDS.Text);
             parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
 
             parameters.Add(txtClientName.Text);
-            parameters.Add(txtQuantity.Text);
             parameters.Add(cmbCashBank.SelectedValue.ToString());
             parameters.Add(cmbCourier.SelectedValue.ToString());
             parameters.Add(txtExpenses.Text);
             parameters.Add(txtTotalPrice.Text);
+            parameters.Add(cmbSalesOffice.SelectedValue.ToString());
             parameters.Add(directSalesModel.ID);
 
             conDB.AddRecordToDatabase(queryString, parameters);
@@ -349,16 +354,48 @@ namespace FHSales.views
             conDB = new ConnectionDB();
             foreach(ProductModel p in lstProductModel)
             {
-                query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, isDeleted) VALUES (?,?,?,0)";
+                query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, totalamt, isDeleted) VALUES (?,?,?,?,0)";
                 List<string> parameters = new List<string>();
 
                 parameters.Add(p.ID);
                 parameters.Add(ID);
                 parameters.Add(p.Quantity);
-
+                parameters.Add(p.TotalAmount);
                 conDB.AddRecordToDatabase(query, parameters);
             }
 
+        }
+
+        private void updateProductsOnList(string strSalesID)
+        {
+            string query = "";
+            conDB = new ConnectionDB();
+            foreach (ProductModel p in lstProductModel)
+            {
+                if (!p.newlyAdded)
+                {
+                    query = "UPDATE dbfh.tblproductsordered SET productID = ?, qty = ?, totalamt = ?, isDeleted = ? WHERE ID = ?";
+                    List<string> parameters = new List<string>();
+
+                    parameters.Add(p.ProductID);
+                    parameters.Add(p.Quantity);
+                    parameters.Add(p.TotalAmount);
+                    parameters.Add(p.isDeleted);
+                    parameters.Add(p.ID);
+                    conDB.AddRecordToDatabase(query, parameters);
+                }else
+                {
+                    query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, totalamt, isDeleted) VALUES (?,?,?,?,0)";
+                    List<string> parameters = new List<string>();
+
+                    parameters.Add(p.ProductID);
+                    parameters.Add(strSalesID);
+                    parameters.Add(p.Quantity);
+                    parameters.Add(p.TotalAmount);
+                    conDB.AddRecordToDatabase(query, parameters);
+                }
+                
+            }
         }
 
         private void loadProductsOnList(string ID)
@@ -367,7 +404,7 @@ namespace FHSales.views
             lstProductModel = new List<ProductModel>();
             ProductModel prodM = new ProductModel();
 
-            string queryString = "SELECT dbfh.tblproductsordered.ID, productID, salesID, qty, description " +
+            string queryString = "SELECT dbfh.tblproductsordered.ID, productID, salesID, qty, totalamt, description, dbfh.tblproductsordered.isDeleted " +
                 "FROM((dbfh.tblproductsordered INNER JOIN dbfh.tblproducts ON " +
                 "dbfh.tblproductsordered.productID = dbfh.tblproducts.ID) " +
                 "INNER JOIN dbfh.tbldirectsales ON dbfh.tblproductsordered.salesID = dbfh.tbldirectsales.ID) " +
@@ -382,9 +419,12 @@ namespace FHSales.views
             while (reader.Read())
             {
                 prodM.ID = reader["ID"].ToString();
+                prodM.ProductID = reader["productID"].ToString();
+                prodM.SalesID = reader["salesID"].ToString();
                 prodM.ProductName = reader["description"].ToString();
                 prodM.Quantity = reader["qty"].ToString();
-
+                prodM.TotalAmount = reader["totalamt"].ToString();
+                prodM.isDeleted = reader["isDeleted"].ToString();
                 lstProductModel.Add(prodM);
                 prodM = new ProductModel();
             }
@@ -399,7 +439,7 @@ namespace FHSales.views
             List<DirectSalesModel> lstDirectSales = new List<DirectSalesModel>();
             DirectSalesModel directSales = new DirectSalesModel();
             string queryString = "SELECT dbfh.tbldirectsales.ID, clientname, quantity, cashbankID, bankname, courierID, " +
-                "couriername, totalprice, deliverydate, expenses FROM((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
+                "couriername, totalprice, deliverydate, expenses, officeID FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
                 "dbfh.tbldirectsales.cashbankID = dbfh.tblbank.ID) INNER JOIN dbfh.tblcourier ON " +
                 "dbfh.tbldirectsales.courierID = dbfh.tblcourier.ID) WHERE dbfh.tbldirectsales.isDeleted = 0 AND dbfh.tbldirectsales.salestypeID = 1";
             List<string> parameters = new List<string>();
@@ -434,6 +474,7 @@ namespace FHSales.views
                 directSales.CashBankName = reader["bankname"].ToString();
                 directSales.CourierID = reader["courierID"].ToString();
                 directSales.CourierName = reader["couriername"].ToString();
+                directSales.OfficeSalesID = reader["officeID"].ToString();
                 directSales.TotalPrice = Convert.ToInt32(reader["totalprice"].ToString());
 
                 DateTime dte = DateTime.Parse(reader["deliveryDate"].ToString());
@@ -461,10 +502,6 @@ namespace FHSales.views
             else if (string.IsNullOrEmpty(txtClientName.Text))
             {
                 await window.ShowMessageAsync("Client Name", "Please provide client name.");
-            }
-            else if (string.IsNullOrEmpty(txtQuantity.Text))
-            {
-                await window.ShowMessageAsync("QUANTITY", "Please provide quantity.");
             }
             else if (cmbCashBank.SelectedItem == null)
             {
@@ -499,6 +536,7 @@ namespace FHSales.views
             if (blCorrect)
             {
                 updateDirectSalesRecord(selected);
+                updateProductsOnList(selected.ID);
                 clearFields();
                 await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
                 dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
@@ -526,12 +564,12 @@ namespace FHSales.views
         {
             deliveryDateDS.Text = "";
             txtClientName.Text = "";
-            txtQuantity.Text = "";
             txtExpenses.Text = "";
             txtTotalPrice.Text = "";
 
             cmbCashBank.SelectedItem = null;
             cmbCourier.SelectedItem = null;
+            cmbSalesOffice.SelectedItem = null;
         }
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
@@ -629,6 +667,8 @@ namespace FHSales.views
         {
             FHBoxes_Report boxesReport = new FHBoxes_Report();
             boxesReport.ShowDialog();
+            //POReport rep = new POReport();
+            //rep.ShowDialog();
         }
 
         private void btnReset_Click(object sender, RoutedEventArgs e)

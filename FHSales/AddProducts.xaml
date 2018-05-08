@@ -7,12 +7,22 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:FHSales"
         mc:Ignorable="d"
-        Title="Add Products" Height="349.867" Width="403.769" ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" Background="#FF539C6A" Closing="MetroWindow_Closing">
+        Title="Add Products" Height="392.867" Width="403.769" ResizeMode="CanMinimize" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" Background="#FF539C6A" Closing="MetroWindow_Closing">
     <Grid>
-        <DataGrid x:Name="dgvProducts" HorizontalAlignment="Left" Height="120" Margin="10,115,0,0" VerticalAlignment="Top" Width="378" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgvProducts" HorizontalAlignment="Left" Height="120" Margin="10,163,0,0" VerticalAlignment="Top" Width="378" AutoGenerateColumns="False">
+            <DataGrid.RowStyle>
+                <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="{x:Type DataGridRow}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding isDeleted}" Value="1" >
+                            <Setter Property="Visibility" Value="Hidden" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="QTY" Binding="{Binding Quantity}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total" Binding="{Binding TotalAmount}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
             </DataGrid.Columns>
 
         </DataGrid>
@@ -20,8 +30,10 @@
         <ComboBox x:Name="cmbProducts" HorizontalAlignment="Left" Margin="86,23,0,0" VerticalAlignment="Top" Width="185" FontFamily="Consolas" DisplayMemberPath="Description" SelectedValuePath="ID"/>
         <Button x:Name="btnAdd" Content="Add" HorizontalAlignment="Left" Margin="276,23,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="btnAdd_Click"/>
         <Label x:Name="label1_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
-        <TextBox x:Name="txtQuantity" HorizontalAlignment="Left" Height="23" Margin="86,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185"/>
-        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="11,240,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="btnRemove_Click"/>
+        <TextBox x:Name="txtQuantity" HorizontalAlignment="Left" Height="23" Margin="86,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtQuantity_PreviewTextInput"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="11,288,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="btnRemove_Click"/>
+        <Label x:Name="label1_Copy1" Content="Total:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
+        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="23" Margin="86,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtTotal_PreviewTextInput"/>
 
     </Grid>
 </controls:MetroWindow>

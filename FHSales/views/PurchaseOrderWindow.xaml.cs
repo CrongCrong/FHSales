@@ -627,8 +627,10 @@ namespace FHSales.views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ReportForm rf = new ReportForm(lstPurchaseOrderReports());
-            rf.ShowDialog();
+            POReport rep = new POReport();
+            rep.ShowDialog();
+            //ReportForm rf = new ReportForm(lstPurchaseOrderReports());
+           // rf.ShowDialog();
         }
 
         private void loadDrugstoreOnCombo()
@@ -874,7 +876,6 @@ namespace FHSales.views
             searchPayDateFrom.IsEnabled = false;
             searchPayDateTo.IsEnabled = false;
         }
-
 
         private void deliveryDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {

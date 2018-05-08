@@ -24,18 +24,21 @@
               <Width>0.72093in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.51259in</Width>
+              <Width>1.08551in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.61676in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.45009in</Width>
+              <Width>1.07509in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.36458in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.40625in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -262,7 +265,22 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Delivery Date</Value>
+                              <Value>Delivery </Value>
+                              <Style>
+                                <FontFamily>Courier New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Date</Value>
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>12pt</FontSize>
@@ -334,7 +352,22 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Due Date</Value>
+                              <Value>Due </Value>
+                              <Style>
+                                <FontFamily>Courier New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Date</Value>
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>12pt</FontSize>
@@ -348,6 +381,57 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox21</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox2">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Payment </Value>
+                              <Style>
+                                <FontFamily>Courier New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Date</Value>
+                              <Style>
+                                <FontFamily>Courier New</FontFamily>
+                                <FontSize>12pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox2</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -379,7 +463,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -413,7 +497,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -447,7 +531,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -481,7 +565,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -515,7 +599,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -549,7 +633,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -583,7 +667,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -617,7 +701,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -651,7 +735,7 @@
                               <Style>
                                 <FontFamily>Courier New</FontFamily>
                                 <FontSize>11pt</FontSize>
-                                <Color>=IIF(Fields!boolPaid.Value = true, "Red", "Green")</Color>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -659,6 +743,40 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>PaymentDueDate</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="PaymentDate">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!PaymentDate.Value</Value>
+                              <Style>
+                                <FontFamily>Courier New</FontFamily>
+                                <FontSize>11pt</FontSize>
+                                <Color>=IIF(Fields!boolPaid.Value = true, "Green", "Red")</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>PaymentDate</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -687,6 +805,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
+            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -701,8 +820,8 @@
         </TablixRowHierarchy>
         <DataSetName>PurchaseOrderDS</DataSetName>
         <Top>0.16542in</Top>
-        <Height>0.5in</Height>
-        <Width>8.98834in</Width>
+        <Height>0.65625in</Height>
+        <Width>9.55084in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -713,7 +832,7 @@
     <Height>2in</Height>
     <Style />
   </Body>
-  <Width>8.98834in</Width>
+  <Width>9.59251in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>
