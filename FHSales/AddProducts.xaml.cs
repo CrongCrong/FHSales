@@ -34,8 +34,9 @@ namespace FHSales
             InitializeComponent();
         }
 
-        public AddProducts(FHBoxes fhBoxes, List<ProductModel> lpm)
+        public AddProducts(FHBoxes fhBoxes, List<ProductModel> lpm, bool ifTryToEdit)
         {
+            ifEdit = ifTryToEdit;
             FhBoxesViews = fhBoxes;
             lstProductModel = lpm;
             InitializeComponent();
@@ -82,9 +83,9 @@ namespace FHSales
 
                 if (ifEdit)
                 {
+                    prodAdd.isDeleted = "0";
                     prodAdd.newlyAdded = true;
                     prodAdd.SalesID = strSalesID;
-
                     lstProductModel.Add(prodAdd);
                     dgvProducts.ItemsSource = lstProductModel;
                     dgvProducts.Items.Refresh();
@@ -112,7 +113,7 @@ namespace FHSales
             cmbProducts.Items.Clear();
             while (reader.Read())
             {
-                prod.ID = reader["ID"].ToString();
+                prod.ProductID = reader["ID"].ToString();
                 prod.ProductName = reader["productname"].ToString();
                 prod.Description = reader["description"].ToString();
 
@@ -175,7 +176,9 @@ namespace FHSales
                 
             }
             FhBoxesViews.txtTotalPrice.Text = x.ToString();
-            
+            lstProductModel = new List<ProductModel>();
+            //dgvProducts.ItemsSource = lstProductModel;
+            //dgvProducts.Items.Refresh();
         }
 
         //private void btnEdit_Click(object sender, RoutedEventArgs e)

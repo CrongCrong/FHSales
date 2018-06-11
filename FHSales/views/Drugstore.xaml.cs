@@ -111,7 +111,7 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
 
-            string queryString = "SELECT ID, drugstore, description, paymentdue FROM dbfh.tbldrugstores WHERE isDeleted = 0";
+            string queryString = "SELECT ID, drugstore, description, paymentdue FROM dbfh.tbldrugstores WHERE isDeleted = 0 order by drugstore ASC";
 
             DrugstoreModel drugstore = new DrugstoreModel();
             List<DrugstoreModel> lstDrugstore = new List<DrugstoreModel>();
@@ -137,7 +137,7 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
 
-            string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, paymentdue, isDeleted) VALUES (?,?,0)";
+            string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, paymentdue, isDeleted) VALUES (?,?,?,0)";
             List<string> parameters = new List<string>();
             parameters.Add(txtDrugstore.Text);
             parameters.Add(txtDescription.Text);

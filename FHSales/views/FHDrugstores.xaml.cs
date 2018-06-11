@@ -410,7 +410,7 @@ namespace FHSales.views
                 lstDrugstores.Add(sales);
                 sales = new DrugstoresSalesModel();
             }
-
+            conDB.closeConnection();
             return lstDrugstores;
         }
 

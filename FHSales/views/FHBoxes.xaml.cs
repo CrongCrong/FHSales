@@ -30,30 +30,43 @@ namespace FHSales.views
 
         ConnectionDB conDB;
         DirectSalesModel selected;
+        bool ifEdit = false;       
         public List<ProductModel> lstProductModel = new List<ProductModel>();
 
 
         private void btnEditDirectSales_Click(object sender, RoutedEventArgs e)
         {
+            conDB = new ConnectionDB();
             selected = dgvDirectSales.SelectedItem as DirectSalesModel;
-
-            if (selected != null)
+            lstProductModel = new List<ProductModel>();
+            try
             {
-                //DirectSalesDetails ds = new DirectSalesDetails(this, selected);
-                // ds.ShowDialog();
-                btnSave.Visibility = Visibility.Hidden;
-                btnUpdate.Visibility = Visibility.Visible;
+                if (selected != null)
+                {
+                    //DirectSalesDetails ds = new DirectSalesDetails(this, selected);
+                    // ds.ShowDialog();
+                    btnSave.Visibility = Visibility.Hidden;
+                    btnUpdate.Visibility = Visibility.Visible;
 
-                deliveryDateDS.Text = selected.DeliveryDate;
-                txtClientName.Text = selected.ClientName;
-                txtExpenses.Text = selected.Expenses.ToString();
-                txtTotalPrice.Text = selected.TotalPrice.ToString();
+                    deliveryDateDS.Text = selected.DeliveryDate;
+                    txtClientName.Text = selected.ClientName;
+                    txtExpenses.Text = selected.Expenses.ToString();
+                    txtTotalPrice.Text = selected.TotalPrice.ToString();
+                    ifEdit = true;
+                    loadCashBankonCombo(selected);
+                    loadCourierCombo(selected);
+                    loadProductsOnList(selected.ID);
+                    loadOfficeSalesCombo(selected);
 
-                loadCashBankonCombo(selected);
-                loadCourierCombo(selected);
-                loadProductsOnList(selected.ID);
-                loadOfficeSalesCombo(selected);
+                    dgvDirectSales.IsEnabled = false;
+                }
             }
+            catch(Exception ex)
+            {
+                conDB.writeLogFile(ex.Message.ToString() + "-" + "Edit Direct sales clicked!" + "-" + ex.StackTrace);
+            }
+
+            
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
@@ -101,6 +114,7 @@ namespace FHSales.views
                     saveProductsOnList(id.ToString());
                     await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                     dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
+                    lstProductModel = new List<ProductModel>();
                     clearFields();
                 }
                 
@@ -168,28 +182,40 @@ namespace FHSales.views
 
         private void loadOfficeSalesCombo(DirectSalesModel dsm)
         {
-            conDB = new ConnectionDB();
-            SalesOfficeModel office = new SalesOfficeModel();
-
-            string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-            cmbSalesOffice.Items.Clear();
-            while (reader.Read())
+            try
             {
-                office.ID = reader["ID"].ToString();
-                office.OfficeName = reader["officename"].ToString();
-                office.Description = reader["description"].ToString();
+                conDB = new ConnectionDB();
+                SalesOfficeModel office = new SalesOfficeModel();
 
-                cmbSalesOffice.Items.Add(office);
-                if (dsm.OfficeSalesID.Equals(office.ID))
+                string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
+
+                MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+                cmbSalesOffice.Items.Clear();
+                while (reader.Read())
                 {
-                    cmbSalesOffice.SelectedItem = office;
-                }
-                office = new SalesOfficeModel();
-            }
+                    office.ID = reader["ID"].ToString();
+                    office.OfficeName = reader["officename"].ToString();
+                    office.Description = reader["description"].ToString();
 
-            conDB.closeConnection();
+                    cmbSalesOffice.Items.Add(office);
+
+                    office = new SalesOfficeModel();
+                }
+
+                foreach (SalesOfficeModel so in cmbSalesOffice.Items)
+                {
+                    if (dsm.OfficeSalesID.Equals(so.ID))
+                    {
+                        cmbSalesOffice.SelectedItem = so;
+                    }
+                }
+                conDB.closeConnection();
+            }
+            catch(Exception ex)
+            {
+                conDB.writeLogFile("LOAD SALES OFFICE COMBO" + "-" + ex.StackTrace + " || " + ex.Message);
+            }
+            
         }
 
         private void loadCashBankonCombo()
@@ -219,80 +245,104 @@ namespace FHSales.views
 
         private void loadCashBankonCombo(DirectSalesModel directSales)
         {
-            conDB = new ConnectionDB();
-            BankModel bankCash = new BankModel();
-
-            string queryString = "SELECT ID, bankname, description FROM dbfh.tblbank WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-            cmbCashBank.Items.Clear();
-            while (reader.Read())
+            try
             {
-                bankCash.ID = reader["ID"].ToString();
-                bankCash.BankName = reader["bankname"].ToString();
-                bankCash.Description = reader["description"].ToString();
+                conDB = new ConnectionDB();
+                BankModel bankCash = new BankModel();
 
-                cmbCashBank.Items.Add(bankCash);
-                if (directSales.CashBankID.Equals(bankCash.ID))
+                string queryString = "SELECT ID, bankname, description FROM dbfh.tblbank WHERE isDeleted = 0";
+
+                MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+                cmbCashBank.Items.Clear();
+                while (reader.Read())
                 {
-                    cmbCashBank.SelectedItem = bankCash;
-                }
-                bankCash = new BankModel();
-            }
+                    bankCash.ID = reader["ID"].ToString();
+                    bankCash.BankName = reader["bankname"].ToString();
+                    bankCash.Description = reader["description"].ToString();
 
-            conDB.closeConnection();
+                    cmbCashBank.Items.Add(bankCash);
+                    if (directSales.CashBankID.Equals(bankCash.ID))
+                    {
+                        cmbCashBank.SelectedItem = bankCash;
+                    }
+                    bankCash = new BankModel();
+                }
+
+                conDB.closeConnection();
+            }
+            catch(Exception ex)
+            {
+                conDB.writeLogFile("LOAD CASH BANK ON COMBO" + "-" + ex.Message + "||" + ex.StackTrace);
+            }
+            
 
         }
 
         private void loadCourierCombo()
         {
-            conDB = new ConnectionDB();
-            CourierModel courier = new CourierModel();
-
-            string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-            cmbCourier.Items.Clear();
-            while (reader.Read())
+            try
             {
-                courier.ID = reader["ID"].ToString();
-                courier.CourierName = reader["couriername"].ToString();
-                courier.Description = reader["description"].ToString();
+                conDB = new ConnectionDB();
+                CourierModel courier = new CourierModel();
 
-                cmbCourier.Items.Add(courier);
+                string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
 
-                courier = new CourierModel();
+                MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+                cmbCourier.Items.Clear();
+                while (reader.Read())
+                {
+                    courier.ID = reader["ID"].ToString();
+                    courier.CourierName = reader["couriername"].ToString();
+                    courier.Description = reader["description"].ToString();
+
+                    cmbCourier.Items.Add(courier);
+
+                    courier = new CourierModel();
+                }
+
+                conDB.closeConnection();
             }
-
-            conDB.closeConnection();
+            catch(Exception ex)
+            {
+                conDB.writeLogFile("LOAD COURIER COMBO NO PARAM" + "-" + ex.Message.ToString());
+            }
+            
         }
 
         private void loadCourierCombo(DirectSalesModel directSales)
         {
-            conDB = new ConnectionDB();
-            CourierModel courier = new CourierModel();
-
-            string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-            cmbCourier.Items.Clear();
-            while (reader.Read())
+            try
             {
-                courier.ID = reader["ID"].ToString();
-                courier.CourierName = reader["couriername"].ToString();
-                courier.Description = reader["description"].ToString();
+                conDB = new ConnectionDB();
+                CourierModel courier = new CourierModel();
 
-                cmbCourier.Items.Add(courier);
+                string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
 
-                if (directSales.CourierID.Equals(courier.ID))
+                MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+                cmbCourier.Items.Clear();
+                while (reader.Read())
                 {
-                    cmbCourier.SelectedItem = courier;
+                    courier.ID = reader["ID"].ToString();
+                    courier.CourierName = reader["couriername"].ToString();
+                    courier.Description = reader["description"].ToString();
+
+                    cmbCourier.Items.Add(courier);
+
+                    if (directSales.CourierID.Equals(courier.ID))
+                    {
+                        cmbCourier.SelectedItem = courier;
+                    }
+
+                    courier = new CourierModel();
                 }
 
-                courier = new CourierModel();
+                conDB.closeConnection();
             }
-
-            conDB.closeConnection();
+            catch(Exception ex)
+            {
+                conDB.writeLogFile("LOAD COURIER ON COMBO" + "-" + ex.Message.ToString() + "||" + ex.StackTrace);
+            }
+            
         }
 
         private int saveDirectSalesRecord()
@@ -357,7 +407,7 @@ namespace FHSales.views
                 query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, totalamt, isDeleted) VALUES (?,?,?,?,0)";
                 List<string> parameters = new List<string>();
 
-                parameters.Add(p.ID);
+                parameters.Add(p.ProductID);
                 parameters.Add(ID);
                 parameters.Add(p.Quantity);
                 parameters.Add(p.TotalAmount);
@@ -540,6 +590,9 @@ namespace FHSales.views
                 clearFields();
                 await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
                 dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
+                btnUpdate.Visibility = Visibility.Hidden;
+                dgvDirectSales.IsEnabled = true;
+                btnSave.Visibility = Visibility.Visible;
             }
         }
 
@@ -549,11 +602,12 @@ namespace FHSales.views
             {
                 clearFields();
                 lstProductModel = new List<ProductModel>();
+                dgvDirectSales.IsEnabled = true;
             }
             else
             {
                 clearFields();
-
+                dgvDirectSales.IsEnabled = true;
                 btnSave.Visibility = Visibility.Visible;
                 btnUpdate.Visibility = Visibility.Hidden;
                 lstProductModel = new List<ProductModel>();
@@ -716,7 +770,8 @@ namespace FHSales.views
 
         private void btnProducts_Click(object sender, RoutedEventArgs e)
         {
-            AddProducts addProd = new AddProducts(this, lstProductModel);
+           
+            AddProducts addProd = new AddProducts(this, lstProductModel, ifEdit);
             addProd.ShowDialog();
         }
 

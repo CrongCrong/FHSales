@@ -65,7 +65,7 @@
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,512,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
         <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="898,512,0,0" 
-                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
+                VerticalAlignment="Top" Width="64" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
 
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="968,512,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
