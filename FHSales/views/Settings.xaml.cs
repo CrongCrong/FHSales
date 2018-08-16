@@ -34,7 +34,7 @@ namespace FHSales.views
         Products _products = new Products();
         Drugstore _drugstore = new Drugstore();
         SalesOffice _salesOffice = new SalesOffice();
-
+        TollPacker _tollPacker = new TollPacker();
 
         private void content_Loaded(object sender, RoutedEventArgs e)
         {
@@ -86,6 +86,11 @@ namespace FHSales.views
         {
             content.Content = _salesOffice;
 
+        }
+
+        private void MenuItem_Click_7(object sender, RoutedEventArgs e)
+        {
+            content.Content = _tollPacker;
         }
     }
 }

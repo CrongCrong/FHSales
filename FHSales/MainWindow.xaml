@@ -137,6 +137,17 @@
                             <Image Source="images/purchase-order-clipart96.png"/>
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
+
+                    <controls:HamburgerMenuIconItem x:Name="menuStocks" Label="Stocks">
+
+                        <controls:HamburgerMenuIconItem.Tag>
+                            <views:StocksInventory />
+                        </controls:HamburgerMenuIconItem.Tag>
+                        <!-- <controls:HamburgerMenuIconItem.Icon>
+                            <Image Source="images/purchase-order-clipart96.png"/>
+                        </controls:HamburgerMenuIconItem.Icon> -->
+                    </controls:HamburgerMenuIconItem>
+                    
                 </controls:HamburgerMenuItemCollection>
             </controls:HamburgerMenu.ItemsSource>
 

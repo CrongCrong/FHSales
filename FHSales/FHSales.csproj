@@ -116,6 +116,8 @@
     <Compile Include="Classes\ReportDate.cs" />
     <Compile Include="Classes\SalesOfficeModel.cs" />
     <Compile Include="Classes\SalesReport.cs" />
+    <Compile Include="Classes\StocksInventoryModel.cs" />
+    <Compile Include="Classes\TollPackerModel.cs" />
     <Compile Include="Classes\UserModel.cs" />
     <Compile Include="Classes\UserTypeEnum.cs" />
     <Compile Include="Classes\UserTypeModel.cs" />
@@ -190,6 +192,12 @@
     </Compile>
     <Compile Include="views\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\StocksInventory.xaml.cs">
+      <DependentUpon>StocksInventory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\TollPacker.xaml.cs">
+      <DependentUpon>TollPacker.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
@@ -303,6 +311,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\Settings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\StocksInventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\TollPacker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -39,6 +39,10 @@
                 <MenuItem x:Name="menuProducts" Header="Products" FontFamily="Consolas" FontSize="20">
                     <MenuItem Header="_Add/Edit Products" Click="MenuItem_Click_4" />
                 </MenuItem>
+
+                <MenuItem x:Name="menuTollPacker" Header="TollPacker" FontFamily="Consolas" FontSize="20">
+                    <MenuItem Header="_Add/Edit Toll packer" Click="MenuItem_Click_7" />
+                </MenuItem>
             </Menu>
 
         </DockPanel>
