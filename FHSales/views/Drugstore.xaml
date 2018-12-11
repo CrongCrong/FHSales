@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FHSales.views"
              mc:Ignorable="d" 
-             d:DesignHeight="336.438" Background="White" FontFamily="Consolas" Loaded="UserControl_Loaded" Width="871.116">
+             d:DesignHeight="336.438" Background="Transparent" FontFamily="Consolas" Loaded="UserControl_Loaded" Width="871.116">
     <Grid>
         <DataGrid x:Name="dgvDrugstore" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="185" Width="438" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -23,9 +23,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label x:Name="label" Content="Drugstore Name:" HorizontalAlignment="Left" Margin="453,80,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="151"/>
+        <Label x:Name="label" Content="Drugstore Name:" HorizontalAlignment="Left" Margin="453,80,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="151"/>
         <TextBox x:Name="txtDrugstore" HorizontalAlignment="Left" Height="28" Margin="604,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
-        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="453,113,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="151"/>
+        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="453,113,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="151"/>
         <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="604,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" Click="btnEditDirectSales_Click" BorderBrush="Black"/>
@@ -36,7 +36,7 @@
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="712,200,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
-        <Label x:Name="label1_Copy" Content="Payment terms:" HorizontalAlignment="Left" Margin="453,146,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="151"/>
+        <Label x:Name="label1_Copy" Content="Payment terms:" HorizontalAlignment="Left" Margin="453,146,0,0" VerticalAlignment="Top" FontSize="15" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="151"/>
         <TextBox x:Name="txtdues" HorizontalAlignment="Left" Height="28" Margin="604,146,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="257" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
 
     </Grid>

@@ -1,0 +1,97 @@
+﻿<UserControl x:Class="FHSales.views.StocksInventoryJuice"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FHSales.views"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             mc:Ignorable="d" Width="1075.533" Height="821.6" Loaded="UserControl_Loaded" Background="Transparent">
+    <Grid>
+        <Menu Background="Transparent" Margin="0,0,0.4,631.2">
+            <MenuItem x:Name="menuReport" Header="Report" FontFamily="Myriad Pro" FontSize="20">
+                <MenuItem Header="_Generate Report" Click="MenuItem_Click_1" />
+                <Separator />
+            </MenuItem>
+        </Menu>
+        <DataGrid x:Name="dgvStocks" HorizontalAlignment="Left" Margin="26,457,0,0" VerticalAlignment="Top" Height="216" Width="486" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Delivery Date" Binding="{Binding StockDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Product" Binding="{Binding ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Click="MenuAddStocks_Click"/>
+                    <MenuItem Header="Edit" Click="MenuEditStocksIn_Click"/>
+                    <MenuItem Header="Delete" Click="MenuDeleteStocksIn_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <!--
+
+        <DataGrid x:Name="dgvStocksInAndOut" HorizontalAlignment="Left" Margin="571,141,0,0" VerticalAlignment="Top" Height="213" Width="422" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Product:" Binding="{Binding ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total In:" Binding="{Binding QtyIn}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total Out:" Binding="{Binding QtyOut}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total Stocks:" Binding="{Binding QtyNet}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        -->
+        <Label x:Name="label3" Content="STOCKS IN TO UPPER WAREHOUSE:" HorizontalAlignment="Left" Margin="26,420,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="#FF27E527" FontSize="16"/>
+        <DataGrid x:Name="dgvStocksOut" HorizontalAlignment="Left" Margin="571,457,0,0" VerticalAlignment="Top" Height="216" Width="469" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Delivery Date" Binding="{Binding StockDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Product" Binding="{Binding ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Add" Click="MenuAddStocksOut_Click"/>
+                    <MenuItem Header="Edit" Click="MenuEditStocksOut_Click"/>
+                    <MenuItem Header="Delete" Click="MenuDeleteStocksOut_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <Label x:Name="label3_Copy" Content="STOCKS OUT TO LOWER WAREHOUSE:" HorizontalAlignment="Left" Margin="571,420,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="Red" FontSize="16"/>
+        <DataGrid x:Name="dgvAccounts" HorizontalAlignment="Left" Margin="10,91,0,0" VerticalAlignment="Top" Height="239" Width="502" AutoGenerateColumns="False" FontSize="15" Background="Transparent">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Client Name" Binding="{Binding ClientName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="D.R. No" Binding="{Binding DrNo}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Delivery Date" Binding="{Binding DeliveryDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="View D.R." Click="MenuViewDR_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        
+        <DataGrid x:Name="dgvConsolidatedDR" HorizontalAlignment="Left" Margin="538,91,0,0" VerticalAlignment="Top" Height="239" Width="502" AutoGenerateColumns="False" FontSize="15" Background="Transparent">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Client Name" Binding="{Binding ClientName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="D.R. No" Binding="{Binding DrNo}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Delivery Date" Binding="{Binding DeliveryDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="View D.R." Click="MenuViewDRConso_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        
+        <Label x:Name="label" Content="ENCODED" HorizontalAlignment="Left" Margin="10,49,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Perpetua Titling MT" Foreground="#FF63EE0D"/>
+        <Label x:Name="label_Copy" Content="CONSOLIDATED" HorizontalAlignment="Left" Margin="538,49,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Perpetua Titling MT" Foreground="#FF63EE0D"/>
+        <!-- <Label x:Name="label1" Content="Date From:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="102" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+        <Label x:Name="label1_Copy" Content="Date To::" HorizontalAlignment="Left" Margin="10,86,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="102" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+         <DatePicker x:Name="dateFrom" HorizontalAlignment="Left" Margin="112,45,0,0" VerticalAlignment="Top" Height="32" FontSize="18" Width="230"/>
+        <DatePicker x:Name="dateTo" HorizontalAlignment="Left" Margin="112,85,0,0" VerticalAlignment="Top" Height="34" FontSize="18" Width="230"/> 
+        <Button x:Name="btnCheckQuota" Content="Check Quota" HorizontalAlignment="Left" Margin="411,45,0,0" VerticalAlignment="Top" Width="101" Height="70" Click="btnCheckQuota_Click" Background="#FF85CD35" FontSize="12" BorderBrush="#FFC52A51"/>
+        -->
+    </Grid>
+</UserControl>

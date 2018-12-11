@@ -8,7 +8,7 @@
              Dialog:DialogParticipation.Register="{Binding}"
              xmlns:local="clr-namespace:FHSales.views"
              mc:Ignorable="d" 
-             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="White" FontFamily="Consolas" Loaded="UserControl_Loaded">
+             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="Transparent" FontFamily="Consolas" Loaded="UserControl_Loaded">
     <Grid>
         <DataGrid x:Name="dgvRegisteredUsers" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="185" Width="380" AutoGenerateColumns="False">
             <DataGrid.Columns>

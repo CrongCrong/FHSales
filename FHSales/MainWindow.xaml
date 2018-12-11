@@ -11,7 +11,12 @@
         Title="FIBER HEALTH" Height="419" Width="966" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" WindowState="Maximized" Closing="MetroWindow_Closing" Loaded="MetroWindow_Loaded">
 
     <Grid>
-
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.504,1.5" StartPoint="0.504,0.03">
+                <GradientStop Color="#614385" Offset="0.2"/>
+                <GradientStop Color="#516395" Offset="0.567"/>
+            </LinearGradientBrush>
+        </Grid.Background>
         <Grid.Resources>
             <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type controls:HamburgerMenuIconItem}">
                 <Grid Height="50">
@@ -138,7 +143,7 @@
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
 
-                    <controls:HamburgerMenuIconItem x:Name="menuStocks" Label="Stocks">
+                    <controls:HamburgerMenuIconItem x:Name="menuStocks" Label="Stocks FH Capsules">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:StocksInventory />
@@ -147,7 +152,17 @@
                             <Image Source="images/purchase-order-clipart96.png"/>
                         </controls:HamburgerMenuIconItem.Icon> -->
                     </controls:HamburgerMenuIconItem>
-                    
+
+                    <controls:HamburgerMenuIconItem x:Name="menuStocksJuice" Label="Stocks FH Juice">
+
+                        <controls:HamburgerMenuIconItem.Tag>
+                            <views:StocksInventoryJuice />
+                        </controls:HamburgerMenuIconItem.Tag>
+                        <controls:HamburgerMenuIconItem.Icon>
+                            <Image Source="images/fhjuice.jpg"/>
+                        </controls:HamburgerMenuIconItem.Icon> 
+                    </controls:HamburgerMenuIconItem>
+
                 </controls:HamburgerMenuItemCollection>
             </controls:HamburgerMenu.ItemsSource>
 

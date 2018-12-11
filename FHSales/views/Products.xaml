@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FHSales.views"
              mc:Ignorable="d" 
-             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="White" FontFamily="Consolas" Loaded="UserControl_Loaded">
+             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="Transparent" FontFamily="Consolas" Loaded="UserControl_Loaded">
     <Grid>
         <DataGrid x:Name="dgvProducts" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="185" Width="380" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -19,9 +19,9 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label x:Name="label" Content="Product Name:" HorizontalAlignment="Left" Margin="448,127,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="label" Content="Product Name:" HorizontalAlignment="Left" Margin="448,127,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B"/>
         <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Height="28" Margin="570,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
-        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="456,160,0,0" VerticalAlignment="Top" FontSize="15"/>
+        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="456,160,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B"/>
         <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" Click="btnEditDirectSales_Click" BorderBrush="Black"/>

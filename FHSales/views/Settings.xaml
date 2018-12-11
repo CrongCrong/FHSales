@@ -7,10 +7,10 @@
              mc:Ignorable="d"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             d:DesignHeight="421.233" d:DesignWidth="696.576">
+             d:DesignHeight="421.233" d:DesignWidth="696.576" Background="Transparent">
     <Grid>
         <DockPanel Margin="0,0,0,389">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="Transparent">
                 <MenuItem x:Name="menuUsers" Header="Users" FontFamily="Consolas" FontSize="20">
                     <MenuItem Header="_New" Click="MenuItem_Click" />
                     <Separator />

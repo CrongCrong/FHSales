@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:FHSales.views"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" Width="1075.533" Background="White" Height="608" Loaded="UserControl_Loaded">
+             mc:Ignorable="d" Width="1075.533" Background="Transparent" Height="608" Loaded="UserControl_Loaded">
 
     <Grid Loaded="Grid_Loaded">
         <DockPanel Margin="0,0,0,570">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem x:Name="menuReports" Header="Reports" FontFamily="Consolas" FontSize="15" FontWeight="Bold">
+            <Menu DockPanel.Dock="Top" Background="Transparent" >
+                <MenuItem x:Name="menuReports" Header="Reports" FontFamily="Consolas" FontSize="15" FontWeight="Bold" Foreground="#FF57C33B">
                     <MenuItem Header="_Print Report" Click="MenuItem_Click" />
                     <Separator />
 

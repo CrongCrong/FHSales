@@ -6,10 +6,10 @@
              xmlns:local="clr-namespace:FHSales.views"           
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" Width="1075.533" Background="White" Height="608" Loaded="UserControl_Loaded" >
+             mc:Ignorable="d" Width="1075.533" Background="Transparent" Height="608" Loaded="UserControl_Loaded" >
     <Grid>
         <DockPanel Margin="0,0,0,570">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="Transparent">
                 <MenuItem x:Name="menuReports" Header="Reports" FontFamily="Consolas" FontSize="15" FontWeight="Bold">
                     <MenuItem Header="_Print Report" Click="MenuItem_Click" />
                     <Separator />
@@ -50,11 +50,11 @@
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
 
 
-        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="647,252,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" Background="Blue" Foreground="White" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="647,252,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" Foreground="#FF57C33B" HorizontalContentAlignment="Right"/>
         <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="780,252,0,0" VerticalAlignment="Top" Width="253" Height="31" FontSize="16" FontFamily="Consolas"/>
-        <Label x:Name="label2" Content="Client Name:" HorizontalAlignment="Left" Margin="647,289,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" Width="133" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label2" Content="Client Name:" HorizontalAlignment="Left" Margin="647,289,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Foreground="#FF57C33B" Width="133" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="txtClientName" Controls:TextBoxHelper.Watermark="Client name" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,289,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas"/>
-        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="647,323,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Background="Blue" Foreground="White" Width="137" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="647,323,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Foreground="#FF57C33B" Width="137" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="780,323,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" PreviewTextInput="txtQuantity_PreviewTextInput"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,432,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
@@ -63,10 +63,12 @@
 
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="968,432,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
-        <Label x:Name="label" Content="Search:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
-        <CheckBox x:Name="checkDate" Content="by Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
+        <Label x:Name="label" Content="Search:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Foreground="#FF57C33B"/>
+        <CheckBox x:Name="checkDate" Content="by Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontSize="13" Foreground="#FF57C33B"
+                  FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
         <DatePicker x:Name="searchDateFrom" HorizontalAlignment="Left" Margin="131,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184"/>
-        <CheckBox x:Name="checkCategory" Content="by Category:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
+        <CheckBox x:Name="checkCategory" Content="by Category:" HorizontalAlignment="Left" Margin="10,98,0,0" Foreground="#FF57C33B"
+                  VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
         <ComboBox x:Name="searchCategory" HorizontalAlignment="Left" Margin="131,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
         <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="519,91,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
@@ -76,9 +78,9 @@
         <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
         <Label x:Name="label8" Content="-" HorizontalAlignment="Left" Margin="315,67,0,0" VerticalAlignment="Top"/>
         <Label x:Name="lblRecords" Content="" HorizontalAlignment="Left" Margin="10,502,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" FontWeight="Bold"/>
-        <Label x:Name="label4" Content="Category:" HorizontalAlignment="Left" Margin="647,357,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="133" Background="Blue" Foreground="White" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label4" Content="Category:" HorizontalAlignment="Left" Margin="647,357,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="133" Foreground="#FF57C33B" HorizontalContentAlignment="Right"/>
         <ComboBox x:Name="cmbCategory" HorizontalAlignment="Left" Margin="780,357,0,0" VerticalAlignment="Top" Width="253" Height="29" FontSize="16" FontFamily="Consolas" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
-        <Label x:Name="label5" Content="Product:" HorizontalAlignment="Left" Margin="647,391,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" Background="Blue" Foreground="White" HorizontalContentAlignment="Right" Width="133"/>
+        <Label x:Name="label5" Content="Product:" HorizontalAlignment="Left" Margin="647,391,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" Foreground="#FF57C33B" HorizontalContentAlignment="Right" Width="133"/>
         <ComboBox x:Name="cmbProduct" HorizontalAlignment="Left" Margin="780,391,0,0" VerticalAlignment="Top" Width="253" Height="29" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
 
     </Grid>

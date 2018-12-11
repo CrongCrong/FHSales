@@ -2,7 +2,9 @@
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 
@@ -19,7 +21,7 @@ namespace FHSales
         }
 
         ConnectionDB conDB;
-        
+
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             if (verifyLogin())
@@ -38,7 +40,7 @@ namespace FHSales
         private bool verifyLogin()
         {
             conDB = new ConnectionDB();
-           //ser = new UserModel();
+            //ser = new UserModel();
             bool ifCorrect = false;
             string queryString = "SELECT dbfh.tblusers.ID, username, aes_decrypt(dbfh.tblusers.password, ?) as pas, firstname, lastname, dbfh.tblusers.usertype " +
                 "FROM (dbfh.tblusers INNER JOIN dbfh.tblusertypes ON dbfh.tblusers.usertype = dbfh.tblusertypes.ID) " +
@@ -70,19 +72,32 @@ namespace FHSales
 
         private async void txtPassword_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && e.Key == Key.Enter)
+            string filePath = @"C:\Logs\Error.txt";
+            try
             {
-                if (verifyLogin())
+                if (e.Key == Key.Return && e.Key == Key.Enter)
                 {
-                    MainWindow main = new MainWindow(this);
-                    main.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    await this.ShowMessageAsync("LOG IN","Incorrect username/password. Please try again!");
+                    if (verifyLogin())
+                    {
+                        MainWindow main = new MainWindow(this);
+                        main.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        await this.ShowMessageAsync("LOG IN", "Incorrect username/password. Please try again!");
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("Message :" + "Login ERROR: " + ex.Message + " " + Environment.NewLine + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                    writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                }
+            }
+
         }
     }
 }

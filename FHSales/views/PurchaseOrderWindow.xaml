@@ -6,14 +6,17 @@
              xmlns:local="clr-namespace:FHSales.views"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" Width="1075.533" Background="White" Height="639" Loaded="UserControl_Loaded" >
+             mc:Ignorable="d" Width="1075.533" Background="Transparent" Height="639" Loaded="UserControl_Loaded" >
     <Grid>
         <DockPanel Margin="0,0,0,570">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="Transparent">
                 <MenuItem x:Name="menuReports" Header="Reports" FontFamily="Consolas" FontSize="15" FontWeight="Bold">
                     <MenuItem Header="_Print Report" Click="MenuItem_Click" />
                     <Separator />
-
+                </MenuItem>
+                <MenuItem x:Name="menuStocks" Header="Stocks" FontFamily="Consolas" FontSize="15" FontWeight="Bold">
+                    <MenuItem Header="_Capsules" Click="MenuStocks_Click" />
+                    <Separator />
                 </MenuItem>
             </Menu>
 
@@ -70,11 +73,14 @@
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="23,549,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
 
-        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="660,246,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="32" HorizontalContentAlignment="Right" Background="Blue" Foreground="White"/>
+        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="660,246,0,0" 
+               VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="32" 
+               HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
         <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="793,246,0,0" VerticalAlignment="Top" Width="253" Height="32" FontSize="16" FontFamily="Consolas" TabIndex="5" SelectedDateChanged="deliveryDate_SelectedDateChanged"/>
-        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="660,212,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <Label x:Name="label3" Content="Quantity:" HorizontalAlignment="Left" Margin="660,212,0,0" 
+               VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="133"/>
         <TextBox x:Name="txtQuantity" Controls:TextBoxHelper.Watermark="Quantity" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,212,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="4"/>
-        <Label x:Name="label" Content="Drugstore:" HorizontalAlignment="Left" Margin="660,144,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <Label x:Name="label" Content="Drugstore:" HorizontalAlignment="Left" Margin="660,144,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="133"/>
         <ComboBox x:Name="comboDrugstore" HorizontalAlignment="Left" Margin="793,144,0,0" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" Height="29" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="2"/>
 
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,549,0,0" 
@@ -84,46 +90,71 @@
 
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="968,549,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
-        <Label x:Name="label2" Content="Product:" HorizontalAlignment="Left" Margin="660,178,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="133"/>
+        <Label x:Name="label2" Content="Product:" HorizontalAlignment="Left" Margin="660,178,0,0" VerticalAlignment="Top" 
+               FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="133"/>
         <ComboBox x:Name="comboProduct" HorizontalAlignment="Left" Margin="793,178,0,0" VerticalAlignment="Top" Width="253" Height="29" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID" TabIndex="3"/>
 
-        <CheckBox x:Name="checkDate" Content="Delvry Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
+        <CheckBox x:Name="checkDate" Content="Delvry Date:" HorizontalAlignment="Left" Margin="10,67,0,0" 
+                  VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" Foreground="#FF57C33B"
+                  HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
         <DatePicker x:Name="searchDateFrom" HorizontalAlignment="Left" Margin="131,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184"/>
-        <Label x:Name="label8" Content="-" HorizontalAlignment="Left" Margin="315,67,0,0" VerticalAlignment="Top"/>
-        <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
-        <CheckBox x:Name="checkCategory" Content="Product:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
+        <Label x:Name="label8" Content="-" HorizontalAlignment="Left" Margin="315,67,0,0" VerticalAlignment="Top" Foreground="#FF57C33B"/>
+        <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,67,0,0" VerticalAlignment="Top" 
+                    FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
+        <CheckBox x:Name="checkCategory" Content="Product:" HorizontalAlignment="Left" Margin="10,98,0,0" 
+                  VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" 
+                  HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" Foreground="#FF57C33B" />
         <ComboBox x:Name="searchProduct" HorizontalAlignment="Left" Margin="131,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
-        <CheckBox x:Name="checkDrugstore" Content="Drugstore:" HorizontalAlignment="Left" Margin="340,99,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDrugstore_Checked" Unchecked="checkDrugstore_Unchecked" />
+        <CheckBox x:Name="checkDrugstore" Content="Drugstore:" HorizontalAlignment="Left" 
+                  Margin="340,99,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" 
+                  HorizontalContentAlignment="Right" Checked="checkDrugstore_Checked" Unchecked="checkDrugstore_Unchecked" Foreground="#FF57C33B"/>
         <ComboBox x:Name="searchDrugstore" HorizontalAlignment="Left" Margin="461,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
 
         <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="490,208,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
         <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="560,208,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnReset_Click" />
-        <Label x:Name="label4" Content="PO Number:" HorizontalAlignment="Left" Margin="660,110,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <Label x:Name="label4" Content="PO Number:" HorizontalAlignment="Left" Margin="660,110,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="#FF57C33B" FontFamily="Consolas" FontSize="16" Width="133"/>
         <TextBox x:Name="txtPO" Controls:TextBoxHelper.Watermark="PO Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="1" />
-        <Label x:Name="label4_Copy" Content="SI Number:" HorizontalAlignment="Left" Margin="660,385,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <Label x:Name="label4_Copy" Content="SI Number:" HorizontalAlignment="Left" Margin="660,385,0,0" 
+               VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="#FF57C33B" FontFamily="Consolas" FontSize="16" Width="133"/>
         <TextBox x:Name="txtSI" Controls:TextBoxHelper.Watermark="SI Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,385,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="9" />
-        <Label x:Name="label4_Copy1" Content="DR Number:" HorizontalAlignment="Left" Margin="660,283,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <Label x:Name="label4_Copy1" Content="DR Number:" HorizontalAlignment="Left" Margin="660,283,0,0" 
+               VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="#FF57C33B" 
+               FontFamily="Consolas" FontSize="16" Width="133"/>
         <TextBox x:Name="txtDR" Controls:TextBoxHelper.Watermark="DR Number" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,283,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="6" />
-        <Label x:Name="label4_Copy2" Content="Payment Date:" HorizontalAlignment="Left" Margin="660,317,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <Label x:Name="label4_Copy2" Content="Payment Date:" HorizontalAlignment="Left" 
+               Margin="660,317,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" 
+               Foreground="#FF57C33B" FontFamily="Consolas" FontSize="16" Width="133"/>
         <DatePicker x:Name="paymentDate" HorizontalAlignment="Left" Margin="793,317,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="7" />
         <Button x:Name="btnView" Content="View" HorizontalAlignment="Left" Margin="93,549,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnView_Click" />
-        <CheckBox x:Name="chkDRNumber" Content="DR Number:" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="13" HorizontalContentAlignment="Right" Width="116" Height="29" Checked="chkDRNumber_Checked" Unchecked="chkDRNumber_Unchecked"/>
+        <CheckBox x:Name="chkDRNumber" Content="DR Number:" HorizontalAlignment="Left" Margin="10,129,0,0" 
+                  VerticalAlignment="Top" FontFamily="Consolas" FontSize="13" HorizontalContentAlignment="Right" Width="116" 
+                  Height="29" Checked="chkDRNumber_Checked" Unchecked="chkDRNumber_Unchecked" Foreground="#FF57C33B"/>
         <TextBox x:Name="searchDR" HorizontalAlignment="Left" Height="28" Margin="131,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
-        <CheckBox x:Name="chkSINumber" Content="SI Number:" HorizontalAlignment="Left" Margin="340,130,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="116" Height="28" FontFamily="Consolas" FontSize="13" Checked="chkSINumber_Checked" Unchecked="chkSINumber_Unchecked"/>
+        <CheckBox x:Name="chkSINumber" Content="SI Number:" HorizontalAlignment="Left" 
+                  Margin="340,130,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Width="116" Height="28" 
+                  FontFamily="Consolas" FontSize="13" Checked="chkSINumber_Checked" Unchecked="chkSINumber_Unchecked" Foreground="#FF57C33B"/>
         <TextBox x:Name="searchSI" HorizontalAlignment="Left" Height="28" Margin="461,129,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
-        <CheckBox x:Name="chkPONumber" Content="PO Number:" HorizontalAlignment="Left" Margin="10,194,0,0" VerticalAlignment="Top" Width="116" HorizontalContentAlignment="Right" Height="28" FontFamily="Consolas" FontSize="13" Checked="chkPONumber_Checked" Unchecked="chkPONumber_Unchecked"/>
+        <CheckBox x:Name="chkPONumber" Content="PO Number:" HorizontalAlignment="Left" Margin="10,194,0,0" 
+                  VerticalAlignment="Top" Width="116" HorizontalContentAlignment="Right" Height="28" FontFamily="Consolas" 
+                  FontSize="13" Checked="chkPONumber_Checked" Unchecked="chkPONumber_Unchecked" Foreground="#FF57C33B"/>
         <TextBox x:Name="searchPO" HorizontalAlignment="Left" Height="28" Margin="131,194,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="184"/>
-        <CheckBox x:Name="chkPaymentDate" Content="Payment Date:" HorizontalAlignment="Left" Margin="10,163,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="chkPaymentDate_Checked" Unchecked="chkPaymentDate_Unchecked"/>
-        <DatePicker x:Name="searchPayDateFrom" HorizontalAlignment="Left" Margin="131,163,0,0" VerticalAlignment="Top" Width="184"/>
-        <Label x:Name="label8_Copy" Content="-" HorizontalAlignment="Left" Margin="315,163,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="chkPaymentDate" Content="Payment Date:" HorizontalAlignment="Left" Margin="10,163,0,0" 
+                  VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" 
+                  HorizontalContentAlignment="Right" Checked="chkPaymentDate_Checked" Unchecked="chkPaymentDate_Unchecked" Foreground="#FF57C33B"/>
+        <DatePicker x:Name="searchPayDateFrom" HorizontalAlignment="Left" Margin="131,163,0,0" VerticalAlignment="Top" Width="184" />
+        <Label x:Name="label8_Copy" Content="-" HorizontalAlignment="Left" Margin="315,163,0,0" VerticalAlignment="Top" Foreground="#FF57C33B"/>
         <DatePicker x:Name="searchPayDateTo" HorizontalAlignment="Left" Margin="330,163,0,0" VerticalAlignment="Top" Width="179"/>
-        <CheckBox x:Name="chkPaid" Content="Paid" HorizontalAlignment="Left" Margin="793,498,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="15"/>
-        <Label x:Name="label4_Copy3" Content="Amount:" HorizontalAlignment="Left" Margin="660,419,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="16" Width="133"/>
+        <CheckBox x:Name="chkPaid" Content="Paid" HorizontalAlignment="Left" Margin="793,498,0,0" 
+                  VerticalAlignment="Top" FontFamily="Consolas" FontSize="15" Foreground="#FF57C33B"/>
+        <Label x:Name="label4_Copy3" Content="Amount:" HorizontalAlignment="Left" 
+               Margin="660,419,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="#FF57C33B" FontFamily="Consolas" FontSize="16" Width="133"/>
         <TextBox x:Name="txtAmount" Controls:TextBoxHelper.Watermark="Amount" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="793,419,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="10" />
-        <Label x:Name="label4_Copy4" Content="Payment Due Date:" HorizontalAlignment="Left" Margin="660,351,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" FontFamily="Consolas" FontSize="13" Width="133" Height="29"/>
+        <Label x:Name="label4_Copy4" Content="Payment Due Date:" HorizontalAlignment="Left"
+               Margin="660,351,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" 
+               Foreground="#FF57C33B" FontFamily="Consolas" FontSize="13" Width="133" Height="29"/>
         <DatePicker x:Name="paymentDueDate" HorizontalAlignment="Left" Margin="793,351,0,0" VerticalAlignment="Top" Height="29" Width="253" FontFamily="Consolas" FontSize="16" TabIndex="8"/>
 
     </Grid>

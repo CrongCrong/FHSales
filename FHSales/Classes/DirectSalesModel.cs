@@ -25,5 +25,11 @@
         public string Title  { get; set; }
 
         public string OfficeSalesID { get; set; }
+
+        public string Remarks { get; set; }
+
+        public bool Paid { get; set; }
+
+        public string isPaid { get; set; }
     }
 }

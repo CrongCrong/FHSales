@@ -3,18 +3,10 @@ using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -30,7 +22,7 @@ namespace FHSales.views
 
         ConnectionDB conDB;
         DirectSalesModel selected;
-        bool ifEdit = false;       
+        bool ifEdit = false;
         public List<ProductModel> lstProductModel = new List<ProductModel>();
 
 
@@ -53,20 +45,22 @@ namespace FHSales.views
                     txtExpenses.Text = selected.Expenses.ToString();
                     txtTotalPrice.Text = selected.TotalPrice.ToString();
                     ifEdit = true;
+                    txtRemarks.Text = selected.Remarks;
+
                     loadCashBankonCombo(selected);
                     loadCourierCombo(selected);
                     loadProductsOnList(selected.ID);
                     loadOfficeSalesCombo(selected);
-
+                    chkPaid.IsChecked = selected.Paid;
                     dgvDirectSales.IsEnabled = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 conDB.writeLogFile(ex.Message.ToString() + "-" + "Edit Direct sales clicked!" + "-" + ex.StackTrace);
             }
 
-            
+
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
@@ -75,11 +69,14 @@ namespace FHSales.views
             searchDateTo.IsEnabled = false;
             searchClient.IsEnabled = false;
             searchBank.IsEnabled = false;
+            cmbSearchPaid.IsEnabled = false;
 
             dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
             loadCashBankonCombo();
             loadCourierCombo();
             loadOfficeSalesCombo();
+            loadPaidCombo();
+
             btnUpdate.Visibility = Visibility.Hidden;
             if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.DIRECTSALES_ADMIN) ||
                 (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
@@ -105,10 +102,11 @@ namespace FHSales.views
 
             if (bl)
             {
-                if(lstProductModel.Count <= 0)
+                if (lstProductModel.Count <= 0)
                 {
                     await window.ShowMessageAsync("SAVE ERROR", "PRODUCT LIST IS EMPTY.");
-                }else
+                }
+                else
                 {
                     int id = saveDirectSalesRecord();
                     saveProductsOnList(id.ToString());
@@ -117,7 +115,7 @@ namespace FHSales.views
                     lstProductModel = new List<ProductModel>();
                     clearFields();
                 }
-                
+
             }
         }
 
@@ -128,7 +126,7 @@ namespace FHSales.views
             DirectSalesModel directSales = new DirectSalesModel();
 
             string queryString = "SELECT dbfh.tbldirectsales.ID, clientname, quantity, cashbankID, bankname, courierID, " +
-                "couriername, totalprice, deliverydate, expenses, officeID FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
+                "couriername, totalprice, deliverydate, expenses, officeID, remarks, isPaid FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
                 "dbfh.tbldirectsales.cashbankID = dbfh.tblbank.ID) INNER JOIN dbfh.tblcourier ON " +
                 "dbfh.tbldirectsales.courierID = dbfh.tblcourier.ID) WHERE dbfh.tbldirectsales.salestypeID = 1 AND dbfh.tbldirectsales.isDeleted = 0 ORDER BY deliverydate DESC";
 
@@ -147,8 +145,19 @@ namespace FHSales.views
                 directSales.OfficeSalesID = reader["officeID"].ToString();
                 DateTime dte = DateTime.Parse(reader["deliveryDate"].ToString());
                 directSales.DeliveryDate = dte.ToShortDateString();
-
+                
                 directSales.Expenses = Convert.ToInt32(reader["expenses"].ToString());
+
+                directSales.Remarks = reader["remarks"].ToString();
+                directSales.isPaid = reader["isPaid"].ToString();
+
+                if (directSales.isPaid.Equals("1"))
+                {
+                    directSales.Paid = true;
+                }else
+                {
+                    directSales.Paid = false;
+                }
 
                 lstDirectSales.Add(directSales);
                 directSales = new DirectSalesModel();
@@ -157,6 +166,13 @@ namespace FHSales.views
             lblRecords.Content = lstDirectSales.Count + " RECORDS FOUND.";
             return lstDirectSales;
 
+        }
+
+        private void loadPaidCombo()
+        {
+            cmbSearchPaid.Items.Clear();
+            cmbSearchPaid.Items.Add("PAID");
+            cmbSearchPaid.Items.Add("UNPAID");
         }
 
         private void loadOfficeSalesCombo()
@@ -211,11 +227,11 @@ namespace FHSales.views
                 }
                 conDB.closeConnection();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 conDB.writeLogFile("LOAD SALES OFFICE COMBO" + "-" + ex.StackTrace + " || " + ex.Message);
             }
-            
+
         }
 
         private void loadCashBankonCombo()
@@ -270,11 +286,11 @@ namespace FHSales.views
 
                 conDB.closeConnection();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 conDB.writeLogFile("LOAD CASH BANK ON COMBO" + "-" + ex.Message + "||" + ex.StackTrace);
             }
-            
+
 
         }
 
@@ -302,11 +318,11 @@ namespace FHSales.views
 
                 conDB.closeConnection();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 conDB.writeLogFile("LOAD COURIER COMBO NO PARAM" + "-" + ex.Message.ToString());
             }
-            
+
         }
 
         private void loadCourierCombo(DirectSalesModel directSales)
@@ -338,11 +354,11 @@ namespace FHSales.views
 
                 conDB.closeConnection();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 conDB.writeLogFile("LOAD COURIER ON COMBO" + "-" + ex.Message.ToString() + "||" + ex.StackTrace);
             }
-            
+
         }
 
         private int saveDirectSalesRecord()
@@ -350,7 +366,7 @@ namespace FHSales.views
             conDB = new ConnectionDB();
             int x = 0;
             string queryString = "INSERT INTO dbfh.tbldirectsales (clientname, cashbankID, courierID, totalprice, " +
-                "deliverydate, expenses, salestypeID, officeID, isDeleted) VALUES (?,?,?,?,?,?,?,?,0)";
+                "deliverydate, expenses, salestypeID, officeID, remarks, isPaid, isDeleted) VALUES (?,?,?,?,?,?,?,?,?,?,0)";
 
             List<string> parameters = new List<string>();
             parameters.Add(txtClientName.Text);
@@ -362,6 +378,17 @@ namespace FHSales.views
             parameters.Add(txtExpenses.Text);
             parameters.Add("1");
             parameters.Add(cmbSalesOffice.SelectedValue.ToString());
+
+            parameters.Add(txtRemarks.Text);
+            if (chkPaid.IsChecked.Value)
+            {
+                parameters.Add("1");
+            }
+            else
+            {
+                parameters.Add("0");
+            }
+
             conDB.AddRecordToDatabase(queryString, parameters);
 
             MySqlDataReader reader = conDB.getSelectConnection("select ID from dbfh.tbldirectsales order by ID desc limit 1", null);
@@ -379,7 +406,7 @@ namespace FHSales.views
         {
             conDB = new ConnectionDB();
             string queryString = "UPDATE dbfh.tbldirectsales SET deliverydate = ?, clientname = ?, cashbankID = ?, " +
-                "courierID = ?, expenses = ?, totalprice = ?, officeID = ? WHERE ID = ?";
+                "courierID = ?, expenses = ?, totalprice = ?, officeID = ?, remarks = ?, isPaid = ? WHERE ID = ?";
 
             List<string> parameters = new List<string>();
             DateTime date = DateTime.Parse(deliveryDateDS.Text);
@@ -391,6 +418,16 @@ namespace FHSales.views
             parameters.Add(txtExpenses.Text);
             parameters.Add(txtTotalPrice.Text);
             parameters.Add(cmbSalesOffice.SelectedValue.ToString());
+
+            parameters.Add(txtRemarks.Text);
+            if (chkPaid.IsChecked.Value)
+            {
+                parameters.Add("1");
+            }
+            else
+            {
+                parameters.Add("0");
+            }
             parameters.Add(directSalesModel.ID);
 
             conDB.AddRecordToDatabase(queryString, parameters);
@@ -402,7 +439,7 @@ namespace FHSales.views
         {
             string query = "";
             conDB = new ConnectionDB();
-            foreach(ProductModel p in lstProductModel)
+            foreach (ProductModel p in lstProductModel)
             {
                 query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, totalamt, isDeleted) VALUES (?,?,?,?,0)";
                 List<string> parameters = new List<string>();
@@ -433,7 +470,8 @@ namespace FHSales.views
                     parameters.Add(p.isDeleted);
                     parameters.Add(p.ID);
                     conDB.AddRecordToDatabase(query, parameters);
-                }else
+                }
+                else
                 {
                     query = "INSERT INTO dbfh.tblproductsordered (productID, salesID, qty, totalamt, isDeleted) VALUES (?,?,?,?,0)";
                     List<string> parameters = new List<string>();
@@ -444,7 +482,7 @@ namespace FHSales.views
                     parameters.Add(p.TotalAmount);
                     conDB.AddRecordToDatabase(query, parameters);
                 }
-                
+
             }
         }
 
@@ -478,7 +516,7 @@ namespace FHSales.views
                 lstProductModel.Add(prodM);
                 prodM = new ProductModel();
             }
-            
+
             conDB.closeConnection();
         }
 
@@ -489,7 +527,7 @@ namespace FHSales.views
             List<DirectSalesModel> lstDirectSales = new List<DirectSalesModel>();
             DirectSalesModel directSales = new DirectSalesModel();
             string queryString = "SELECT dbfh.tbldirectsales.ID, clientname, quantity, cashbankID, bankname, courierID, " +
-                "couriername, totalprice, deliverydate, expenses, officeID FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
+                "couriername, totalprice, deliverydate, expenses, officeID, remarks, isPaid FROM ((dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON " +
                 "dbfh.tbldirectsales.cashbankID = dbfh.tblbank.ID) INNER JOIN dbfh.tblcourier ON " +
                 "dbfh.tbldirectsales.courierID = dbfh.tblcourier.ID) WHERE dbfh.tbldirectsales.isDeleted = 0 AND dbfh.tbldirectsales.salestypeID = 1";
             List<string> parameters = new List<string>();
@@ -513,6 +551,20 @@ namespace FHSales.views
                 parameters.Add(searchBank.SelectedValue.ToString());
             }
 
+            if (checkPaidSearch.IsChecked == true)
+            {
+                if (cmbSearchPaid.SelectedValue.ToString().Equals("PAID"))
+                {
+                    queryString += " AND (dbfh.tbldirectsales.isPaid = ?)";
+                    parameters.Add("1");
+                }else
+                {
+                    queryString += " AND (dbfh.tbldirectsales.isPaid = ?)";
+                    parameters.Add("0");
+                }
+                
+            }
+
             MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
 
             while (reader.Read())
@@ -531,6 +583,17 @@ namespace FHSales.views
                 directSales.DeliveryDate = dte.ToShortDateString();
 
                 directSales.Expenses = Convert.ToInt32(reader["expenses"].ToString());
+                directSales.Remarks = reader["remarks"].ToString();
+                directSales.isPaid = reader["isPaid"].ToString();
+
+                if (directSales.isPaid.Equals("1"))
+                {
+                    directSales.Paid = true;
+                }
+                else
+                {
+                    directSales.Paid = false;
+                }
 
                 lstDirectSales.Add(directSales);
                 directSales = new DirectSalesModel();
@@ -538,6 +601,18 @@ namespace FHSales.views
             conDB.closeConnection();
             lblRecords.Content = lstDirectSales.Count + " RECORDS FOUND.";
             return lstDirectSales;
+        }
+
+        private void deleteRecord(string strID)
+        {
+            conDB = new ConnectionDB();
+            string queryString = "UPDATE dbfh.tbldirectsales SET isDeleted = 1 WHERE ID = ?";
+            List<string> parameters = new List<string>();
+            parameters.Add(strID);
+
+            conDB.AddRecordToDatabase(queryString, parameters);
+            conDB.closeConnection();
+
         }
 
         private async Task<bool> checkFields()
@@ -620,17 +695,19 @@ namespace FHSales.views
             txtClientName.Text = "";
             txtExpenses.Text = "";
             txtTotalPrice.Text = "";
+            txtRemarks.Text = "";
 
             cmbCashBank.SelectedItem = null;
             cmbCourier.SelectedItem = null;
             cmbSalesOffice.SelectedItem = null;
+            chkPaid.IsChecked = false;
         }
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
 
-            if (checkDate.IsChecked == true || checkClient.IsChecked == true || checkBank.IsChecked == true)
+            if (checkDate.IsChecked == true || checkClient.IsChecked == true || checkBank.IsChecked == true || checkPaidSearch.IsChecked == true)
             {
                 if ((string.IsNullOrEmpty(searchDateFrom.Text) || string.IsNullOrEmpty(searchDateTo.Text)) && checkDate.IsChecked == true)
                 {
@@ -641,6 +718,10 @@ namespace FHSales.views
                     await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
                 }
                 else if (checkBank.IsChecked == true && searchBank.SelectedItem == null)
+                {
+                    await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
+                }
+                else if (checkPaidSearch.IsChecked == true && cmbSearchPaid.SelectedItem == null)
                 {
                     await window.ShowMessageAsync("SEARCH", "Please complete value to search.");
                 }
@@ -759,7 +840,7 @@ namespace FHSales.views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if(!UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_ADMIN) || !UserModel.UserType.Equals(UserTypeEnum.ADMIN))
+            if (!UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_ADMIN) || !UserModel.UserType.Equals(UserTypeEnum.ADMIN))
             {
                 btnEditDirectSales.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;
@@ -770,10 +851,36 @@ namespace FHSales.views
 
         private void btnProducts_Click(object sender, RoutedEventArgs e)
         {
-           
+
             AddProducts addProd = new AddProducts(this, lstProductModel, ifEdit);
             addProd.ShowDialog();
         }
 
+        private void checkPaidSearch_Checked(object sender, RoutedEventArgs e)
+        {
+            cmbSearchPaid.IsEnabled = true;
+        }
+
+        private void checkPaidSearch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            cmbSearchPaid.IsEnabled = false;
+        }
+
+        private async void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            MessageDialogResult result = await window.ShowMessageAsync("Delete Record", "Are you sure you want to delete record?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                DirectSalesModel dsm = dgvDirectSales.SelectedItem as DirectSalesModel;
+                if(dsm != null)
+                {
+                    deleteRecord(dsm.ID);
+                    dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
+                    dgvDirectSales.Items.Refresh();
+                }
+            }
+        }
     }
 }

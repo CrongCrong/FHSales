@@ -9,7 +9,7 @@ namespace FHSales.Classes
 {
     public class ConnectionDB
     {
-        string myConnection = "Server=" + Properties.Settings.Default.connectionDB + "; port=3306;username=root;password=admin; convert zero datetime=True";
+        string myConnection = "Server=" + Properties.Settings.Default.connectionDB + "; port=3306;username=root;password=admin; convert zero datetime=True;Initial Catalog='dbfh';SslMode=none";
         public MySqlConnection myConn = new MySqlConnection();
         MySqlDataReader reader;
 
@@ -31,8 +31,6 @@ namespace FHSales.Classes
                         command.Parameters.Add(p1);
                     }
                 }
-
-
                 myConn.Open();
                 command.Connection = myConn;
 
@@ -41,9 +39,8 @@ namespace FHSales.Classes
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+                writeLogFile(ex.Message + " | " + ex.StackTrace);
             }
-
-
             return reader;
         }
 

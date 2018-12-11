@@ -13,10 +13,32 @@ namespace FHSales.Classes
 
         public string TollpackerName { get; set; }
 
+        public string TollpackerID { get; set; }
+
         public string StocksDescription { get; set; }
 
         public string Qty { get; set; }
 
+        public string QtyIn { get; set; }
+
+        public string QtyOut { get; set; }
+
+        public string QtyNet { get; set; }
+
         public string DeliveryDate { get; set; }
+
+        public string ProductName { get; set; }
+
+        public string ProductID { get; set; }
+
+        public string Paid { get; set; }
+
+        public string DRNo { get; set; }
+
+        public string Amount { get; set; }
+
+        public string Terms { get; set; }
+
+        public string PaymentDueDate { get; set; }
     }
 }

@@ -6,17 +6,17 @@
              xmlns:local="clr-namespace:FHSales.views"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" Width="1075.533" Background="White" Height="680" Loaded="UserControl_Loaded">
+             mc:Ignorable="d" Width="1075.533" Background="Transparent" Height="680" Loaded="UserControl_Loaded">
     <Grid>
-        <Label x:Name="label" Content="Toll Packer:" HorizontalAlignment="Left" Margin="26,60,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label" Content="Toll Packer:" HorizontalAlignment="Left" Margin="26,60,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
         <ComboBox x:Name="cmbTollpacker" HorizontalAlignment="Left" Height="29" Margin="156,60,0,0" VerticalAlignment="Top" Width="197" FontSize="16" ItemsSource="{Binding TollPackerModel}" DisplayMemberPath="Description" SelectedValuePath="ID" />
-        <Label x:Name="label1" Content="Item Description:" HorizontalAlignment="Left" Margin="26,94,0,0" VerticalAlignment="Top" FontSize="16" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label1" Content="Item Description:" HorizontalAlignment="Left" Margin="26,94,0,0" VerticalAlignment="Top" FontSize="16" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
         <TextBox x:Name="txtItemDescription" HorizontalAlignment="Left" Height="31" Margin="156,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197" FontSize="16"/>
-        <Label x:Name="label1_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="26,130,0,0" VerticalAlignment="Top" FontSize="16" Width="130" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label1_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="26,130,0,0" VerticalAlignment="Top" FontSize="16" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
         <TextBox x:Name="txtQty" HorizontalAlignment="Left" Height="31" Margin="156,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="197" FontSize="16"/>
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="358,146,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSave_Click" />
-        <DataGrid x:Name="dgvStocks" HorizontalAlignment="Left" Margin="26,166,0,0" VerticalAlignment="Top" Height="143" Width="327" AutoGenerateColumns="False">
+        <DataGrid x:Name="dgvStocks" HorizontalAlignment="Left" Margin="26,166,0,0" VerticalAlignment="Top" Height="234" Width="327" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Delivery Date" Binding="{Binding DeliveryDate}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
@@ -29,16 +29,18 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="label_Copy" Content="Date:" HorizontalAlignment="Left" Margin="26,26,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right"/>
+        <Label x:Name="label_Copy" Content="Date:" HorizontalAlignment="Left" Margin="26,26,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
         <DatePicker x:Name="dateDelivered" HorizontalAlignment="Left" Margin="156,26,0,0" VerticalAlignment="Top" Height="29" Width="197" FontSize="16"/>
         <Button x:Name="btnDelete" Content="Delete" HorizontalAlignment="Left" Margin="428,146,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnDelete_Click" />
-        <Label x:Name="label_Copy1" Content="Stocks:" HorizontalAlignment="Left" Margin="564,26,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right"/>
-        <TextBox x:Name="txtOverallStocks" HorizontalAlignment="Left" Height="29" Margin="694,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="161" FontSize="16" />
-        <Label x:Name="label_Copy2" Content="P.O:" HorizontalAlignment="Left" Margin="564,60,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right"/>
-        <TextBox x:Name="txtPOOutput" HorizontalAlignment="Left" Height="29" Margin="694,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="161" FontSize="16" />
-        <Label x:Name="label_Copy3" Content="Direct Sales:" HorizontalAlignment="Left" Margin="564,94,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right"/>
-        <TextBox x:Name="txtDirectSalesOutput" HorizontalAlignment="Left" Height="29" Margin="694,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="161" FontSize="16" />
+        <Label x:Name="label_Copy1" Content="Stocks:" HorizontalAlignment="Left" Margin="564,26,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
+        <TextBox x:Name="txtOverallStocks" HorizontalAlignment="Left" Height="29" Margin="694,26,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="16" />
+        <Label x:Name="label_Copy2" Content="P.O:" HorizontalAlignment="Left" Margin="564,60,0,0" VerticalAlignment="Top" FontSize="16" 
+               FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
+        <TextBox x:Name="txtPOOutput" HorizontalAlignment="Left" Height="29" Margin="694,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="16" />
+        <Label x:Name="label_Copy3" Content="Direct Sales:" HorizontalAlignment="Left" Margin="564,94,0,0" 
+               VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Width="130" HorizontalContentAlignment="Right" Foreground="#FF57C33B"/>
+        <TextBox x:Name="txtDirectSalesOutput" HorizontalAlignment="Left" Height="29" Margin="694,94,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="171" FontSize="16" />
         <Button x:Name="btnCheckStocks" Content="Check" HorizontalAlignment="Left" Margin="790,146,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnCheckStocks_Click" />
 

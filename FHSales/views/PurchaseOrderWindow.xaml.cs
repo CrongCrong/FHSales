@@ -121,7 +121,9 @@ namespace FHSales.views
                 purchase.DrugstoreID = reader["drugstoreID"].ToString();
                 purchase.ProductID = reader["productID"].ToString();
                 purchase.isPaid = reader["isPaid"].ToString();
-                purchase.Amount = Convert.ToDouble(reader["amount"].ToString()).ToString("N0");
+                double tempAmt = Convert.ToDouble(reader["amount"].ToString());
+                purchase.Amount = tempAmt.ToString("N2");
+
                 if (purchase.isPaid.Equals("1"))
                 {
                     purchase.boolPaid = true;
@@ -631,6 +633,14 @@ namespace FHSales.views
             rep.ShowDialog();
             //ReportForm rf = new ReportForm(lstPurchaseOrderReports());
            // rf.ShowDialog();
+        }
+
+        private void MenuStocks_Click(object sender, RoutedEventArgs e)
+        {
+            POReport rep = new POReport();
+            rep.ShowDialog();
+            //ReportForm rf = new ReportForm(lstPurchaseOrderReports());
+            // rf.ShowDialog();
         }
 
         private void loadDrugstoreOnCombo()

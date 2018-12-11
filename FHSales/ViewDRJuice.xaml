@@ -1,0 +1,37 @@
+﻿<Controls:MetroWindow x:Class="FHSales.ViewDRJuice"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FHSales"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Title="ViewDRJuice" Height="737.745" Width="690.496" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Grid>
+        <Label x:Name="label" Content="Client Name:" HorizontalAlignment="Left" Margin="164,49,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+        <ComboBox x:Name="cmbClient" HorizontalAlignment="Left" Margin="303,49,0,0" VerticalAlignment="Top" Width="235" Height="32" FontSize="18" FontFamily="Myriad Pro" ItemsSource="{Binding ClientModel}" DisplayMemberPath="ClientName" SelectedValuePath="ID"/>
+        <Label x:Name="label_Copy" Content="Delivery Date:" HorizontalAlignment="Left" Margin="164,124,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="303,124,0,0" VerticalAlignment="Top" Width="235" Height="32" FontSize="18" FontFamily="Myriad Pro" SelectedDateFormat="Short"/>
+        <Label x:Name="label_Copy1" Content="Payment mode:" HorizontalAlignment="Left" Margin="164,161,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <ComboBox x:Name="cmbPayment" HorizontalAlignment="Left" Margin="303,161,0,0" VerticalAlignment="Top" Width="235" Height="32" FontSize="18" FontFamily="Myriad Pro" ItemsSource="{Binding PaymentModel}" DisplayMemberPath="PaymentMode" SelectedValuePath="ID"/>
+        <Label x:Name="label_Copy2" Content="Total:" HorizontalAlignment="Left" Margin="164,310,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="33" Margin="303,310,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" FontSize="18" FontFamily="Tahoma" IsEnabled="False"/>
+        <Button x:Name="btnAddProducts" Content="Add/View products" HorizontalAlignment="Left" Height="56" Margin="303,425,0,0" VerticalAlignment="Top" Width="235" Click="btnAddProducts_Click" FontFamily="Myriad Pro" Background="#FF85CD35" FontSize="15" BorderBrush="#FFC52A51"/>
+        <Label x:Name="label_Copy3" Content="Terms:" HorizontalAlignment="Left" Margin="164,198,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <TextBox x:Name="txtTerms" HorizontalAlignment="Left" Height="33" Margin="303,198,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" FontSize="18" FontFamily="Tahoma" TextChanged="txtTerms_TextChanged" PreviewTextInput="txtTerms_PreviewTextInput"/>
+        <Label x:Name="label_Copy4" Content="Payment Due Date:" HorizontalAlignment="Left" Margin="164,236,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="15" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <DatePicker x:Name="paymentDueDate" HorizontalAlignment="Left" Margin="303,236,0,0" VerticalAlignment="Top" Width="235" Height="32" FontSize="18" FontFamily="Myriad Pro" IsEnabled="False"/>
+        <Label x:Name="label_Copy5" Content="DR No.:" HorizontalAlignment="Left" Margin="164,87,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" FontWeight="Bold"/>
+        <TextBox x:Name="txtDRNo" HorizontalAlignment="Left" Height="33" Margin="303,86,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" FontSize="18" FontFamily="Tahoma"/>
+        <Label x:Name="label_Copy6" Content="Rep./Distributor:" HorizontalAlignment="Left" Margin="164,273,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="18" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold"/>
+        <ComboBox x:Name="cmbRep" HorizontalAlignment="Left" Margin="303,273,0,0" VerticalAlignment="Top" Width="235" Height="32" FontSize="18" FontFamily="Myriad Pro" ItemsSource="{Binding PaymentModel}" DisplayMemberPath="Name" SelectedValuePath="ID"/>
+        <CheckBox x:Name="chkPaid" Content="Paid?" HorizontalAlignment="Left" Margin="303,388,0,0" VerticalAlignment="Top" FontSize="18" FontFamily="Myriad Pro" Height="32" Width="81" FontWeight="Bold"/>
+        <Label x:Name="label_Copy7" Content="Remaining Balance:" HorizontalAlignment="Left" Margin="164,349,0,0" VerticalAlignment="Top" FontFamily="Myriad Pro" FontSize="15" Width="139" HorizontalContentAlignment="Right" RenderTransformOrigin="0.466,2.138" FontWeight="Bold" Height="32"/>
+        <TextBox x:Name="txtRemainingBalance" HorizontalAlignment="Left" Height="33" Margin="303,348,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="235" FontSize="18" FontFamily="Tahoma" Text="0" PreviewTextInput="txtRemainingBalance_PreviewTextInput"/>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="118,526,0,0" VerticalAlignment="Top" Width="92" Click="btnSave_Click" FontFamily="Myriad Pro" Background="#FF85CD35" Height="47" BorderBrush="#FFC52A51" FontSize="12"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="215,526,0,0" VerticalAlignment="Top" Width="92" Click="btnCancel_Click" Height="47" Background="#FF85CD35" FontFamily="Myriad Pro" BorderBrush="#FFC52A51" FontSize="12"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="118,526,0,0" VerticalAlignment="Top" Width="92" FontFamily="Myriad Pro" Background="#FF85CD35" Height="47" BorderBrush="#FFC52A51" FontSize="12" Click="btnUpdate_Click"/>
+
+    </Grid>
+</Controls:MetroWindow>

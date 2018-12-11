@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>19</ApplicationRevision>
+    <ApplicationRevision>29</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,7 +60,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
@@ -68,7 +68,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
+    <Reference Include="MySql.Data, Version=8.0.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -97,27 +97,36 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddProductJuiceAcct.xaml.cs">
+      <DependentUpon>AddProductJuiceAcct.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddProducts.xaml.cs">
       <DependentUpon>AddProducts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AccountOrderModel.cs" />
     <Compile Include="Classes\BankModel.cs" />
     <Compile Include="Classes\CategoryModel.cs" />
     <Compile Include="Classes\ChartType.cs" />
+    <Compile Include="Classes\ClientModel.cs" />
     <Compile Include="Classes\ConnectionDB.cs" />
     <Compile Include="Classes\CourierModel.cs" />
     <Compile Include="Classes\DirectSalesModel.cs" />
     <Compile Include="Classes\DrugstoreModel.cs" />
     <Compile Include="Classes\DrugstoresSalesModel.cs" />
+    <Compile Include="Classes\FHJuiceProductModel.cs" />
     <Compile Include="Classes\FreebiesModel.cs" />
+    <Compile Include="Classes\PaymentModel.cs" />
     <Compile Include="Classes\Per.cs" />
     <Compile Include="Classes\ProductModel.cs" />
     <Compile Include="Classes\PurchaseOrderModel.cs" />
     <Compile Include="Classes\RegisteredUserModel.cs" />
     <Compile Include="Classes\ReportDate.cs" />
+    <Compile Include="Classes\RepresentativeModel.cs" />
     <Compile Include="Classes\SalesOfficeModel.cs" />
     <Compile Include="Classes\SalesReport.cs" />
     <Compile Include="Classes\StocksInventoryModel.cs" />
     <Compile Include="Classes\TollPackerModel.cs" />
+    <Compile Include="Classes\TRAN_TYPE.cs" />
     <Compile Include="Classes\UserModel.cs" />
     <Compile Include="Classes\UserTypeEnum.cs" />
     <Compile Include="Classes\UserTypeModel.cs" />
@@ -142,6 +151,9 @@
     <Compile Include="Freebies_Report.xaml.cs">
       <DependentUpon>Freebies_Report.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GenerateReportView.xaml.cs">
+      <DependentUpon>GenerateReportView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogIn.xaml.cs">
       <DependentUpon>LogIn.xaml</DependentUpon>
     </Compile>
@@ -150,6 +162,18 @@
     </Compile>
     <Compile Include="ReportForm.xaml.cs">
       <DependentUpon>ReportForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReportFormJuices.xaml.cs">
+      <DependentUpon>ReportFormJuices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StocksDetailsIn.xaml.cs">
+      <DependentUpon>StocksDetailsIn.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StocksDetailsOut.xaml.cs">
+      <DependentUpon>StocksDetailsOut.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewDRJuice.xaml.cs">
+      <DependentUpon>ViewDRJuice.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Bank.xaml.cs">
       <DependentUpon>Bank.xaml</DependentUpon>
@@ -196,12 +220,19 @@
     <Compile Include="views\StocksInventory.xaml.cs">
       <DependentUpon>StocksInventory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\StocksInventoryJuice.xaml.cs">
+      <DependentUpon>StocksInventoryJuice.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\TollPacker.xaml.cs">
       <DependentUpon>TollPacker.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Users.xaml.cs">
       <DependentUpon>Users.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddProductJuiceAcct.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddProducts.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -234,6 +265,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GenerateReportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LogIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -255,6 +290,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReportForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReportFormJuices.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StocksDetailsIn.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StocksDetailsOut.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewDRJuice.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -318,6 +369,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\StocksInventoryJuice.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\TollPacker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -346,6 +401,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Resource Include="images\speclogo-transparent.fw.png" />
+    <Resource Include="images\fhjuice.jpg" />
     <Content Include="Reports\PURCHASE_ORDER.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
