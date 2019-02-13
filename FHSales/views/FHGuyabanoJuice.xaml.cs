@@ -41,21 +41,14 @@ namespace FHSales.views
             loadCashBankonCombo();
             loadCourierCombo();
             btnUpdate.Visibility = Visibility.Hidden;
-            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.DIRECTSALES_ADMIN) ||
-                (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
-            {
-                btnEdit.Visibility = Visibility.Visible;
-                btnSave.Visibility = Visibility.Visible;
-                btnUpdate.Visibility = Visibility.Visible;
-                btnCancel.Visibility = Visibility.Visible;
-            }
-            else
+            if (!UserModel.isDSAdmin)
             {
                 btnEdit.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;
                 btnUpdate.Visibility = Visibility.Hidden;
                 btnCancel.Visibility = Visibility.Hidden;
             }
+            
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
@@ -512,7 +505,7 @@ namespace FHSales.views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_ADMIN) || !UserModel.UserType.Equals(UserTypeEnum.ADMIN))
+            if (!UserModel.isDSAdmin)
             {
                 btnEdit.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;

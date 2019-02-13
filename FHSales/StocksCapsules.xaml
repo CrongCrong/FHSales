@@ -1,0 +1,17 @@
+﻿<controls:MetroWindow x:Class="FHSales.StocksCapsules"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FHSales"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        mc:Ignorable="d"
+        Title="StocksCapsules" Height="442.642" Width="421.238" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" Background="#FF539C6A">
+    <Grid>
+        <Label x:Name="lblTotalStocksIn" Content="Total IN:" HorizontalAlignment="Left" Margin="97,58,0,0" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+        <Label x:Name="lblTotalStocksOut" Content="Total OUT:" HorizontalAlignment="Left" Margin="79,92,0,0" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+        <Label x:Name="lblTotalStocksOut_Copy" Content="Total OUT:" HorizontalAlignment="Left" Margin="79,126,0,0" VerticalAlignment="Top" FontFamily="Arial Black" FontSize="16"/>
+
+    </Grid>
+</controls:MetroWindow>

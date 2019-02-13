@@ -1,4 +1,5 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls;
 using Microsoft.Reporting.WinForms;
 using MySql.Data.MySqlClient;
@@ -22,7 +23,15 @@ namespace FHSales
         BankModel bankModel;
         ReportDate reportDate;
         string strFHProduct;
-        List<PurchaseOrderModel> lstPurchaseOrderModels;
+        //List<PurchaseOrderModel> lstPurchaseOrderModels;
+        List<PurchaseOrders> lstPurchaseOrders;
+        List<DirectSalesDaily> lstDirectSalesDaily;
+        int totalAmount = 0;
+        int totalExpenses = 0;
+        int totalJuice = 0;
+        int totalPads = 0;
+        int totalGuava = 0;
+        int totalGuyabano = 0;
 
         public ReportForm(BankModel bm, ReportDate rd, string s)
         {
@@ -39,9 +48,22 @@ namespace FHSales
             InitializeComponent();
         }
 
-        public ReportForm(List<PurchaseOrderModel> lstPurchMods)
+
+        public ReportForm(List<PurchaseOrders> lstPurchMods)
         {
-            lstPurchaseOrderModels = lstPurchMods;
+            lstPurchaseOrders = lstPurchMods;
+            InitializeComponent();
+        }
+
+        public ReportForm(List<DirectSalesDaily> lstDS, int tAmount, int tExpenses, int tJuice, int tPads, int tGuava, int iGuyabano)
+        {
+            lstDirectSalesDaily = lstDS;
+            totalAmount = tAmount;
+            totalExpenses = tExpenses;
+            totalJuice = tJuice;
+            totalPads = tPads;
+            totalGuava = tGuava;
+            totalGuyabano = iGuyabano;
             InitializeComponent();
         }
 
@@ -492,12 +514,15 @@ namespace FHSales
                 }
             }
 
-            if(lstPurchaseOrderModels != null)
+            if(lstPurchaseOrders != null)
             {
-                generatePurchaseOrderReport(lstPurchaseOrderModels);
+                generatePurchaseOrderReport(lstPurchaseOrders);
             }
 
-
+            if(lstDirectSalesDaily != null)
+            {
+                generateDirectSalesReport(lstDirectSalesDaily);
+            }
         }
 
 
@@ -1155,17 +1180,72 @@ namespace FHSales
             return lstDrugstore;
         }
 
-        private void generatePurchaseOrderReport(List<PurchaseOrderModel> listPurchases)
+        private void generatePurchaseOrderReport(List<PurchaseOrders> listPurchases)
         {
             ReportDataSource rds = new ReportDataSource();
 
-            rds = new ReportDataSource("PurchaseOrderDS", listPurchases);
+            rds = new ReportDataSource("DataSet1", listPurchases);
 
             reportViewer.ProcessingMode = ProcessingMode.Local;
             LocalReport localReport = reportViewer.LocalReport;
 
-            localReport.ReportPath = "Reports/PURCHASE_ORDER.rdlc";
+            localReport.ReportPath = "Reports/PURCHASE_ORDER_MONGO.rdlc";
             reportViewer.RefreshReport();
+
+            
+
+            System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+            ps.Landscape = true;
+
+            ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+            ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+            reportViewer.SetPageSettings(ps);
+
+            reportViewer.LocalReport.DataSources.Add(rds);
+
+            // Refresh the report  
+            reportViewer.RefreshReport();
+        }
+
+        private void generateDirectSalesReport(List<DirectSalesDaily> lstD)
+        {
+            ReportDataSource rds = new ReportDataSource();
+
+            rds = new ReportDataSource("DataSet1", lstD);
+
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            LocalReport localReport = reportViewer.LocalReport;
+
+            localReport.ReportPath = "Reports/DIRECTSALES_REPORT.rdlc";
+            reportViewer.RefreshReport();
+
+            List<ReportParameter> paramList = new List<ReportParameter>();
+
+            ReportParameter param = new ReportParameter("TotalAmount");
+            param.Values.Add(totalAmount.ToString());
+            paramList.Add(param);
+
+            param = new ReportParameter("TotalExpenses");
+            param.Values.Add(totalExpenses.ToString());
+            paramList.Add(param);
+
+            param = new ReportParameter("TotalFreeJuice");
+            param.Values.Add(totalJuice.ToString());
+            paramList.Add(param);
+
+            param = new ReportParameter("TotalFreePads");
+            param.Values.Add(totalPads.ToString());
+            paramList.Add(param);
+
+            param = new ReportParameter("TotalGuava");
+            param.Values.Add(totalGuava.ToString());
+            paramList.Add(param);
+
+            param = new ReportParameter("TotalGuyabano");
+            param.Values.Add(totalGuyabano.ToString());
+            paramList.Add(param);
+
+            this.reportViewer.LocalReport.SetParameters(paramList.ToArray());
 
             System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
             ps.Landscape = true;

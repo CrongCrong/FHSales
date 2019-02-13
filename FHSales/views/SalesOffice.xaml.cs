@@ -1,5 +1,7 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -29,68 +31,80 @@ namespace FHSales.views
         }
 
         ConnectionDB conDB;
-        string recordID = "";
+        MahApps.Metro.Controls.MetroWindow window;
+        SalesOffices salesOfficeToUpdate;
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             btnUpdate.Visibility = Visibility.Hidden;
-            dgvSalesOffice.ItemsSource = loadDataGridDetails();
+            dgvSalesOffice.ItemsSource = await loadDataGridDetails();
         }
 
-        private List<SalesOfficeModel> loadDataGridDetails()
+        private async Task<List<SalesOffices>> loadDataGridDetails()
         {
+            List<SalesOffices> lstAgnts = new List<SalesOffices>();
             conDB = new ConnectionDB();
-            List<SalesOfficeModel> lstSalesOfficeModel = new List<SalesOfficeModel>();
-            SalesOfficeModel som = new SalesOfficeModel();
-
-            string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-
-            while (reader.Read())
+            try
             {
-                som.ID = reader["ID"].ToString();
-                som.OfficeName = reader["officename"].ToString();
-                som.Description = reader["description"].ToString();
-
-                lstSalesOfficeModel.Add(som);
-                som = new SalesOfficeModel();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                var collection = db.GetCollection<SalesOffices>("SalesOffices");
+                var filter = Builders<SalesOffices>.Filter.And(
+        Builders<SalesOffices>.Filter.Where(p => p.isDeleted == false));
+                lstAgnts = collection.Find(filter).ToList();
             }
-
-            conDB.closeConnection();
-
-            return lstSalesOfficeModel;
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+            return lstAgnts;
         }
 
-        private void saveRecord()
+        private async void saveRecord()
         {
-            conDB = new ConnectionDB();
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                SalesOffices so = new SalesOffices();
+                so.OfficeName = txtOfficeName.Text;
+                so.Description = txtDescription.Text;
 
-            string queryString = "INSERT INTO dbfh.tblsalesoffice (officename, description, isDeleted) VALUES (?,?,0)";
-
-            List<string> parameters = new List<string>();
-
-            parameters.Add(txtOfficeName.Text);
-            parameters.Add(txtDescription.Text);
-
-            conDB.AddRecordToDatabase(queryString, parameters);
-
-            conDB.closeConnection();
+                var collection = db.GetCollection<SalesOffices>("SalesOffices");
+                collection.InsertOne(so);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
         }
 
-        private void updateRecord(string strID)
+        private async void updateRecord()
         {
-            conDB = new ConnectionDB();
-            string queryString = "UPDATE dbfh.tblsalesoffice SET officename = ?, description = ? WHERE ID = ?";
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
 
-            List<string> parameters = new List<string>();
-            parameters.Add(txtOfficeName.Text);
-            parameters.Add(txtDescription.Text);
-            parameters.Add(strID);
+                salesOfficeToUpdate.OfficeName = txtOfficeName.Text;
+                salesOfficeToUpdate.Description = txtDescription.Text;
 
-            conDB.AddRecordToDatabase(queryString, parameters);
+                var filter = Builders<SalesOffices>.Filter.And(
+            Builders<SalesOffices>.Filter.Where(p => p.Id == salesOfficeToUpdate.Id));
+                var updte = Builders<SalesOffices>.Update.Set("OfficeName", salesOfficeToUpdate.OfficeName)
+                    .Set("Description", salesOfficeToUpdate.Description);
 
-            conDB.closeConnection();
+                var collection = db.GetCollection<SalesOffices>("SalesOffices");
+                collection.UpdateOne(filter, updte);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
         }
 
         private async Task<bool> checkFields()
@@ -124,7 +138,7 @@ namespace FHSales.views
                 saveRecord();
                 txtOfficeName.Text = "";
                 txtDescription.Text = "";
-                dgvSalesOffice.ItemsSource = loadDataGridDetails();
+                dgvSalesOffice.ItemsSource = await loadDataGridDetails();
                 await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
             }
         }
@@ -135,12 +149,11 @@ namespace FHSales.views
             bool x = await checkFields();
             if (x)
             {
-                updateRecord(recordID);
+                updateRecord();
                 await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-                dgvSalesOffice.ItemsSource = loadDataGridDetails();
+                dgvSalesOffice.ItemsSource = await loadDataGridDetails();
                 txtOfficeName.Text = "";
                 txtDescription.Text = "";
-                recordID = "";
                 btnUpdate.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Visible;
             }
@@ -154,17 +167,15 @@ namespace FHSales.views
             btnUpdate.Visibility = Visibility.Hidden;
         }
 
-
         private void btnEditDirectSales_Click(object sender, RoutedEventArgs e)
         {
             
-            SalesOfficeModel sls = dgvSalesOffice.SelectedItem as SalesOfficeModel;
+            salesOfficeToUpdate = dgvSalesOffice.SelectedItem as SalesOffices;
 
-            if(sls != null)
+            if(salesOfficeToUpdate != null)
             {
-                recordID = sls.ID;
-                txtOfficeName.Text = sls.OfficeName;
-                txtDescription.Text = sls.Description;
+                txtOfficeName.Text = salesOfficeToUpdate.OfficeName;
+                txtDescription.Text = salesOfficeToUpdate.Description;
 
                 btnSave.Visibility = Visibility.Hidden;
                 btnUpdate.Visibility = Visibility.Visible;
@@ -172,5 +183,65 @@ namespace FHSales.views
             }
 
         }
+
+        #region
+        //private List<SalesOfficeModel> loadDataGridDetails()
+        //{
+        //    conDB = new ConnectionDB();
+        //    List<SalesOfficeModel> lstSalesOfficeModel = new List<SalesOfficeModel>();
+        //    SalesOfficeModel som = new SalesOfficeModel();
+
+        //    string queryString = "SELECT ID, officename, description FROM dbfh.tblsalesoffice WHERE isDeleted = 0";
+
+        //    MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+
+        //    while (reader.Read())
+        //    {
+        //        som.ID = reader["ID"].ToString();
+        //        som.OfficeName = reader["officename"].ToString();
+        //        som.Description = reader["description"].ToString();
+
+        //        lstSalesOfficeModel.Add(som);
+        //        som = new SalesOfficeModel();
+        //    }
+
+        //    conDB.closeConnection();
+
+        //    return lstSalesOfficeModel;
+        //}
+
+        //private void saveRecord()
+        //{
+        //    conDB = new ConnectionDB();
+
+        //    string queryString = "INSERT INTO dbfh.tblsalesoffice (officename, description, isDeleted) VALUES (?,?,0)";
+
+        //    List<string> parameters = new List<string>();
+
+        //    parameters.Add(txtOfficeName.Text);
+        //    parameters.Add(txtDescription.Text);
+
+        //    conDB.AddRecordToDatabase(queryString, parameters);
+
+        //    conDB.closeConnection();
+        //}
+
+        //private void updateRecord(string strID)
+        //{
+        //    conDB = new ConnectionDB();
+        //    string queryString = "UPDATE dbfh.tblsalesoffice SET officename = ?, description = ? WHERE ID = ?";
+
+        //    List<string> parameters = new List<string>();
+        //    parameters.Add(txtOfficeName.Text);
+        //    parameters.Add(txtDescription.Text);
+        //    parameters.Add(strID);
+
+        //    conDB.AddRecordToDatabase(queryString, parameters);
+
+        //    conDB.closeConnection();
+        //}
+
+
+        #endregion
     }
 }

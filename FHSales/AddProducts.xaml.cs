@@ -8,6 +8,8 @@ using System;
 using System.Windows.Input;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
+using FHSales.MongoClasses;
+using MongoDB.Driver;
 
 namespace FHSales
 {
@@ -22,11 +24,14 @@ namespace FHSales
         }
 
         ConnectionDB conDB;
-        List<ProductModel> lstProductModel = new List<ProductModel>();
+        List<ProductsOrdered> lstProductForDrugstores = new List<ProductsOrdered>();
+        ProductsOrdered productsOrdered = new ProductsOrdered();
         FHBoxes FhBoxesViews;
+        FHDrugstores FhDrugstoreView;
         bool ifEdit = false;
         string strSalesID = "";
-        ProductModel prodToEdit;
+        MahApps.Metro.Controls.MetroWindow window;
+
 
         public AddProducts(FHBoxes fhBoxes)
         {
@@ -38,212 +43,101 @@ namespace FHSales
         {
             ifEdit = ifTryToEdit;
             FhBoxesViews = fhBoxes;
-            lstProductModel = lpm;
+            InitializeComponent();
+        }
+
+        public AddProducts(FHDrugstores fhDrugs, List<ProductsOrdered> lpmDrg)
+        {
+            FhDrugstoreView = fhDrugs;
+            lstProductForDrugstores = lpmDrg;
             InitializeComponent();
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {     
+        {
+            window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             loadProductsOnCombo();
-            if(lstProductModel.Count > 0)
+            if (FhDrugstoreView != null)
             {
-                ifEdit = true;
-                dgvProducts.ItemsSource = lstProductModel;
-                dgvProducts.Items.Refresh();
-                strSalesID = lstProductModel[0].SalesID;
-                //btnAdd.IsEnabled = false;
-                //btnRemove.IsEnabled = false;
+                dgvProducts.ItemsSource = lstProductForDrugstores;
             }
         }
 
         private async void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            ProductModel prodAdd = cmbProducts.SelectedItem as ProductModel;
+            Products prodAdd = cmbProducts.SelectedItem as Products;
             bool x = await checkFields();
 
             if (x)
             {
-                if (string.IsNullOrEmpty(txtQuantity.Text))
-                {
-                    prodAdd.Quantity = "0";
-                }
-                else
-                {
-                    prodAdd.Quantity = txtQuantity.Text;
-                }
+                productsOrdered.ProductName = prodAdd.ProductName;
+                productsOrdered.Qty = Convert.ToInt32(txtQuantity.Text);
+                productsOrdered.Price = Convert.ToDouble(txtPrice.Text);
+                productsOrdered.Total = Convert.ToDouble(txtTotal.Text);
 
-                if (string.IsNullOrEmpty(txtTotal.Text))
-                {
-                    prodAdd.TotalAmount = "0";
-                }
-                else
-                {
-                    prodAdd.TotalAmount = txtTotal.Text;
-                }
-
-                if (ifEdit)
-                {
-                    prodAdd.isDeleted = "0";
-                    prodAdd.newlyAdded = true;
-                    prodAdd.SalesID = strSalesID;
-                    lstProductModel.Add(prodAdd);
-                    dgvProducts.ItemsSource = lstProductModel;
-                    dgvProducts.Items.Refresh();
-                }
-                else
-                {
-                    prodAdd.isDeleted = "0";
-                    lstProductModel.Add(prodAdd);
-                    dgvProducts.ItemsSource = lstProductModel;
-                    dgvProducts.Items.Refresh();
-                }
+                lstProductForDrugstores.Add(productsOrdered);
+                dgvProducts.ItemsSource = lstProductForDrugstores;
+                dgvProducts.Items.Refresh();
+                productsOrdered = new ProductsOrdered();
                 clearFields();
             }
-            
+
         }
 
-        private void loadProductsOnCombo()
+
+        private async void loadProductsOnCombo()
         {
-            conDB = new ConnectionDB();
-            ProductModel prod = new ProductModel();
-
-            string queryString = "SELECT ID, productname, description FROM dbfh.tblproducts WHERE isDeleted = 0";
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-            cmbProducts.Items.Clear();
-            while (reader.Read())
+            try
             {
-                prod.ProductID = reader["ID"].ToString();
-                prod.ProductName = reader["productname"].ToString();
-                prod.Description = reader["description"].ToString();
+                cmbProducts.Items.Clear();
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                var collection = db.GetCollection<Products>("Products");
 
-                cmbProducts.Items.Add(prod);
-
-                prod = new ProductModel();
+                var filter = Builders<Products>.Filter.And(
+        Builders<Products>.Filter.Where(p => p.isDeleted == false));
+                List<Products> lstPayments = collection.Find(filter).ToList();
+                foreach (Products p in lstPayments)
+                {
+                    cmbProducts.Items.Add(p);
+                }
             }
-
-            conDB.closeConnection();
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("EXCEPTION", "ERROR LOADING DATA " + ex.Message);
+            }
         }
+
+
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            ProductModel prodMod = dgvProducts.SelectedItem as ProductModel;
+            ProductsOrdered prodMod = dgvProducts.SelectedItem as ProductsOrdered;
 
-            if(prodMod != null)
+            if (prodMod != null)
             {
-                if (ifEdit && !prodMod.newlyAdded)
-                {
-                    foreach(ProductModel p in lstProductModel)
-                    {
-                        if (p.ID.Equals(prodMod.ID))
-                        {
-                            p.isDeleted = "1";
-                        }
-                    }
-
-                    dgvProducts.ItemsSource = lstProductModel;
-                    dgvProducts.Items.Refresh();
-
-                }else if(ifEdit && prodMod.newlyAdded)
-                {
-                    lstProductModel.Remove(prodMod);
-                    dgvProducts.ItemsSource = lstProductModel;
-                    dgvProducts.Items.Refresh();
-                }
-                else
-                {
-                    lstProductModel.Remove(prodMod);
-                    dgvProducts.ItemsSource = lstProductModel;
-                    dgvProducts.Items.Refresh();
-                }
-                
+                lstProductForDrugstores.Remove(prodMod);
+                dgvProducts.ItemsSource = lstProductForDrugstores;
+                dgvProducts.Items.Refresh();
             }
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if(lstProductModel != null)
-            {
-                FhBoxesViews.lstProductModel = lstProductModel;
-            }
             double x = 0;
-            foreach (ProductModel p in lstProductModel)
+            if(FhDrugstoreView != null)
             {
-                if (!p.isDeleted.Equals("1"))
+                foreach (ProductsOrdered po in lstProductForDrugstores)
                 {
-                    x += Convert.ToDouble(p.TotalAmount);
+                    x += po.Total;
                 }
-                
+                FhDrugstoreView.lstProductsOrdered = lstProductForDrugstores;
+                FhDrugstoreView.txtTotal.Text = x.ToString();
+                lstProductForDrugstores = new List<ProductsOrdered>();
             }
-            FhBoxesViews.txtTotalPrice.Text = x.ToString();
-            lstProductModel = new List<ProductModel>();
-            //dgvProducts.ItemsSource = lstProductModel;
-            //dgvProducts.Items.Refresh();
         }
 
-        //private void btnEdit_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ProductModel pm = dgvProducts.SelectedItem as ProductModel;
-        //    btnUpdate.Visibility = Visibility.Visible;
-        //    prodToEdit = pm;
-        //    if(pm != null)
-        //    {
-        //        foreach(ProductModel p in cmbProducts.Items)
-        //        {
-        //            if (p.ID.Equals(pm.ID))
-        //            {
-        //                cmbProducts.SelectedItem = p;
-        //            }
-        //        }
-        //        txtQuantity.Text = pm.Quantity;
-        //        txtTotal.Text = pm.TotalAmount;
-        //    }
-        //}
-
-        //private async void btnUpdate_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ProductModel pm = cmbProducts.SelectedItem as ProductModel;
-        //    bool x = await checkFields();
-        //    if (pm != null)
-        //    {
-        //        if (x)
-        //        {
-        //            foreach (ProductModel p in lstProductModel)
-        //            {
-        //                if (prodToEdit.Equals(p))
-        //                {
-        //                    if (string.IsNullOrEmpty(txtQuantity.Text))
-        //                    {
-        //                        p.Quantity = "0";
-        //                    }
-        //                    else
-        //                    {
-        //                        p.Quantity = txtQuantity.Text;
-        //                    }
-
-        //                    if (string.IsNullOrEmpty(txtTotal.Text))
-        //                    {
-        //                        p.TotalAmount = "0";
-        //                    }
-        //                    else
-        //                    {
-        //                        p.TotalAmount = txtTotal.Text;
-        //                    }
-        //                    p.ID = pm.ID;
-        //                    p.ProductName = pm.ProductName;
-        //                }
-        //            }
-        //        }
-                
-        //    }
-
-        //    dgvProducts.ItemsSource = lstProductModel;
-        //    dgvProducts.Items.Refresh();
-        //    clearFields();
-        //    btnUpdate.Visibility = Visibility.Hidden;
-        //    btnAdd.Visibility = Visibility.Visible;
-            
-        //}
 
         private void CheckIsNumeric(TextCompositionEventArgs e)
         {
@@ -274,6 +168,18 @@ namespace FHSales
             {
                 await window.ShowMessageAsync("Products", "Please select product.");
             }
+            else if (string.IsNullOrEmpty(txtQuantity.Text))
+            {
+                await window.ShowMessageAsync("Quantity", "Please input value.");
+            }
+            else if (string.IsNullOrEmpty(txtPrice.Text))
+            {
+                await window.ShowMessageAsync("Price", "Please input value.");
+            }
+            else if (string.IsNullOrEmpty(txtQuantity.Text))
+            {
+                await window.ShowMessageAsync("Total", "Please input value.");
+            }
             else
             {
                 ifAllCorrect = true;
@@ -286,8 +192,51 @@ namespace FHSales
         {
             cmbProducts.SelectedItem = null;
             txtQuantity.Text = "";
-            txtTotal.Text = "";
+            txtTotal.Text = "0";
+            txtPrice.Text = "0";
         }
+
+        private void cmbProducts_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            Products p = cmbProducts.SelectedItem as Products;
+
+            if (p != null)
+            {
+                txtPrice.Text = p.Price.ToString();
+            }
+        }
+
+        private void txtQuantity_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            double a = Convert.ToDouble(txtPrice.Text);
+            int b = !(string.IsNullOrEmpty(txtQuantity.Text)) ? Convert.ToInt32(txtQuantity.Text) : 0;
+
+            double dblTotal = b * a;
+            txtTotal.Text = dblTotal.ToString();
+        }
+
+        //private void loadProductsOnCombo()
+        //{
+        //    conDB = new ConnectionDB();
+        //    ProductModel prod = new ProductModel();
+
+        //    string queryString = "SELECT ID, productname, description FROM dbfh.tblproducts WHERE isDeleted = 0";
+
+        //    MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+        //    cmbProducts.Items.Clear();
+        //    while (reader.Read())
+        //    {
+        //        prod.ProductID = reader["ID"].ToString();
+        //        prod.ProductName = reader["productname"].ToString();
+        //        prod.Description = reader["description"].ToString();
+
+        //        cmbProducts.Items.Add(prod);
+
+        //        prod = new ProductModel();
+        //    }
+
+        //    conDB.closeConnection();
+        //}
 
     }
 }

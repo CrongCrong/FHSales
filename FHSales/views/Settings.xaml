@@ -11,38 +11,52 @@
     <Grid>
         <DockPanel Margin="0,0,0,389">
             <Menu DockPanel.Dock="Top" Background="Transparent">
-                <MenuItem x:Name="menuUsers" Header="Users" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_New" Click="MenuItem_Click" />
-                    <Separator />
+
+                <MenuItem Header="Settings">
+                    <MenuItem x:Name="menuUsers" Header="Users" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_New" Click="MenuItem_Click" />
+                        <Separator />
+
+                    </MenuItem>
                     
-                </MenuItem>
-                <MenuItem x:Name="menuBank" Header="Bank" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit" Click="MenuItem_Click_1" />
-                </MenuItem>
+                    <MenuItem x:Name="menuArea" Header="Area" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_8"  />
+                    </MenuItem>
+                    
+                    <MenuItem x:Name="menuAgent" Header="Agent" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_9" />
+                    </MenuItem>
+                    
+                    <MenuItem x:Name="menuBank" Header="Bank" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_1" />
+                    </MenuItem>
 
-                <MenuItem x:Name="menuSalesOffice" Header="Sales Office" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit" Click="MenuItem_Click_6" />
+                    <MenuItem x:Name="menuDrugstores" Header="Drugstore" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_5" />
+                    </MenuItem>
+
+                    <MenuItem x:Name="menuCourier" Header="Courier" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_2" />
+                    </MenuItem>
+
+                    <MenuItem x:Name="menuFreebies" Header="Freebies" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit Category" Click="MenuItem_Click_3" />
+                    </MenuItem>
+
+                    <MenuItem x:Name="menuProducts" Header="Products" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit Products" Click="MenuItem_Click_4" />
+                    </MenuItem>
+
+                    <MenuItem x:Name="menuSalesOffice" Header="Sales Office" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit" Click="MenuItem_Click_6" />
+                    </MenuItem>
+                    
+                    <MenuItem x:Name="menuTollPacker" Header="TollPacker" FontFamily="Consolas" FontSize="20">
+                        <MenuItem Header="_Add/Edit Toll packer" Click="MenuItem_Click_7" />
+                    </MenuItem>
                 </MenuItem>
                 
-                <MenuItem x:Name="menuDrugstores" Header="Drugstore" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit" Click="MenuItem_Click_5" />
-                </MenuItem>
                 
-                <MenuItem x:Name="menuCourier" Header="Courier" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit" Click="MenuItem_Click_2" />
-                </MenuItem>
-
-                <MenuItem x:Name="menuFreebies" Header="Freebies" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit Category" Click="MenuItem_Click_3" />
-                </MenuItem>
-
-                <MenuItem x:Name="menuProducts" Header="Products" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit Products" Click="MenuItem_Click_4" />
-                </MenuItem>
-
-                <MenuItem x:Name="menuTollPacker" Header="TollPacker" FontFamily="Consolas" FontSize="20">
-                    <MenuItem Header="_Add/Edit Toll packer" Click="MenuItem_Click_7" />
-                </MenuItem>
             </Menu>
 
         </DockPanel>

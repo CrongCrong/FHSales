@@ -1,4 +1,5 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls;
 using System.Windows;
 
@@ -15,12 +16,10 @@ namespace FHSales
         }
 
         LogIn logInWindow;
-        //public UserModel user; 
 
         public MainWindow(LogIn lg)
         {
             logInWindow = lg;
-            //user = um;
             InitializeComponent();
         }
 
@@ -28,7 +27,7 @@ namespace FHSales
         {
             this.HamburgerControl.Content = e.ClickedItem;
             this.HamburgerControl.IsPaneOpen = false;
-            
+
         }
 
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -38,16 +37,15 @@ namespace FHSales
             logInWindow.txtPassword.Password = "";
             UserModel.FirstName = "";
             UserModel.LastName = "";
-            UserModel.UserType = "";
-            
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_VIEW))
-            {
-                menuSettings.IsEnabled = false;
-            }
+            //if (UserModel.UserType.Equals(UserTypeEnum.DIRECTSALES_VIEW))
+            //{
+            //    menuSettings.IsEnabled = false;
+            //}
+
         }
     }
 }

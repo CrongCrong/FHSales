@@ -1,4 +1,5 @@
 ﻿
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,19 @@ namespace FHSales.Classes
         public MySqlConnection myConn = new MySqlConnection();
         MySqlDataReader reader;
 
+        string connectionString = "mongodb+srv://admin:admin@cluster0-wdztm.gcp.mongodb.net/admin";
+        //string connectionString = "mongodb://localhost:27017/";
+        MongoClient client = new MongoClient();
+
+        public MongoClient initializeMongoDB()
+        {
+            client = new MongoClient(connectionString);
+
+            return client;
+        }
+
         public MySqlDataReader getSelectConnection(string queryString, List<string> parameters)
         {
-
             try
             {
                 myConn = new MySqlConnection(myConnection);

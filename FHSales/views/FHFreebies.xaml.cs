@@ -41,15 +41,7 @@ namespace FHSales.views
             loadCategoryOnCombo();
             loadProductOnCombo();
             btnUpdate.Visibility = Visibility.Hidden;
-            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.DIRECTSALES_ADMIN) ||
-                (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN))
-            {
-                btnEdit.Visibility = Visibility.Visible;
-                btnSave.Visibility = Visibility.Visible;
-                btnUpdate.Visibility = Visibility.Visible;
-                btnCancel.Visibility = Visibility.Visible;
-            }
-            else
+            if (!UserModel.isDSAdmin)
             {
                 btnEdit.Visibility = Visibility.Hidden;
                 btnSave.Visibility = Visibility.Hidden;

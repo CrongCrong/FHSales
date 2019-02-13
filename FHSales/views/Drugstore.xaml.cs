@@ -1,6 +1,9 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,12 +22,82 @@ namespace FHSales.views
         }
 
         ConnectionDB conDB;
-        string recordID = "";
+        MahApps.Metro.Controls.MetroWindow window;
+        Drugstores drugstoreToUpdate = new Drugstores();
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            dgvDrugstore.ItemsSource = loadDataGridDetails();
+            window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            dgvDrugstore.ItemsSource = await loadDataGridDetails();
             btnUpdate.Visibility = Visibility.Hidden;
+        }
+
+        private async Task<List<Drugstores>> loadDataGridDetails()
+        {
+            List<Drugstores> lstDrgs = new List<Drugstores>();
+            conDB = new ConnectionDB();
+            try
+            {
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                var collection = db.GetCollection<Drugstores>("Drugstores");
+                var filter = Builders<Drugstores>.Filter.And(
+        Builders<Drugstores>.Filter.Where(p => p.isDeleted == false));
+                lstDrgs = collection.Find(filter).ToList();
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+            return lstDrgs;
+        }
+
+        private async void saveRecord()
+        {
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                Drugstores ds = new Drugstores();
+                ds.DrugstoreName = txtDrugstore.Text;
+                ds.Description = txtDescription.Text;
+                ds.Terms = txtdues.Text;
+                var collection = db.GetCollection<Drugstores>("Drugstores");
+                collection.InsertOne(ds);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+        }
+
+        private async void updateRecord()
+        {
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+
+                drugstoreToUpdate.DrugstoreName = txtDrugstore.Text;
+                drugstoreToUpdate.Description = txtDescription.Text;
+                drugstoreToUpdate.Terms = txtdues.Text;
+
+                var filter = Builders<Drugstores>.Filter.And(
+            Builders<Drugstores>.Filter.Where(p => p.Id == drugstoreToUpdate.Id));
+                var updte = Builders<Drugstores>.Update.Set("DrugstoreName", drugstoreToUpdate.DrugstoreName)
+                    .Set("Description", drugstoreToUpdate.Description)
+                    .Set("Terms", drugstoreToUpdate.Terms);
+
+                var collection = db.GetCollection<Drugstores>("Drugstores");
+                collection.UpdateOne(filter, updte);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Cause by: " + ex.StackTrace);
+            }
+
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
@@ -39,47 +112,30 @@ namespace FHSales.views
                 txtDrugstore.Text = "";
                 txtDescription.Text = "";
                 txtdues.Text = "";
-                dgvDrugstore.ItemsSource = loadDataGridDetails();
+                dgvDrugstore.ItemsSource = await loadDataGridDetails();
             }
         }
 
         private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
-            update(recordID);
+            updateRecord();
             await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-            dgvDrugstore.ItemsSource = loadDataGridDetails();
+            dgvDrugstore.ItemsSource = await loadDataGridDetails();
             txtDrugstore.Text = "";
             txtDescription.Text = "";
             txtdues.Text = "";
-            recordID = "";
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
 
-        }
-
-        private void btnEditDirectSales_Click(object sender, RoutedEventArgs e)
-        {
-            DrugstoreModel selectedCourier = dgvDrugstore.SelectedItem as DrugstoreModel;
-
-            if (selectedCourier != null)
-            {
-                txtDrugstore.Text = selectedCourier.DrugstoreName;
-                txtDescription.Text = selectedCourier.Description;
-                recordID = selectedCourier.ID;
-                btnUpdate.Visibility = Visibility.Visible;
-                btnSave.Visibility = Visibility.Hidden;
-
-            }
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             txtDrugstore.Text = "";
             txtDescription.Text = "";
-            recordID = "";
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
+            dgvDrugstore.IsEnabled = true;
         }
 
         private async Task<bool> checkFields()
@@ -107,61 +163,79 @@ namespace FHSales.views
             return ifAllCorrect;
         }
 
-        private List<DrugstoreModel> loadDataGridDetails()
+
+        #region MYSQL Codes
+        //private List<DrugstoreModel> loadDataGridDetails()
+        //{
+        //    conDB = new ConnectionDB();
+
+        //    string queryString = "SELECT ID, drugstore, description, paymentdue FROM dbfh.tbldrugstores WHERE isDeleted = 0 order by drugstore ASC";
+
+        //    DrugstoreModel drugstore = new DrugstoreModel();
+        //    List<DrugstoreModel> lstDrugstore = new List<DrugstoreModel>();
+
+        //    MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+
+        //    while (reader.Read())
+        //    {
+        //        drugstore.ID = reader["ID"].ToString();
+        //        drugstore.DrugstoreName = reader["drugstore"].ToString();
+        //        drugstore.Description = reader["description"].ToString();
+        //        drugstore.PaymentDue = reader["paymentdue"].ToString();
+        //        lstDrugstore.Add(drugstore);
+        //        drugstore = new DrugstoreModel();
+        //    }
+
+        //    conDB.closeConnection();
+
+        //    return lstDrugstore;
+        //}
+
+        //private void saveRecord()
+        //{
+        //    conDB = new ConnectionDB();
+
+        //    string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, paymentdue, isDeleted) VALUES (?,?,?,0)";
+        //    List<string> parameters = new List<string>();
+        //    parameters.Add(txtDrugstore.Text);
+        //    parameters.Add(txtDescription.Text);
+        //    parameters.Add(txtdues.Text);
+        //    conDB.AddRecordToDatabase(queryString, parameters);
+
+        //    conDB.closeConnection();
+        //}
+
+        //private void update(string strID)
+        //{
+        //    conDB = new ConnectionDB();
+
+        //    string queryString = "UPDATE dbfh.tbldrugstores SET drugstore = ?, description = ?, paymentdue = ? WHERE ID = ?";
+        //    List<string> parameters = new List<string>();
+        //    parameters.Add(txtDrugstore.Text);
+        //    parameters.Add(txtDescription.Text);
+        //    parameters.Add(txtdues.Text);
+        //    parameters.Add(strID);
+
+        //    conDB.AddRecordToDatabase(queryString, parameters);
+        //    conDB.closeConnection();
+
+        //}
+
+        #endregion
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            conDB = new ConnectionDB();
+            Drugstores dd = dgvDrugstore.SelectedItem as Drugstores;
 
-            string queryString = "SELECT ID, drugstore, description, paymentdue FROM dbfh.tbldrugstores WHERE isDeleted = 0 order by drugstore ASC";
-
-            DrugstoreModel drugstore = new DrugstoreModel();
-            List<DrugstoreModel> lstDrugstore = new List<DrugstoreModel>();
-
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
-
-            while (reader.Read())
+            if(dd != null)
             {
-                drugstore.ID = reader["ID"].ToString();
-                drugstore.DrugstoreName = reader["drugstore"].ToString();
-                drugstore.Description = reader["description"].ToString();
-                drugstore.PaymentDue = reader["paymentdue"].ToString();
-                lstDrugstore.Add(drugstore);
-                drugstore = new DrugstoreModel();
+                dgvDrugstore.IsEnabled = false;
+                txtDescription.Text = dd.Description;
+                txtDrugstore.Text = dd.DrugstoreName;
+                txtdues.Text = dd.Terms;
+                btnSave.Visibility = Visibility.Hidden;
+                btnUpdate.Visibility = Visibility.Visible;
             }
-
-            conDB.closeConnection();
-
-            return lstDrugstore;
         }
-
-        private void saveRecord()
-        {
-            conDB = new ConnectionDB();
-
-            string queryString = "INSERT INTO dbfh.tbldrugstores (drugstore, description, paymentdue, isDeleted) VALUES (?,?,?,0)";
-            List<string> parameters = new List<string>();
-            parameters.Add(txtDrugstore.Text);
-            parameters.Add(txtDescription.Text);
-            parameters.Add(txtdues.Text);
-            conDB.AddRecordToDatabase(queryString, parameters);
-
-            conDB.closeConnection();
-        }
-
-        private void update(string strID)
-        {
-            conDB = new ConnectionDB();
-
-            string queryString = "UPDATE dbfh.tbldrugstores SET drugstore = ?, description = ?, paymentdue = ? WHERE ID = ?";
-            List<string> parameters = new List<string>();
-            parameters.Add(txtDrugstore.Text);
-            parameters.Add(txtDescription.Text);
-            parameters.Add(txtdues.Text);
-            parameters.Add(strID);
-
-            conDB.AddRecordToDatabase(queryString, parameters);
-            conDB.closeConnection();
-
-        }
-
     }
 }

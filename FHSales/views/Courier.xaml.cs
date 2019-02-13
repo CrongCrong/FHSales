@@ -1,5 +1,7 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -29,38 +31,102 @@ namespace FHSales.views
         }
 
         ConnectionDB conDB;
-        string recordID = "";
+        MahApps.Metro.Controls.MetroWindow window;
+        Couriers courierToUpdate = new Couriers();
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            dgvCourier.ItemsSource = loadDataGridDetails();
+            window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            dgvCourier.ItemsSource = await loadDataGridDetails();
             btnUpdate.Visibility = Visibility.Hidden;
+        }
+
+        private async Task<List<Couriers>> loadDataGridDetails()
+        {
+            List<Couriers> lstCouriers = new List<Couriers>();     
+            conDB = new ConnectionDB();
+            try
+            {
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                var collection = db.GetCollection<Couriers>("Couriers");
+                var filter = Builders<Couriers>.Filter.And(
+        Builders<Couriers>.Filter.Where(p => p.isDeleted == false));
+                lstCouriers = collection.Find(filter).ToList();
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+            return lstCouriers;
+        }
+
+        private async void saveRecord()
+        {
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+                Couriers cr = new Couriers();
+                cr.CourierName = txtCourierName.Text;
+                cr.Description = txtDescription.Text;
+
+                var collection = db.GetCollection<Couriers>("Couriers");
+                collection.InsertOne(cr);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+        }
+
+        private async void updateRecord()
+        {
+            try
+            {
+                conDB = new ConnectionDB();
+                MongoClient client = conDB.initializeMongoDB();
+                var db = client.GetDatabase("DBFH");
+
+                courierToUpdate.CourierName = txtCourierName.Text;
+                courierToUpdate.Description = txtDescription.Text;
+
+                var filter = Builders<Couriers>.Filter.And(
+            Builders<Couriers>.Filter.Where(p => p.Id == courierToUpdate.Id));
+                var updte = Builders<Couriers>.Update.Set("CourierName", courierToUpdate.CourierName)
+                    .Set("Description", courierToUpdate.Description);
+
+                var collection = db.GetCollection<Couriers>("Couriers");
+                collection.UpdateOne(filter, updte);
+            }
+            catch (Exception ex)
+            {
+                await window.ShowMessageAsync("ERROR", "Caused by: " + ex.StackTrace);
+            }
+
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             bool bl = await checkFields();
-            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
-
             if (bl)
             {
                 saveRecord();
                 await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                 txtCourierName.Text = "";
                 txtDescription.Text = "";
-                dgvCourier.ItemsSource = loadDataGridDetails();
+                dgvCourier.ItemsSource = await loadDataGridDetails();
             }
         }
 
         private async void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
-            MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
-            update(recordID);
+            updateRecord();
             await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-            dgvCourier.ItemsSource = loadDataGridDetails();
+            dgvCourier.ItemsSource = await loadDataGridDetails();
             txtCourierName.Text = "";
             txtDescription.Text = "";
-            recordID = "";
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
 
@@ -68,13 +134,13 @@ namespace FHSales.views
 
         private void btnEditDirectSales_Click(object sender, RoutedEventArgs e)
         {
-            CourierModel selectedCourier = dgvCourier.SelectedItem as CourierModel;
+            courierToUpdate = dgvCourier.SelectedItem as Couriers;
 
-            if (selectedCourier != null)
+            if (courierToUpdate != null)
             {
-                txtCourierName.Text = selectedCourier.CourierName;
-                txtDescription.Text = selectedCourier.Description;
-                recordID = selectedCourier.ID;
+                txtCourierName.Text = courierToUpdate.CourierName;
+                txtDescription.Text = courierToUpdate.Description;
+                
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
 
@@ -85,7 +151,6 @@ namespace FHSales.views
         {
             txtCourierName.Text = "";
             txtDescription.Text = "";
-            recordID = "";
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
         }
@@ -111,60 +176,62 @@ namespace FHSales.views
             return ifAllCorrect;
         }
 
-        private List<CourierModel> loadDataGridDetails()
-        {
-            conDB = new ConnectionDB();
 
-            string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
+        #region MYSQL CODES
+        //private List<CourierModel> loadDataGridDetails()
+        //{
+        //    conDB = new ConnectionDB();
 
-            CourierModel courier = new CourierModel();
-            List<CourierModel> lstCourier = new List<CourierModel>();
+        //    string queryString = "SELECT ID, couriername, description FROM dbfh.tblcourier WHERE isDeleted = 0";
 
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
+        //    CourierModel courier = new CourierModel();
+        //    List<CourierModel> lstCourier = new List<CourierModel>();
 
-            while (reader.Read())
-            {
-                courier.ID = reader["ID"].ToString();
-                courier.CourierName = reader["couriername"].ToString();
-                courier.Description = reader["description"].ToString();
-                lstCourier.Add(courier);
-                courier = new CourierModel();
-            }
+        //    MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
 
-            conDB.closeConnection();
+        //    while (reader.Read())
+        //    {
+        //        courier.ID = reader["ID"].ToString();
+        //        courier.CourierName = reader["couriername"].ToString();
+        //        courier.Description = reader["description"].ToString();
+        //        lstCourier.Add(courier);
+        //        courier = new CourierModel();
+        //    }
 
-            return lstCourier;
-        }
+        //    conDB.closeConnection();
 
-        private void saveRecord()
-        {
-            conDB = new ConnectionDB();
+        //    return lstCourier;
+        //}
 
-            string queryString = "INSERT INTO dbfh.tblcourier (couriername, description, isDeleted) VALUES (?,?,0)";
-            List<string> parameters = new List<string>();
-            parameters.Add(txtCourierName.Text);
-            parameters.Add(txtDescription.Text);
+        //private void saveRecord()
+        //{
+        //    conDB = new ConnectionDB();
 
-            conDB.AddRecordToDatabase(queryString, parameters);
+        //    string queryString = "INSERT INTO dbfh.tblcourier (couriername, description, isDeleted) VALUES (?,?,0)";
+        //    List<string> parameters = new List<string>();
+        //    parameters.Add(txtCourierName.Text);
+        //    parameters.Add(txtDescription.Text);
 
-            conDB.closeConnection();
-        }
+        //    conDB.AddRecordToDatabase(queryString, parameters);
 
-        private void update(string strID)
-        {
-            conDB = new ConnectionDB();
+        //    conDB.closeConnection();
+        //}
 
-            string queryString = "UPDATE dbfh.tblcourier SET couriername = ?, description = ? WHERE ID = ?";
-            List<string> parameters = new List<string>();
-            parameters.Add(txtCourierName.Text);
-            parameters.Add(txtDescription.Text);
-            parameters.Add(strID);
+        //private void update(string strID)
+        //{
+        //    conDB = new ConnectionDB();
 
-            conDB.AddRecordToDatabase(queryString, parameters);
-            conDB.closeConnection();
+        //    string queryString = "UPDATE dbfh.tblcourier SET couriername = ?, description = ? WHERE ID = ?";
+        //    List<string> parameters = new List<string>();
+        //    parameters.Add(txtCourierName.Text);
+        //    parameters.Add(txtDescription.Text);
+        //    parameters.Add(strID);
 
-        }
+        //    conDB.AddRecordToDatabase(queryString, parameters);
+        //    conDB.closeConnection();
 
+        //}
 
+        #endregion
     }
 }

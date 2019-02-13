@@ -1,6 +1,8 @@
 ﻿using FHSales.Classes;
+using FHSales.MongoClasses;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace FHSales
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (verifyLogin())
+            if (verifyLoginMongo())
             {
                 MainWindow main = new MainWindow(this);
                 main.Show();
@@ -34,41 +36,94 @@ namespace FHSales
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            //conDB = new ConnectionDB();
+            //MongoClient client = conDB.initializeMongoDB();
+            //var db = client.GetDatabase("DBFH");
 
+            //Users u = new Users();
+            //u.FirstName = "Prince";
+            //u.LastName = "Ocenar";
+            //u.isEditing = true;
+            //u.isViewing = true;
+            //u.Password = "adminadmin";
+            //u.Username = "super";
+            //u.isDSAdmin = true;
+            //u.isPOAdmin = true;
+            //PasswordHash ph = new PasswordHash(u.Password);
+            //u.bHash = ph.Hash;
+            //u.bSalt = ph.Salt;
+
+            //var collection = db.GetCollection<Users>("Users");
+            //collection.InsertOne(u);
         }
 
-        private bool verifyLogin()
+        private bool verifyLoginMongo()
         {
-            conDB = new ConnectionDB();
-            //ser = new UserModel();
             bool ifCorrect = false;
-            string queryString = "SELECT dbfh.tblusers.ID, username, aes_decrypt(dbfh.tblusers.password, ?) as pas, firstname, lastname, dbfh.tblusers.usertype " +
-                "FROM (dbfh.tblusers INNER JOIN dbfh.tblusertypes ON dbfh.tblusers.usertype = dbfh.tblusertypes.ID) " +
-                "WHERE aes_decrypt(dbfh.tblusers.password, ?) = ? AND username = ? AND dbfh.tblusers.isDeleted = 0";
+            PasswordHash ph;
+            conDB = new ConnectionDB();
+            MongoClient client = conDB.initializeMongoDB();
+            var db = client.GetDatabase("DBFH");
+            var collection = db.GetCollection<Users>("Users");
+            var filter = Builders<Users>.Filter.And(
+    Builders<Users>.Filter.Where(p => p.Username.ToLower().Contains(txtUsername.Text)),
+    Builders<Users>.Filter.Where(p => p.isDeleted == false));
 
-            List<string> parameters = new List<string>();
+            List<Users> lstUser = collection.Find(filter).ToList();
 
-            parameters.Add("pr1nce");
-            parameters.Add("pr1nce");
-            parameters.Add(txtPassword.Password);
-            parameters.Add(txtUsername.Text);
+            int x = lstUser.Count;
 
-            MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
-
-            while (reader.Read())
+            if (x > 0)
             {
-                UserModel.ID = reader["ID"].ToString();
-                UserModel.FirstName = reader["firstname"].ToString();
-                UserModel.LastName = reader["lastname"].ToString();
-                UserModel.Username = reader["username"].ToString();
-                UserModel.UserType = reader["usertype"].ToString();
-
-                ifCorrect = true;
+                foreach (Users u in lstUser)
+                {
+                    UserModel.FirstName = u.FirstName;
+                    UserModel.LastName = u.LastName;
+                    UserModel.Username = u.Username;
+                    UserModel.Password = u.Password;
+                    UserModel.isPOAdmin = u.isPOAdmin;
+                    UserModel.isDSAdmin = u.isDSAdmin;
+                    UserModel.bHash = u.bHash;
+                    UserModel.bSalt = u.bSalt;
+                    ph = new PasswordHash(u.bSalt, u.bHash);
+                    ifCorrect = ph.Verify(txtPassword.Password);
+                }
             }
-            conDB.closeConnection();
-
             return ifCorrect;
         }
+
+        //private bool verifyLogin()
+        //{
+        //    conDB = new ConnectionDB();
+        //    //ser = new UserModel();
+        //    bool ifCorrect = false;
+        //    string queryString = "SELECT dbfh.tblusers.ID, username, aes_decrypt(dbfh.tblusers.password, ?) as pas, firstname, lastname, dbfh.tblusers.usertype " +
+        //        "FROM (dbfh.tblusers INNER JOIN dbfh.tblusertypes ON dbfh.tblusers.usertype = dbfh.tblusertypes.ID) " +
+        //        "WHERE aes_decrypt(dbfh.tblusers.password, ?) = ? AND username = ? AND dbfh.tblusers.isDeleted = 0";
+
+        //    List<string> parameters = new List<string>();
+
+        //    parameters.Add("pr1nce");
+        //    parameters.Add("pr1nce");
+        //    parameters.Add(txtPassword.Password);
+        //    parameters.Add(txtUsername.Text);
+
+        //    MySqlDataReader reader = conDB.getSelectConnection(queryString, parameters);
+
+        //    while (reader.Read())
+        //    {
+        //        UserModel.ID = reader["ID"].ToString();
+        //        UserModel.FirstName = reader["firstname"].ToString();
+        //        UserModel.LastName = reader["lastname"].ToString();
+        //        UserModel.Username = reader["username"].ToString();
+        //        UserModel.UserType = reader["usertype"].ToString();
+
+        //        ifCorrect = true;
+        //    }
+        //    conDB.closeConnection();
+
+        //    return ifCorrect;
+        //}
 
         private async void txtPassword_KeyDown(object sender, KeyEventArgs e)
         {
@@ -77,7 +132,7 @@ namespace FHSales
             {
                 if (e.Key == Key.Return && e.Key == Key.Enter)
                 {
-                    if (verifyLogin())
+                    if (verifyLoginMongo())
                     {
                         MainWindow main = new MainWindow(this);
                         main.Show();

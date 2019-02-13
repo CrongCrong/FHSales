@@ -73,8 +73,8 @@
 
             <!--  Items  -->
             <controls:HamburgerMenu.ItemsSource>
-                <controls:HamburgerMenuItemCollection>
-                    <controls:HamburgerMenuIconItem x:Name="menuFHSales" Label="Direct Sales">
+                 <controls:HamburgerMenuItemCollection>
+                    <!--<controls:HamburgerMenuIconItem x:Name="menuFHSales" Label="Direct Sales">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FHBoxes />
@@ -82,8 +82,18 @@
                         <controls:HamburgerMenuIconItem.Icon>
                             <Image Source="images/fh.png"/>
                         </controls:HamburgerMenuIconItem.Icon>
-                    </controls:HamburgerMenuIconItem>
+                    </controls:HamburgerMenuIconItem> -->
 
+                    <controls:HamburgerMenuIconItem x:Name="menuDirestSalesDaily" Label="Direct Sales - Daily">
+
+                        <controls:HamburgerMenuIconItem.Tag>
+                            <views:DirectSalesDailyView />
+                        </controls:HamburgerMenuIconItem.Tag>
+                        <controls:HamburgerMenuIconItem.Icon>
+                            <Image Source="images/fh.png"/>
+                        </controls:HamburgerMenuIconItem.Icon>
+                    </controls:HamburgerMenuIconItem>
+                    
                     <!--<controls:HamburgerMenuIconItem x:Name="menuFHBottles" Label="FH Bottles">
 
                         <controls:HamburgerMenuIconItem.Tag>
@@ -114,7 +124,7 @@
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem> -->
 
-                    <controls:HamburgerMenuIconItem x:Name="menuFreebies" Label="FH Freebies">
+                    <!-- <controls:HamburgerMenuIconItem x:Name="menuFreebies" Label="FH Freebies">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FHFreebies />
@@ -122,15 +132,13 @@
                         <controls:HamburgerMenuIconItem.Icon>
                             <Image Source="images/FREE.png"/>
                         </controls:HamburgerMenuIconItem.Icon>
-                    </controls:HamburgerMenuIconItem>
+                    </controls:HamburgerMenuIconItem> -->
 
-                    <!-- <controls:HamburgerMenuIconItem x:Name="menuDrugstores" Label="Drugstores">
-
+                    <controls:HamburgerMenuIconItem x:Name="menuDrugstores" Label="Drugstores">
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:FHDrugstores />
                         </controls:HamburgerMenuIconItem.Tag>
-                       
-                    </controls:HamburgerMenuIconItem> -->
+                    </controls:HamburgerMenuIconItem> 
 
 
                     <controls:HamburgerMenuIconItem x:Name="menuPurchaseorder" Label="Purchase Orders">
@@ -143,15 +151,15 @@
                         </controls:HamburgerMenuIconItem.Icon>
                     </controls:HamburgerMenuIconItem>
 
-                    <controls:HamburgerMenuIconItem x:Name="menuStocks" Label="Stocks FH Capsules">
+                    <!-- <controls:HamburgerMenuIconItem x:Name="menuStocks" Label="Stocks FH Capsules">
 
                         <controls:HamburgerMenuIconItem.Tag>
                             <views:StocksInventory />
                         </controls:HamburgerMenuIconItem.Tag>
-                        <!-- <controls:HamburgerMenuIconItem.Icon>
+                        <controls:HamburgerMenuIconItem.Icon>
                             <Image Source="images/purchase-order-clipart96.png"/>
-                        </controls:HamburgerMenuIconItem.Icon> -->
-                    </controls:HamburgerMenuIconItem>
+                        </controls:HamburgerMenuIconItem.Icon> 
+                    </controls:HamburgerMenuIconItem> 
 
                     <controls:HamburgerMenuIconItem x:Name="menuStocksJuice" Label="Stocks FH Juice">
 
@@ -161,7 +169,7 @@
                         <controls:HamburgerMenuIconItem.Icon>
                             <Image Source="images/fhjuice.jpg"/>
                         </controls:HamburgerMenuIconItem.Icon> 
-                    </controls:HamburgerMenuIconItem>
+                    </controls:HamburgerMenuIconItem> -->
 
                 </controls:HamburgerMenuItemCollection>
             </controls:HamburgerMenu.ItemsSource>

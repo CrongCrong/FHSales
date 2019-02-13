@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="FHSales.views.AgentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FHSales.views"
+             mc:Ignorable="d" 
+             d:DesignHeight="336.438" d:DesignWidth="833.616" Background="Transparent" FontFamily="Consolas">
+    <Grid Loaded="Grid_Loaded">
+        <DataGrid x:Name="dgvArea" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="185" Width="380" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" Binding="{Binding AgentName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label x:Name="label" Content="Area Name:" HorizontalAlignment="Left" Margin="451,83,0,0" VerticalAlignment="Top" 
+               FontSize="15" RenderTransformOrigin="0.87,0.607" Foreground="#FF57C33B" Width="124" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtAgentName" HorizontalAlignment="Left" Height="28" Margin="575,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
+                            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
+
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="642,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="642,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="712,200,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
+
+    </Grid>
+</UserControl>

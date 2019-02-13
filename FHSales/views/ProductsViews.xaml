@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FHSales.views.Products"
+﻿<UserControl x:Class="FHSales.views.ProductsViews"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -19,10 +19,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <Label x:Name="label" Content="Product Name:" HorizontalAlignment="Left" Margin="448,127,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B"/>
-        <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Height="28" Margin="570,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
-        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="456,160,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B"/>
-        <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="570,160,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label" Content="Product Name:" HorizontalAlignment="Left" Margin="447,93,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B"/>
+        <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Height="28" Margin="564,92,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
+        <Label x:Name="label1" Content="Description:" HorizontalAlignment="Left" Margin="456,125,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B" Height="28" Width="108"/>
+        <TextBox x:Name="txtDescription" HorizontalAlignment="Left" Height="28" Margin="564,125,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" Click="btnEditDirectSales_Click" BorderBrush="Black"/>
 
@@ -32,6 +32,8 @@
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="712,200,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
+        <Label x:Name="label1_Copy" Content="Price:" HorizontalAlignment="Left" Margin="456,158,0,0" VerticalAlignment="Top" FontSize="15" Foreground="#FF57C33B" Height="28" Width="108" HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+        <TextBox x:Name="txtPrice" HorizontalAlignment="Left" Height="28" Margin="564,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="207" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center" PreviewTextInput="txtPrice_PreviewTextInput" Text="0"/>
 
     </Grid>
 </UserControl>

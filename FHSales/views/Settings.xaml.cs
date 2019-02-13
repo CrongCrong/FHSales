@@ -27,28 +27,22 @@ namespace FHSales.views
             InitializeComponent();
         }
 
-        Users _users = new Users();
+        UsersView _users = new UsersView();
         Bank _bank = new Bank();
         Courier _courier = new Courier();
         Freebies _freebies = new Freebies();
-        Products _products = new Products();
+        ProductsViews _products = new ProductsViews();
         Drugstore _drugstore = new Drugstore();
         SalesOffice _salesOffice = new SalesOffice();
         TollPacker _tollPacker = new TollPacker();
+        AreaView _areaView = new AreaView();
+        AgentView _agent = new AgentView();
 
         private void content_Loaded(object sender, RoutedEventArgs e)
         {
-            if ((Convert.ToInt32(UserModel.UserType) != (int)UserTypeEnum.ADMIN))
+            if(!UserModel.isDSAdmin || !UserModel.isPOAdmin)
             {
-                menuUsers.IsEnabled = false;             
-            }
-            if ((Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.ADMIN) 
-                || (Convert.ToInt32(UserModel.UserType) == (int)UserTypeEnum.PO_VIEW))
-            {
-                menuDrugstores.IsEnabled = true;
-            }else
-            {
-                menuDrugstores.IsEnabled = false;
+                menuUsers.IsEnabled = false;
             }
         }
 
@@ -91,6 +85,16 @@ namespace FHSales.views
         private void MenuItem_Click_7(object sender, RoutedEventArgs e)
         {
             content.Content = _tollPacker;
+        }
+
+        private void MenuItem_Click_8(object sender, RoutedEventArgs e)
+        {
+            content.Content = _areaView;
+        }
+
+        private void MenuItem_Click_9(object sender, RoutedEventArgs e)
+        {
+            content.Content = _agent;
         }
     }
 }

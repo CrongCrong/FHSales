@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>29</ApplicationRevision>
+    <ApplicationRevision>35</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -62,16 +62,43 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>fhcc_icon_JW4_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DnsClient, Version=1.0.7.0, Culture=neutral, PublicKeyToken=4574bb5573c51424, processorArchitecture=MSIL">
+      <HintPath>..\packages\DnsClient.1.0.7\lib\net45\DnsClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=1.5.0.23, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="MongoDB.Bson, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Bson.2.7.2\lib\net45\MongoDB.Bson.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.2.7.2\lib\net45\MongoDB.Driver.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MongoDB.Driver.Core, Version=2.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MongoDB.Driver.Core.2.7.2\lib\net45\MongoDB.Driver.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.11.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.3.0\lib\netstandard1.1\System.Buffers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.0.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.1.5.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
@@ -97,11 +124,20 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddClientFH.xaml.cs">
+      <DependentUpon>AddClientFH.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddProductDirectDaily.xaml.cs">
+      <DependentUpon>AddProductDirectDaily.xaml</DependentUpon>
+    </Compile>
     <Compile Include="AddProductJuiceAcct.xaml.cs">
       <DependentUpon>AddProductJuiceAcct.xaml</DependentUpon>
     </Compile>
     <Compile Include="AddProducts.xaml.cs">
       <DependentUpon>AddProducts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddSubArea.xaml.cs">
+      <DependentUpon>AddSubArea.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\AccountOrderModel.cs" />
     <Compile Include="Classes\BankModel.cs" />
@@ -157,6 +193,23 @@
     <Compile Include="LogIn.xaml.cs">
       <DependentUpon>LogIn.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MongoClasses\Agents.cs" />
+    <Compile Include="MongoClasses\Area.cs" />
+    <Compile Include="MongoClasses\Banks.cs" />
+    <Compile Include="MongoClasses\Clients.cs" />
+    <Compile Include="MongoClasses\Couriers.cs" />
+    <Compile Include="MongoClasses\DirectSales.cs" />
+    <Compile Include="MongoClasses\DirectSalesDaily.cs" />
+    <Compile Include="MongoClasses\Drugstores.cs" />
+    <Compile Include="MongoClasses\DrugstoresSales.cs" />
+    <Compile Include="MongoClasses\PasswordHash.cs" />
+    <Compile Include="MongoClasses\Products.cs" />
+    <Compile Include="MongoClasses\ProductsOrdered.cs" />
+    <Compile Include="MongoClasses\ProductsOrderedDS.cs" />
+    <Compile Include="MongoClasses\PurchaseOrders.cs" />
+    <Compile Include="MongoClasses\SalesOffices.cs" />
+    <Compile Include="MongoClasses\SubArea.cs" />
+    <Compile Include="MongoClasses\Users.cs" />
     <Compile Include="POReport.xaml.cs">
       <DependentUpon>POReport.xaml</DependentUpon>
     </Compile>
@@ -165,6 +218,9 @@
     </Compile>
     <Compile Include="ReportFormJuices.xaml.cs">
       <DependentUpon>ReportFormJuices.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StocksCapsules.xaml.cs">
+      <DependentUpon>StocksCapsules.xaml</DependentUpon>
     </Compile>
     <Compile Include="StocksDetailsIn.xaml.cs">
       <DependentUpon>StocksDetailsIn.xaml</DependentUpon>
@@ -175,11 +231,20 @@
     <Compile Include="ViewDRJuice.xaml.cs">
       <DependentUpon>ViewDRJuice.xaml</DependentUpon>
     </Compile>
+    <Compile Include="views\AgentView.xaml.cs">
+      <DependentUpon>AgentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\AreaView.xaml.cs">
+      <DependentUpon>AreaView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="views\Bank.xaml.cs">
       <DependentUpon>Bank.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Courier.xaml.cs">
       <DependentUpon>Courier.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="views\DirectSalesDailyView.xaml.cs">
+      <DependentUpon>DirectSalesDailyView.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\Drugstore.xaml.cs">
       <DependentUpon>Drugstore.xaml</DependentUpon>
@@ -205,8 +270,8 @@
     <Compile Include="views\Freebies.xaml.cs">
       <DependentUpon>Freebies.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\Products.xaml.cs">
-      <DependentUpon>Products.xaml</DependentUpon>
+    <Compile Include="views\ProductsViews.xaml.cs">
+      <DependentUpon>ProductsViews.xaml</DependentUpon>
     </Compile>
     <Compile Include="views\PurchaseOrderWindow.xaml.cs">
       <DependentUpon>PurchaseOrderWindow.xaml</DependentUpon>
@@ -226,14 +291,26 @@
     <Compile Include="views\TollPacker.xaml.cs">
       <DependentUpon>TollPacker.xaml</DependentUpon>
     </Compile>
-    <Compile Include="views\Users.xaml.cs">
-      <DependentUpon>Users.xaml</DependentUpon>
+    <Compile Include="views\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddClientFH.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddProductDirectDaily.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="AddProductJuiceAcct.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddProducts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddSubArea.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -297,6 +374,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="StocksCapsules.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="StocksDetailsIn.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -309,11 +390,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="views\AgentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\AreaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="views\Bank.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="views\Courier.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="views\DirectSalesDailyView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -349,7 +442,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\Products.xaml">
+    <Page Include="views\ProductsViews.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -377,7 +470,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="views\Users.xaml">
+    <Page Include="views\UsersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -400,6 +493,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Content Include="Reports\DIRECTSALES_REPORT.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="fhcc_icon_JW4_icon.ico" />
+    <Content Include="Reports\PURCHASE_ORDER_MONGO.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Resource Include="images\speclogo-transparent.fw.png" />
     <Resource Include="images\fhjuice.jpg" />
     <Content Include="Reports\PURCHASE_ORDER.rdlc">
@@ -501,6 +601,8 @@
     <None Include="Properties\DataSources\FHSales.Classes.DrugstoresSalesModel.datasource" />
     <None Include="Properties\DataSources\FHSales.Classes.FreebiesModel.datasource" />
     <None Include="Properties\DataSources\FHSales.Classes.PurchaseOrderModel.datasource" />
+    <None Include="Properties\DataSources\FHSales.MongoClasses.DirectSalesDaily.datasource" />
+    <None Include="Properties\DataSources\FHSales.MongoClasses.PurchaseOrders.datasource" />
     <None Include="Properties\DataSources\FHSales.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\FHSales.Properties.Settings.datasource" />
     <None Include="Properties\Settings.settings">
