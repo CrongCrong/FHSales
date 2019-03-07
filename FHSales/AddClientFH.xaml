@@ -20,10 +20,10 @@
         <TextBox x:Name="txtContactNo" HorizontalAlignment="Left" Height="34" Margin="135,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="191" FontSize="18" FontFamily="Century" TabIndex="3"/>
         <DataGrid x:Name="dgvClients" HorizontalAlignment="Left" Margin="10,224,0,0" VerticalAlignment="Top" Width="666" Height="286" AutoGenerateColumns="False" FontFamily="Century">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
-
                 <DataGridTextColumn Header="Last name" Binding="{Binding LastName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True" />
 
+                <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+              
                 <DataGridTextColumn Header="Contact No." Binding="{Binding ContactNo}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True" />
 
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>

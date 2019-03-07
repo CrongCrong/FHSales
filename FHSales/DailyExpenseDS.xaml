@@ -1,0 +1,34 @@
+﻿<Controls:MetroWindow x:Class="FHSales.DailyExpenseDS"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:local="clr-namespace:FHSales"
+        mc:Ignorable="d"
+        Title="Daily Expense Record" Height="451.644" Width="515.777" Background="#FF8DB77B" Loaded="MetroWindow_Loaded" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" Closing="MetroWindow_Closing">
+    <Grid>
+        <Label x:Name="label" Content="Expense:" HorizontalAlignment="Left" Margin="48,45,0,0" VerticalAlignment="Top" FontFamily="Abel" FontSize="16" Width="104" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtExpense" HorizontalAlignment="Left" Height="30" Margin="152,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" FontSize="16" FontFamily="Abel" PreviewTextInput="txtExpense_PreviewTextInput"/>
+        <Label x:Name="label_Copy" Content="Date:" HorizontalAlignment="Left" Margin="48,10,0,0" VerticalAlignment="Top" FontFamily="Abel" FontSize="16" Width="104" HorizontalContentAlignment="Right"/>
+        <DatePicker x:Name="dateExpense" HorizontalAlignment="Left" Margin="152,10,0,0" VerticalAlignment="Top" Height="30" Width="221" FontSize="16" FontFamily="Abel"/>
+        <Label x:Name="label_Copy1" Content="Notes:" HorizontalAlignment="Left" Margin="48,80,0,0" VerticalAlignment="Top" FontFamily="Abel" FontSize="16" Width="104" HorizontalContentAlignment="Right"/>
+        <TextBox x:Name="txtNotes" HorizontalAlignment="Left" Height="77" Margin="152,80,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" FontSize="16" FontFamily="Abel"/>
+        <DataGrid x:Name="dgvExpenses" HorizontalAlignment="Left" Height="181" Margin="10,162,0,0" VerticalAlignment="Top" Width="490" FontFamily="Abel" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="DATE" Binding="{Binding strDateRecorded}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="EXPENSE" Binding="{Binding ExpensesValue}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="NOTES" Binding="{Binding Notes}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+            </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Remove" Click="RemoveRecord_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+        </DataGrid>
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="378,92,0,0" VerticalAlignment="Top" 
+                Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSave_Click" />
+
+    </Grid>
+</Controls:MetroWindow>

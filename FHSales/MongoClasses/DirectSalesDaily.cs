@@ -26,6 +26,7 @@ namespace FHSales.MongoClasses
 
         public string TrackingNo { get; set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
         public DateTime DateOrdered { get; set; }
 
         public string FreePads { get; set; }

@@ -84,7 +84,6 @@ namespace FHSales
 
         }
 
-
         private async void loadProductsOnCombo()
         {
             try
@@ -108,8 +107,6 @@ namespace FHSales
                 await window.ShowMessageAsync("EXCEPTION", "ERROR LOADING DATA " + ex.Message);
             }
         }
-
-
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {

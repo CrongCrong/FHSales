@@ -135,8 +135,33 @@ namespace FHSales
         private void clearFields()
         {
             cmbProducts.SelectedItem = null;
-            txtPrice.Text = "";
+            txtPrice.Text = "0";
             txtQty.Text = "";
+        }
+
+        private void txtQty_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void txtQty_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            CheckIsNumeric(e);
+        }
+
+        private void CheckIsNumeric(TextCompositionEventArgs e)
+        {
+            int result;
+
+            if (!(int.TryParse(e.Text, out result) || e.Text == "."))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtPrice_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            CheckIsNumeric(e);
         }
     }
 }

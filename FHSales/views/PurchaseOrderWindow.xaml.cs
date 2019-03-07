@@ -103,6 +103,7 @@ namespace FHSales.views
                 var filter = Builders<Drugstores>.Filter.And(
         Builders<Drugstores>.Filter.Where(p => p.isDeleted == false));
                 List<Drugstores> lstPayments = collection.Find(filter).ToList();
+                lstPayments = lstPayments.OrderBy(a => a.Description).ToList();
                 foreach (Drugstores p in lstPayments)
                 {
                     searchDrugstore.Items.Add(p);
@@ -308,42 +309,35 @@ namespace FHSales.views
           Builders<PurchaseOrders>.Filter.Gte("DeliveryDate", dteNow),
          Builders<PurchaseOrders>.Filter.Lte("DeliveryDate", dteFirstDay));
                 }
-
                 if (checkDrugstore.IsChecked.Value)
                 {
                     Drugstores dd = searchDrugstore.SelectedItem as Drugstores;
                     filter = filter & Builders<PurchaseOrders>.Filter.And(
          Builders<PurchaseOrders>.Filter.Eq("Drugstore", dd));
                 }
-
                 if (checkCategory.IsChecked.Value)
                 {
                     Products dd = searchDrugstore.SelectedItem as Products;
                     filter = filter & Builders<PurchaseOrders>.Filter.And(
          Builders<PurchaseOrders>.Filter.Eq("Products", dd));
                 }
-
                 if (chkPaymentDate.IsChecked.Value)
                 {
                     filter = filter & Builders<PurchaseOrders>.Filter.And(
           Builders<PurchaseOrders>.Filter.Gte("PaymentDate", dteNowPayment),
          Builders<PurchaseOrders>.Filter.Lte("PaymentDate", dteFirstDayPayment));
                 }
-
                 if (chkPONumber.IsChecked.Value)
                 {
                     filter = filter & Builders<PurchaseOrders>.Filter.And(
           Builders<PurchaseOrders>.Filter.Gte("PONumber", searchPO));
                 }
-
                 if (chkSINumber.IsChecked.Value)
                 {
                     filter = filter & Builders<PurchaseOrders>.Filter.And(
           Builders<PurchaseOrders>.Filter.Gte("SINumber", searchSI));
                 }
-
                 lstDrgSales = collection.Find(filter).ToList();
-
             }
             catch (Exception ex)
             {

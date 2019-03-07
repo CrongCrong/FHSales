@@ -24,18 +24,23 @@ namespace FHSales
 
         ConnectionDB conDB;
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (verifyLoginMongo())
+
+            if (await verifyLoginMongo())
             {
+                
                 MainWindow main = new MainWindow(this);
                 main.Show();
+
                 this.Hide();
+                
             }
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
+           // window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             //conDB = new ConnectionDB();
             //MongoClient client = conDB.initializeMongoDB();
             //var db = client.GetDatabase("DBFH");
@@ -57,8 +62,9 @@ namespace FHSales
             //collection.InsertOne(u);
         }
 
-        private bool verifyLoginMongo()
+        private async System.Threading.Tasks.Task<bool> verifyLoginMongo()
         {
+            var z = await this.ShowProgressAsync("LOADING", "Please wait...", false) as ProgressDialogController;
             bool ifCorrect = false;
             PasswordHash ph;
             conDB = new ConnectionDB();
@@ -89,6 +95,7 @@ namespace FHSales
                     ifCorrect = ph.Verify(txtPassword.Password);
                 }
             }
+            await z.CloseAsync();
             return ifCorrect;
         }
 
@@ -132,7 +139,7 @@ namespace FHSales
             {
                 if (e.Key == Key.Return && e.Key == Key.Enter)
                 {
-                    if (verifyLoginMongo())
+                    if (await verifyLoginMongo())
                     {
                         MainWindow main = new MainWindow(this);
                         main.Show();

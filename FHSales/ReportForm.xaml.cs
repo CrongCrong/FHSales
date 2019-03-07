@@ -26,6 +26,8 @@ namespace FHSales
         //List<PurchaseOrderModel> lstPurchaseOrderModels;
         List<PurchaseOrders> lstPurchaseOrders;
         List<DirectSalesDaily> lstDirectSalesDaily;
+        List<DirectSalesModel> lstDirectSalesModel;
+
         int totalAmount = 0;
         int totalExpenses = 0;
         int totalJuice = 0;
@@ -64,6 +66,12 @@ namespace FHSales
             totalPads = tPads;
             totalGuava = tGuava;
             totalGuyabano = iGuyabano;
+            InitializeComponent();
+        }
+
+        public ReportForm(List<DirectSalesModel> lstDDS)
+        {
+            lstDirectSalesModel = lstDDS;
             InitializeComponent();
         }
 
@@ -523,8 +531,37 @@ namespace FHSales
             {
                 generateDirectSalesReport(lstDirectSalesDaily);
             }
+
+            if(lstDirectSalesModel != null)
+            {
+                generateFHBOXESSOLD();
+            }
         }
 
+        private void generateFHBOXESSOLD()
+        {
+            ReportDataSource rds = new ReportDataSource();
+
+            rds = new ReportDataSource("DataSet1", lstDirectSalesModel);
+
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            LocalReport localReport = reportViewer.LocalReport;
+
+            localReport.ReportPath = "Reports/DIRECTSALES.rdlc";
+            reportViewer.RefreshReport();
+
+            System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+            ps.Landscape = true;
+
+            ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+            ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+            reportViewer.SetPageSettings(ps);
+
+            reportViewer.LocalReport.DataSources.Add(rds);
+
+            // Refresh the report  
+            reportViewer.RefreshReport();
+        }
 
         private List<DirectSalesModel> getDirectSalesModelAllBoxes()
         {

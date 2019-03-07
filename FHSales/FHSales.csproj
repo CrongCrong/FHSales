@@ -25,7 +25,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>35</ApplicationRevision>
+    <ApplicationRevision>51</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -166,6 +166,9 @@
     <Compile Include="Classes\UserModel.cs" />
     <Compile Include="Classes\UserTypeEnum.cs" />
     <Compile Include="Classes\UserTypeModel.cs" />
+    <Compile Include="DailyExpenseDS.xaml.cs">
+      <DependentUpon>DailyExpenseDS.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DirectSalesDetails.xaml.cs">
       <DependentUpon>DirectSalesDetails.xaml</DependentUpon>
     </Compile>
@@ -202,6 +205,7 @@
     <Compile Include="MongoClasses\DirectSalesDaily.cs" />
     <Compile Include="MongoClasses\Drugstores.cs" />
     <Compile Include="MongoClasses\DrugstoresSales.cs" />
+    <Compile Include="MongoClasses\Expenses.cs" />
     <Compile Include="MongoClasses\PasswordHash.cs" />
     <Compile Include="MongoClasses\Products.cs" />
     <Compile Include="MongoClasses\ProductsOrdered.cs" />
@@ -311,6 +315,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AddSubArea.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DailyExpenseDS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -493,7 +501,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="images\small-fh.png" />
     <Content Include="Reports\DIRECTSALES_REPORT.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Reports\DIRECTSALES.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="fhcc_icon_JW4_icon.ico" />

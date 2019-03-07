@@ -32,9 +32,9 @@
         <Label x:Name="label" Content="Product:" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold"/>
         <ComboBox x:Name="cmbProducts" HorizontalAlignment="Left" Margin="140,37,0,0" VerticalAlignment="Top" Width="301" Height="32" FontFamily="Myriad Pro" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="15"/>
         <Label x:Name="label_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold"/>
-        <TextBox x:Name="txtQty" HorizontalAlignment="Left" Height="32" Margin="140,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro"/>
+        <TextBox x:Name="txtQty" HorizontalAlignment="Left" Height="32" Margin="140,75,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro" PreviewTextInput="txtQty_PreviewTextInput"/>
         <Label x:Name="label_Copy1" Content="Price:" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold" Height="32"/>
-        <TextBox x:Name="txtPrice" HorizontalAlignment="Left" Height="32" Margin="140,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro"/>
+        <TextBox x:Name="txtPrice" HorizontalAlignment="Left" Height="32" Margin="140,114,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro" PreviewTextInput="txtPrice_PreviewTextInput"/>
         <Label x:Name="label_Copy2" Content="Remarks:" HorizontalAlignment="Left" Margin="10,153,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold" Height="32"/>
         <TextBox x:Name="txtRemarks" HorizontalAlignment="Left" Height="32" Margin="140,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontFamily="Myriad Pro" FontSize="18" Text="n/a"/>
 

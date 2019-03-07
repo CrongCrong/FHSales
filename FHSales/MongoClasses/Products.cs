@@ -1,9 +1,7 @@
-﻿using MongoDB.Bson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace FHSales.MongoClasses
 {
@@ -18,5 +16,8 @@ namespace FHSales.MongoClasses
         public double Price { get; set; }
 
         public bool isDeleted { get; set; }
+
+        [BsonIgnore]
+        public int Qty { get; set; }
     }
 }

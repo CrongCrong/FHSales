@@ -63,6 +63,8 @@ namespace FHSales
                 var filter = Builders<Clients>.Filter.And(
         Builders<Clients>.Filter.Where(p => p.isDeleted == false));
                 lstDS = collection.Find(filter).ToList();
+
+                lstDS = lstDS.OrderBy(cc => cc.LastName).ToList();
             }
             catch (Exception ex)
             {
