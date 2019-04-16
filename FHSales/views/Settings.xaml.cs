@@ -1,18 +1,6 @@
 ﻿using FHSales.Classes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -21,7 +9,7 @@ namespace FHSales.views
     /// </summary>
     public partial class Settings : UserControl
     {
-        
+
         public Settings()
         {
             InitializeComponent();
@@ -40,7 +28,7 @@ namespace FHSales.views
 
         private void content_Loaded(object sender, RoutedEventArgs e)
         {
-            if(!UserModel.isDSAdmin || !UserModel.isPOAdmin)
+            if (!UserModel.isDSAdmin || !UserModel.isPOAdmin)
             {
                 menuUsers.IsEnabled = false;
             }

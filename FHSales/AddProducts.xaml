@@ -22,7 +22,6 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="QTY" Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Price" Binding="{Binding Price}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Total" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
             </DataGrid.Columns>
 
@@ -33,10 +32,8 @@
         <Label x:Name="label1_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="10,54,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
         <TextBox x:Name="txtQuantity" HorizontalAlignment="Left" Height="23" Margin="86,54,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtQuantity_PreviewTextInput" TextChanged="txtQuantity_TextChanged"/>
         <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="11,288,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="btnRemove_Click"/>
-        <Label x:Name="label1_Copy1" Content="Total:" HorizontalAlignment="Left" Margin="9,116,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
-        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="23" Margin="86,116,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtTotal_PreviewTextInput" IsEnabled="False"/>
-        <Label x:Name="label1_Copy2" Content="Price:" HorizontalAlignment="Left" Margin="10,85,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
-        <TextBox x:Name="txtPrice" HorizontalAlignment="Left" Height="23" Margin="86,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtTotal_PreviewTextInput" IsEnabled="False" Text="0"/>
+        <Label x:Name="label1_Copy1" Content="Total:" HorizontalAlignment="Left" Margin="11,85,0,0" VerticalAlignment="Top" FontFamily="Consolas" Height="26" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="76"/>
+        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="23" Margin="87,85,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="185" PreviewTextInput="txtTotal_PreviewTextInput"/>
 
     </Grid>
 </controls:MetroWindow>

@@ -63,7 +63,7 @@ namespace FHSales.views
                 btnUpdate.Visibility = Visibility.Hidden;
                 btnCancel.Visibility = Visibility.Hidden;
             }
-            
+
         }
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)

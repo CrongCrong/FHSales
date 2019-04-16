@@ -13,18 +13,18 @@
         <ComboBox x:Name="cmbProducts" HorizontalAlignment="Left" Margin="140,56,0,0" VerticalAlignment="Top" Width="301" Height="32" FontFamily="Myriad Pro" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="15"/>
         <Label x:Name="label_Copy" Content="Quantity:" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold"/>
         <TextBox x:Name="txtQty" HorizontalAlignment="Left" Height="32" Margin="140,97,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro" TextChanged="txtQty_TextChanged" PreviewTextInput="txtQty_PreviewTextInput"/>
-        <Button x:Name="button" Content="ADD" HorizontalAlignment="Left" Margin="182,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="button_Click" Background="#FF85CD35" BorderBrush="#FFC52A51" />
+        <Button x:Name="button" Content="ADD" HorizontalAlignment="Left" Margin="194,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="button_Click" Background="#FF85CD35" BorderBrush="#FFC52A51" />
         <Label x:Name="label_Copy1" Content="Price:" HorizontalAlignment="Left" Margin="10,138,0,0" VerticalAlignment="Top" Width="130" HorizontalContentAlignment="Right" FontSize="18" FontFamily="Myriad Pro" FontWeight="Bold" Height="32"/>
         <TextBox x:Name="txtPrice" HorizontalAlignment="Left" Height="32" Margin="140,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="301" FontSize="18" FontFamily="Myriad Pro" Text="0" PreviewTextInput="txtPrice_PreviewTextInput"/>
-        <DataGrid x:Name="dgvProductsOrdered" HorizontalAlignment="Left" Margin="10,261,0,0" VerticalAlignment="Top" Height="222" Width="431" FontFamily="Myriad Pro" AutoGenerateColumns="False" Background="Transparent">
+        <DataGrid x:Name="dgvProductsOrdered" HorizontalAlignment="Left" Margin="10,261,0,0" VerticalAlignment="Top" Height="222" Width="443" FontFamily="Myriad Pro" AutoGenerateColumns="False" Background="Transparent">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Product" Binding="{Binding Path=Products.ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Qty." Binding="{Binding Qty}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Price" Binding="{Binding Price}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="270,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnRemove_Click" Background="#FF85CD35" BorderBrush="#FFC52A51"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="182,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnUpdate_Click" BorderBrush="#FFC52A51" Background="#FF85CD35"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="358,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnCancel_Click" Background="#FF85CD35" BorderBrush="#FFC52A51"/>
+        <Button x:Name="btnRemove" Content="Remove" HorizontalAlignment="Left" Margin="282,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnRemove_Click" Background="#FF85CD35" BorderBrush="#FFC52A51"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="194,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnUpdate_Click" BorderBrush="#FFC52A51" Background="#FF85CD35"/>
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="370,208,0,0" VerticalAlignment="Top" Width="83" Height="32" FontFamily="Myriad Pro" Click="btnCancel_Click" Background="#FF85CD35" BorderBrush="#FFC52A51"/>
     </Grid>
 </Controls:MetroWindow>

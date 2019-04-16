@@ -7,16 +7,9 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace FHSales
 {
@@ -173,7 +166,7 @@ namespace FHSales
                 {
                     sumEX = sumEX + Convert.ToDouble(exx.ExpensesValue);
                 }
-                directSalesDailyView. lblExpenseToday.Content = "For this day: Php " + sumEX.ToString("0.##");
+                directSalesDailyView.lblExpenseToday.Content = "For this day: Php " + sumEX.ToString("0.##");
 
                 filter = Builders<Expenses>.Filter.And(
        Builders<Expenses>.Filter.Where(p => p.isDeleted == false),

@@ -1,20 +1,10 @@
 ﻿using FHSales.Classes;
 using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -37,13 +27,13 @@ namespace FHSales.views
         {
             dgvTollPacker.ItemsSource = loadDataGridDetails();
             btnUpdate.Visibility = Visibility.Hidden;
-        }   
+        }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
             TollPackerModel tollMod = dgvTollPacker.SelectedItem as TollPackerModel;
-            
-            if(tollMod != null)
+
+            if (tollMod != null)
             {
                 recID = tollMod.ID;
                 txtTollPacker.Text = tollMod.TollpackerName;
@@ -108,12 +98,14 @@ namespace FHSales.views
             MahApps.Metro.Controls.MetroWindow window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
 
             if (string.IsNullOrEmpty(txtTollPacker.Text))
-                   {
+            {
                 await window.ShowMessageAsync("Toll Packer", "Please input name.");
-            }else if (string.IsNullOrEmpty(txtDescription.Text))
+            }
+            else if (string.IsNullOrEmpty(txtDescription.Text))
             {
                 await window.ShowMessageAsync("Description", "Please input description.");
-            }else
+            }
+            else
             {
                 ifOkay = true;
             }
@@ -125,7 +117,7 @@ namespace FHSales.views
         {
             txtTollPacker.Text = "";
             txtDescription.Text = "";
-            
+
         }
 
         private List<TollPackerModel> loadDataGridDetails()

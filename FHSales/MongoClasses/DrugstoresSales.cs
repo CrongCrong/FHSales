@@ -33,7 +33,21 @@ namespace FHSales.MongoClasses
 
         public List<ProductsOrdered> ProductsOrdered { get; set; }
 
+        public List<PaymentsDrugstores> Payments { get; set; }
+
+        public string DRNo { get; set; }
+
+        public string ContactNo { get; set; }
+
         [BsonIgnore]
         public string strDate { get; set; }
+
+        [BsonIgnore]
+        public string strAreaName { get; set; }
+
+        [BsonIgnore]
+        public string strBalance { get; set; }
+
+
     }
 }

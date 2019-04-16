@@ -2,7 +2,6 @@
 using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
 using MongoDB.Driver;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -100,7 +99,7 @@ namespace FHSales.views
                 productToUpdate.ProductName = txtProductName.Text;
                 productToUpdate.Description = txtDescription.Text;
                 productToUpdate.Price = Convert.ToDouble(txtPrice.Text);
-                
+
                 var filter = Builders<Products>.Filter.And(
             Builders<Products>.Filter.Where(p => p.Id == productToUpdate.Id));
                 var updte = Builders<Products>.Update.Set("ProductName", productToUpdate.ProductName)
@@ -121,7 +120,7 @@ namespace FHSales.views
             productToUpdate = dgvProducts.SelectedItem as Products;
             if (productToUpdate != null)
             {
-               
+
                 txtProductName.Text = productToUpdate.ProductName;
                 txtDescription.Text = productToUpdate.Description;
                 txtPrice.Text = productToUpdate.Price.ToString();

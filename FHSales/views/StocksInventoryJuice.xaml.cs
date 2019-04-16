@@ -4,7 +4,6 @@ using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -43,9 +42,9 @@ namespace FHSales.views
             double dblQtyIn = 0;
             double dblQtyOut = 0;
 
-            foreach(FHJuiceProductModel j in lstProductsStocksIn)
+            foreach (FHJuiceProductModel j in lstProductsStocksIn)
             {
-                foreach(FHJuiceProductModel k in lstProductsStocksOut)
+                foreach (FHJuiceProductModel k in lstProductsStocksOut)
                 {
                     if (j.ID.Equals(k.ID))
                     {
@@ -328,7 +327,7 @@ namespace FHSales.views
         }
 
         private void MenuAddStocksOut_Click(object sender, RoutedEventArgs e)
-        {          
+        {
             StocksDetailsIn stocksIn = new StocksDetailsIn(this, TRAN_TYPE.STOCKS_OUT_ADD);
             stocksIn.ShowDialog();
         }
@@ -503,7 +502,7 @@ namespace FHSales.views
                 juiceIn = new FHJuiceProductModel();
             }
             conDB.closeConnection();
-            return lstJuiceIn;         
+            return lstJuiceIn;
         }
 
         private List<FHJuiceProductModel> loadProductsStocksLowerWarehouse()

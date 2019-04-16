@@ -104,7 +104,7 @@ namespace FHSales.views
             bankToUpdate = dgvBanks.SelectedItem as Banks;
 
             if (bankToUpdate != null)
-            {         
+            {
                 txtBankName.Text = bankToUpdate.BankName;
                 txtDescription.Text = bankToUpdate.Description;
                 btnSave.Visibility = Visibility.Hidden;

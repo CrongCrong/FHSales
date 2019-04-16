@@ -3,7 +3,6 @@ using FHSales.MongoClasses;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MongoDB.Driver;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,31 +28,32 @@ namespace FHSales
 
             if (await verifyLoginMongo())
             {
-                
+
                 MainWindow main = new MainWindow(this);
                 main.Show();
 
                 this.Hide();
-                
+
             }
         }
 
         private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-           // window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
+            //window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             //conDB = new ConnectionDB();
             //MongoClient client = conDB.initializeMongoDB();
             //var db = client.GetDatabase("DBFH");
 
             //Users u = new Users();
-            //u.FirstName = "Prince";
-            //u.LastName = "Ocenar";
+            //u.FirstName = "Shekinah";
+            //u.LastName = "Passion";
             //u.isEditing = true;
             //u.isViewing = true;
-            //u.Password = "adminadmin";
-            //u.Username = "super";
-            //u.isDSAdmin = true;
-            //u.isPOAdmin = true;
+            //u.Password = "sp3ctrum";
+            //u.Username = "admindsconso";
+            //u.isDSAdmin = false;
+            //u.isPOAdmin = false;
+            //u.isDSConsoAdmin = true;
             //PasswordHash ph = new PasswordHash(u.Password);
             //u.bHash = ph.Hash;
             //u.bSalt = ph.Salt;
@@ -72,7 +72,7 @@ namespace FHSales
             var db = client.GetDatabase("DBFH");
             var collection = db.GetCollection<Users>("Users");
             var filter = Builders<Users>.Filter.And(
-    Builders<Users>.Filter.Where(p => p.Username.ToLower().Contains(txtUsername.Text)),
+    Builders<Users>.Filter.Where(p => p.Username.Equals(txtUsername.Text)),
     Builders<Users>.Filter.Where(p => p.isDeleted == false));
 
             List<Users> lstUser = collection.Find(filter).ToList();
@@ -89,6 +89,7 @@ namespace FHSales
                     UserModel.Password = u.Password;
                     UserModel.isPOAdmin = u.isPOAdmin;
                     UserModel.isDSAdmin = u.isDSAdmin;
+                    UserModel.isDSConsoAdmin = u.isDSConsoAdmin != null ? u.isDSConsoAdmin : false;
                     UserModel.bHash = u.bHash;
                     UserModel.bSalt = u.bSalt;
                     ph = new PasswordHash(u.bSalt, u.bHash);

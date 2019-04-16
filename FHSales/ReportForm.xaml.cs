@@ -1,4 +1,6 @@
-﻿using FHSales.Classes;
+﻿
+
+using FHSales.Classes;
 using FHSales.MongoClasses;
 using MahApps.Metro.Controls;
 using Microsoft.Reporting.WinForms;
@@ -22,11 +24,13 @@ namespace FHSales
         ConnectionDB conDB;
         BankModel bankModel;
         ReportDate reportDate;
+
         string strFHProduct;
         //List<PurchaseOrderModel> lstPurchaseOrderModels;
         List<PurchaseOrders> lstPurchaseOrders;
         List<DirectSalesDaily> lstDirectSalesDaily;
         List<DirectSalesModel> lstDirectSalesModel;
+        List<DrugstoresSales> lstDrugstoresSales;
 
         int totalAmount = 0;
         int totalExpenses = 0;
@@ -50,7 +54,6 @@ namespace FHSales
             InitializeComponent();
         }
 
-
         public ReportForm(List<PurchaseOrders> lstPurchMods)
         {
             lstPurchaseOrders = lstPurchMods;
@@ -72,6 +75,19 @@ namespace FHSales
         public ReportForm(List<DirectSalesModel> lstDDS)
         {
             lstDirectSalesModel = lstDDS;
+            InitializeComponent();
+        }
+
+
+        public ReportForm(List<DirectSalesDaily> lstDDS)
+        {
+            lstDirectSalesDaily = lstDDS;
+            InitializeComponent();
+        }
+
+        public ReportForm(List<DrugstoresSales> lstDS)
+        {
+            lstDrugstoresSales = lstDS;
             InitializeComponent();
         }
 
@@ -522,19 +538,24 @@ namespace FHSales
                 }
             }
 
-            if(lstPurchaseOrders != null)
+            if (lstPurchaseOrders != null)
             {
                 generatePurchaseOrderReport(lstPurchaseOrders);
             }
 
-            if(lstDirectSalesDaily != null)
+            if (lstDirectSalesDaily != null)
             {
                 generateDirectSalesReport(lstDirectSalesDaily);
             }
 
-            if(lstDirectSalesModel != null)
+            if (lstDirectSalesModel != null)
             {
                 generateFHBOXESSOLD();
+            }
+
+            if (lstDrugstoresSales != null)
+            {
+                generateDrugstoresSales(lstDrugstoresSales);
             }
         }
 
@@ -571,7 +592,7 @@ namespace FHSales
 
             DirectSalesModel directSales = new DirectSalesModel();
             directSales.Title = "SALES REPORT : " + reportDate.MonthFrom.Substring(0, 4);
-            String queryString = "SELECT monthname(deliverydate) as deliverydate, cashbankID, dbfh.tblbank.description, sum(totalprice) as total FROM " +
+            string queryString = "SELECT monthname(deliverydate) as deliverydate, cashbankID, dbfh.tblbank.description, sum(totalprice) as total FROM " +
                 "(dbfh.tbldirectsales INNER JOIN dbfh.tblbank ON dbfh.tbldirectsales.cashbankID = dbfh.tblbank.ID) " +
                 "WHERE (dbfh.tbldirectsales.deliverydate BETWEEN ? AND ?) AND (dbfh.tbldirectsales.salestypeID = 1) AND (dbfh.tbldirectsales.isDeleted = 0) GROUP BY MONTH(deliverydate)";
 
@@ -850,7 +871,7 @@ namespace FHSales
             List<FreebiesModel> lstFreebies = new List<FreebiesModel>();
             FreebiesModel freeby = new FreebiesModel();
 
-            string queryString = "SELECT sum(quantity) as total, monthname(deliverydate) as deliverydate, " +                
+            string queryString = "SELECT sum(quantity) as total, monthname(deliverydate) as deliverydate, " +
                 "dbfh.tblfreebies.categoryID, dbfh.tblcategory.description AS catdesc, dbfh.tblproducts.description AS proddesc, " +
                 "dbfh.tblproducts.ID AS prodID FROM((dbfh.tblfreebies INNER JOIN dbfh.tblcategory ON dbfh.tblfreebies.categoryID  " +
                 "= dbfh.tblcategory.ID) INNER JOIN dbfh.tblproducts ON dbfh.tblfreebies.productID = dbfh.tblproducts.ID) " +
@@ -925,7 +946,7 @@ namespace FHSales
             DrugstoresSalesModel drugstoresMod = new DrugstoresSalesModel();
 
             drugstoresMod.Title = "All Drugstores - All Products";
-            string queryString = "SELECT monthname(deliverydate) as deliverydate, sum(quantity) as total, " +    
+            string queryString = "SELECT monthname(deliverydate) as deliverydate, sum(quantity) as total, " +
                 "dbfh.tbldrugstores.description AS drugstore  FROM (dbfh.tblsales INNER JOIN dbfh.tbldrugstores " +
                 "ON dbfh.tblsales.drugstoreID = dbfh.tbldrugstores.ID) WHERE (deliverydate BETWEEN ? AND ?) AND " +
                 "(dbfh.tblsales.isDeleted = 0) GROUP BY DATE(dbfh.tblsales.deliverydate), dbfh.tblsales.drugstoreID";
@@ -1007,7 +1028,7 @@ namespace FHSales
 
             while (reader.Read())
             {
-                
+
                 drugstoresMod.DeliveryDate = reader["deliverydate"].ToString();
                 drugstoresMod.ProductName = reader["product"].ToString();
                 drugstoresMod.Quantity = Convert.ToInt32(reader["total"].ToString());
@@ -1050,7 +1071,7 @@ namespace FHSales
                 drugstoresMod.Total = Convert.ToInt32(reader["total"].ToString());
                 drugstoresMod.Title = "YEARLY REPORT: " + drugstoresMod.ProductName;
                 lstDrugstore.Add(drugstoresMod);
-                
+
                 drugstoresMod = new DrugstoresSalesModel();
             }
 
@@ -1075,7 +1096,7 @@ namespace FHSales
                 "(dbfh.tblsales.isDeleted = 0) AND (dbfh.tblsales.drugstoreID = ?) GROUP BY DATE(deliverydate) ORDER BY DATE(deliverydate) ASC";
 
             List<string> parameters = new List<string>();
-            
+
             parameters.Add(reportDate.MonthFrom);
             parameters.Add(reportDate.MonthTo);
             parameters.Add(reportDate.DrugstoreID);
@@ -1229,7 +1250,7 @@ namespace FHSales
             localReport.ReportPath = "Reports/PURCHASE_ORDER_MONGO.rdlc";
             reportViewer.RefreshReport();
 
-            
+
 
             System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
             ps.Landscape = true;
@@ -1246,55 +1267,67 @@ namespace FHSales
 
         private void generateDirectSalesReport(List<DirectSalesDaily> lstD)
         {
-            ReportDataSource rds = new ReportDataSource();
+            try
+            {
+                ReportDataSource rds = new ReportDataSource();
 
-            rds = new ReportDataSource("DataSet1", lstD);
+                rds = new ReportDataSource("DataSet1", lstD);
 
-            reportViewer.ProcessingMode = ProcessingMode.Local;
-            LocalReport localReport = reportViewer.LocalReport;
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                LocalReport localReport = reportViewer.LocalReport;
 
-            localReport.ReportPath = "Reports/DIRECTSALES_REPORT.rdlc";
-            reportViewer.RefreshReport();
+                localReport.ReportPath = "Reports/DIRECTSALES_FH.rdlc";
+                reportViewer.RefreshReport();
 
-            List<ReportParameter> paramList = new List<ReportParameter>();
+                System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                ps.Landscape = true;
 
-            ReportParameter param = new ReportParameter("TotalAmount");
-            param.Values.Add(totalAmount.ToString());
-            paramList.Add(param);
+                ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                reportViewer.SetPageSettings(ps);
 
-            param = new ReportParameter("TotalExpenses");
-            param.Values.Add(totalExpenses.ToString());
-            paramList.Add(param);
+                reportViewer.LocalReport.DataSources.Add(rds);
 
-            param = new ReportParameter("TotalFreeJuice");
-            param.Values.Add(totalJuice.ToString());
-            paramList.Add(param);
+                // Refresh the report  
+                reportViewer.RefreshReport();
+            }
+            catch (Exception ex)
+            {
+                conDB.writeLogFile(ex.StackTrace + " || " + ex.Message);
+            }
 
-            param = new ReportParameter("TotalFreePads");
-            param.Values.Add(totalPads.ToString());
-            paramList.Add(param);
+        }
 
-            param = new ReportParameter("TotalGuava");
-            param.Values.Add(totalGuava.ToString());
-            paramList.Add(param);
+        private void generateDrugstoresSales(List<DrugstoresSales> lstDD)
+        {
+            try
+            {
+                ReportDataSource rds = new ReportDataSource();
 
-            param = new ReportParameter("TotalGuyabano");
-            param.Values.Add(totalGuyabano.ToString());
-            paramList.Add(param);
+                rds = new ReportDataSource("DataSet1", lstDD);
 
-            this.reportViewer.LocalReport.SetParameters(paramList.ToArray());
+                reportViewer.ProcessingMode = ProcessingMode.Local;
+                LocalReport localReport = reportViewer.LocalReport;
 
-            System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
-            ps.Landscape = true;
+                localReport.ReportPath = "Reports/SMALLDRUGSTORES.rdlc";
+                reportViewer.RefreshReport();
 
-            ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
-            ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
-            reportViewer.SetPageSettings(ps);
+                System.Drawing.Printing.PageSettings ps = new System.Drawing.Printing.PageSettings();
+                ps.Landscape = true;
 
-            reportViewer.LocalReport.DataSources.Add(rds);
+                ps.PaperSize = new System.Drawing.Printing.PaperSize("A4", 827, 1170);
+                ps.PaperSize.RawKind = (int)System.Drawing.Printing.PaperKind.A4;
+                reportViewer.SetPageSettings(ps);
 
-            // Refresh the report  
-            reportViewer.RefreshReport();
+                reportViewer.LocalReport.DataSources.Add(rds);
+
+                // Refresh the report  
+                reportViewer.RefreshReport();
+            }
+            catch (Exception ex)
+            {
+                conDB.writeLogFile(ex.StackTrace + " || " + ex.Message);
+            }
         }
     }
 }

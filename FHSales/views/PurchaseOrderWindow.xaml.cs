@@ -1,13 +1,9 @@
-﻿
-using MySql.Data.MySqlClient;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System;
 using MahApps.Metro.Controls.Dialogs;
 using System.Threading.Tasks;
-using System.Data.SqlTypes;
-using Microsoft.Reporting.WinForms;
 using FHSales.MongoClasses;
 using MongoDB.Driver;
 using FHSales.Classes;
@@ -81,7 +77,7 @@ namespace FHSales.views
                     ds.strPaymentDueDate = ds.PaymentDueDate.ToShortDateString();
                 }
                 lstPurchaseOrd = lstPurchaseOrd.OrderByDescending(a => a.DeliveryDate).ToList();
-                
+
             }
             catch (Exception ex)
             {
@@ -287,7 +283,7 @@ namespace FHSales.views
         private async Task<List<PurchaseOrders>> search()
         {
             List<PurchaseOrders> lstDrgSales = new List<PurchaseOrders>();
-            DateTime dteNow = (!string.IsNullOrEmpty(searchDateFrom.Text)) ? DateTime.Parse(searchDateFrom.Text) :  DateTime.Now;
+            DateTime dteNow = (!string.IsNullOrEmpty(searchDateFrom.Text)) ? DateTime.Parse(searchDateFrom.Text) : DateTime.Now;
             DateTime dteFirstDay = (!string.IsNullOrEmpty(searchDateTo.Text)) ? DateTime.Parse(searchDateTo.Text) : DateTime.Now;
 
             DateTime dteNowPayment = (!string.IsNullOrEmpty(searchPayDateFrom.Text)) ? DateTime.Parse(searchPayDateFrom.Text) : DateTime.Now;
@@ -351,7 +347,7 @@ namespace FHSales.views
         {
             purchaseOrderToUpdate = dgvPO.SelectedItem as PurchaseOrders;
             enableDisableControls(true);
-            dgvPO.IsEnabled = false; 
+            dgvPO.IsEnabled = false;
             if (purchaseOrderToUpdate != null)
             {
                 btnUpdate.Visibility = Visibility.Visible;
@@ -500,7 +496,6 @@ namespace FHSales.views
                 if (chkPaid.IsChecked.Value)
                 {
                     result = await window.ShowMessageAsync("Purchase Order", "Is this transaction ALREADY PAID?", MessageDialogStyle.AffirmativeAndNegative);
-
                 }
                 else
                 {
@@ -613,6 +608,8 @@ namespace FHSales.views
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
             dgvPO.IsEnabled = true;
+            expiryDate.Text = "";
+            txtBatchNo.Text = "";
         }
 
         private void btnView_Click(object sender, RoutedEventArgs e)
@@ -621,7 +618,7 @@ namespace FHSales.views
 
             if (purchaseOrderToUpdate != null)
             {
-                    
+
                 txtDR.Text = purchaseOrderToUpdate.DRNumber;
                 txtSI.Text = purchaseOrderToUpdate.SINumber;
                 txtPO.Text = purchaseOrderToUpdate.PONumber;
@@ -631,7 +628,8 @@ namespace FHSales.views
                 txtAmount.Text = purchaseOrderToUpdate.Amount.ToString("0.##");
                 paymentDueDate.Text = purchaseOrderToUpdate.PaymentDueDate.ToShortDateString();
                 chkPaid.IsChecked = purchaseOrderToUpdate.isPaid;
-              
+                expiryDate.Text = purchaseOrderToUpdate.ExpiryDate.ToShortDateString();
+                txtBatchNo.Text = purchaseOrderToUpdate.BatchNo;
                 foreach (Drugstores dsm in comboDrugstore.Items)
                 {
                     if (dsm.Id.Equals(purchaseOrderToUpdate.Drugstore.Id))

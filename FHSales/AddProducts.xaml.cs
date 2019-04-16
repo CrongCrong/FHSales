@@ -1,7 +1,6 @@
 ﻿using FHSales.Classes;
 using FHSales.views;
 using MahApps.Metro.Controls;
-using MySql.Data.MySqlClient;
 using System.Collections.Generic;
 using System.Windows;
 using System;
@@ -26,10 +25,14 @@ namespace FHSales
         ConnectionDB conDB;
         List<ProductsOrdered> lstProductForDrugstores = new List<ProductsOrdered>();
         ProductsOrdered productsOrdered = new ProductsOrdered();
+        List<ProductModel> lstProdsMods = new List<ProductModel>();
+        List<PaymentsDrugstores> lstPaymentDrugstores = new List<PaymentsDrugstores>();
+
         FHBoxes FhBoxesViews;
         FHDrugstores FhDrugstoreView;
         bool ifEdit = false;
-        string strSalesID = "";
+        //string strSalesID = "";
+
         MahApps.Metro.Controls.MetroWindow window;
 
 
@@ -43,13 +46,15 @@ namespace FHSales
         {
             ifEdit = ifTryToEdit;
             FhBoxesViews = fhBoxes;
+            lstProdsMods = lpm;
             InitializeComponent();
         }
 
-        public AddProducts(FHDrugstores fhDrugs, List<ProductsOrdered> lpmDrg)
+        public AddProducts(FHDrugstores fhDrugs, List<ProductsOrdered> lpmDrg, List<PaymentsDrugstores> lstPdrg)
         {
             FhDrugstoreView = fhDrugs;
             lstProductForDrugstores = lpmDrg;
+            lstPaymentDrugstores = lstPdrg;
             InitializeComponent();
         }
 
@@ -57,6 +62,11 @@ namespace FHSales
         {
             window = Window.GetWindow(this) as MahApps.Metro.Controls.MetroWindow;
             loadProductsOnCombo();
+            if (FhBoxesViews != null)
+            {
+                dgvProducts.ItemsSource = lstProdsMods;
+            }
+
             if (FhDrugstoreView != null)
             {
                 dgvProducts.ItemsSource = lstProductForDrugstores;
@@ -72,9 +82,9 @@ namespace FHSales
             {
                 productsOrdered.ProductName = prodAdd.ProductName;
                 productsOrdered.Qty = Convert.ToInt32(txtQuantity.Text);
-                productsOrdered.Price = Convert.ToDouble(txtPrice.Text);
+                productsOrdered.Price = Convert.ToDouble(txtTotal.Text);
                 productsOrdered.Total = Convert.ToDouble(txtTotal.Text);
-
+                productsOrdered.Id = prodAdd.Id;
                 lstProductForDrugstores.Add(productsOrdered);
                 dgvProducts.ItemsSource = lstProductForDrugstores;
                 dgvProducts.Items.Refresh();
@@ -82,6 +92,22 @@ namespace FHSales
                 clearFields();
             }
 
+            //ProductModel proAdd = cmbProducts.SelectedItem as ProductModel;
+            //ProductModel pp = new ProductModel();
+            //bool x = await checkFields();
+            //if (x)
+            //{
+
+            //    pp.ID = proAdd.ProductID;
+            //    pp.Quantity = txtQuantity.Text;
+            //    pp.ProductName = proAdd.ProductName;
+            //    pp.TotalAmount = (Convert.ToDouble(pp.Quantity) * Convert.ToDouble(txtPrice.Text)).ToString();
+            //    pp.newlyAdded = true;
+            //    lstProdsMods.Add(pp);
+            //    pp = new ProductModel();
+            //}
+            //dgvProducts.Items.Refresh();
+            //dgvProducts.ItemsSource = lstProdsMods;
         }
 
         private async void loadProductsOnCombo()
@@ -97,6 +123,7 @@ namespace FHSales
                 var filter = Builders<Products>.Filter.And(
         Builders<Products>.Filter.Where(p => p.isDeleted == false));
                 List<Products> lstPayments = collection.Find(filter).ToList();
+
                 foreach (Products p in lstPayments)
                 {
                     cmbProducts.Items.Add(p);
@@ -123,16 +150,32 @@ namespace FHSales
         private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             double x = 0;
-            if(FhDrugstoreView != null)
+            double dblTotal = 0;
+            double dblPaym = 0;
+            if (FhDrugstoreView != null)
             {
                 foreach (ProductsOrdered po in lstProductForDrugstores)
                 {
                     x += po.Total;
                 }
                 FhDrugstoreView.lstProductsOrdered = lstProductForDrugstores;
-                FhDrugstoreView.txtTotal.Text = x.ToString();
-                lstProductForDrugstores = new List<ProductsOrdered>();
+
+                if (lstPaymentDrugstores != null && lstPaymentDrugstores.Count > 0)
+                {
+
+                    dblPaym = 0;
+                    foreach (PaymentsDrugstores fds in lstPaymentDrugstores)
+                    {
+                        dblPaym += fds.Payment;
+                    }
+                }
+
+                FhDrugstoreView.txtTotal.Text = (x -= dblPaym).ToString();
+
             }
+            lstProductForDrugstores = new List<ProductsOrdered>();
+            lstPaymentDrugstores = new List<PaymentsDrugstores>();
+
         }
 
 
@@ -169,10 +212,6 @@ namespace FHSales
             {
                 await window.ShowMessageAsync("Quantity", "Please input value.");
             }
-            else if (string.IsNullOrEmpty(txtPrice.Text))
-            {
-                await window.ShowMessageAsync("Price", "Please input value.");
-            }
             else if (string.IsNullOrEmpty(txtQuantity.Text))
             {
                 await window.ShowMessageAsync("Total", "Please input value.");
@@ -190,26 +229,26 @@ namespace FHSales
             cmbProducts.SelectedItem = null;
             txtQuantity.Text = "";
             txtTotal.Text = "0";
-            txtPrice.Text = "0";
+
         }
 
         private void cmbProducts_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Products p = cmbProducts.SelectedItem as Products;
+            //Products p = cmbProducts.SelectedItem as Products;
 
-            if (p != null)
-            {
-                txtPrice.Text = p.Price.ToString();
-            }
+            //if (p != null)
+            //{
+            //    txtPrice.Text = p.Price.ToString();
+            //}
         }
 
         private void txtQuantity_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
-            double a = Convert.ToDouble(txtPrice.Text);
-            int b = !(string.IsNullOrEmpty(txtQuantity.Text)) ? Convert.ToInt32(txtQuantity.Text) : 0;
+            //double a = Convert.ToDouble(txtPrice.Text);
+            //int b = !(string.IsNullOrEmpty(txtQuantity.Text)) ? Convert.ToInt32(txtQuantity.Text) : 0;
 
-            double dblTotal = b * a;
-            txtTotal.Text = dblTotal.ToString();
+            //double dblTotal = b * a;
+            //txtTotal.Text = dblTotal.ToString();
         }
 
         //private void loadProductsOnCombo()

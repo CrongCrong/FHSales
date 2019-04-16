@@ -1,6 +1,4 @@
-﻿
-
-using FHSales.Classes;
+﻿using FHSales.Classes;
 using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
 using MongoDB.Driver;
@@ -51,6 +49,7 @@ namespace FHSales.views
 
             string dtee = "1" + "/" + dteNow.Month + "/" + dteNow.Year;
             dteFirstDay = DateTime.Parse(dtee);
+            chkPaid.Visibility = Visibility.Hidden;
 
             if (!UserModel.isDSAdmin)
             {
@@ -60,6 +59,11 @@ namespace FHSales.views
                 btnCancel.Visibility = Visibility.Hidden;
                 btnReset.Visibility = Visibility.Hidden;
                 dgvDirectSales.IsEnabled = false;
+            }
+            if (UserModel.isDSConsoAdmin)
+            {
+                chkPaid.Visibility = Visibility.Visible;
+                chkCancelled.Visibility = Visibility.Visible;
             }
 
             btnUpdate.Visibility = Visibility.Hidden;
@@ -121,7 +125,11 @@ namespace FHSales.views
                         {
                             if (pp.Products != null && pp.Products.Id.Equals(p.Id))
                             {
-                                p.Qty = p.Qty + Convert.ToInt32(pp.Qty);
+                                p.Qty += Convert.ToInt32(pp.Qty);
+                            }
+                            if (ds.isCancelled && (p.Qty > 0))
+                            {
+                                p.Qty -= Convert.ToInt32(pp.Qty);
                             }
                         }
                     }
@@ -129,7 +137,7 @@ namespace FHSales.views
                     iTotalExpenses += Convert.ToInt32(ds.Expenses);
                     iTotalPads += Convert.ToInt32(ds.FreePads);
                     iTotaljuice += Convert.ToInt32(ds.FreeJuice);
-
+                    ds.strCancelled = ds.isCancelled ? "YES" : "NO";
                     ds.strDateOrdered = ds.DateOrdered.ToShortDateString();
                     ds.Client.strFullName = ds.Client.LastName + ", " + ds.Client.FirstName;
                 }
@@ -169,6 +177,12 @@ namespace FHSales.views
                 ds.Remarks = txtRemarks.Text;
                 ds.TrackingNo = txtTrackingNumber.Text;
                 ds.ProductsOrdered = lstProductsOrderedDS;
+                ds.isCancelled = chkCancelled.IsChecked.Value;
+
+                if (UserModel.isDSConsoAdmin)
+                {
+                    ds.isPaid = chkPaid.IsChecked.Value;
+                }
 
                 var collection = db.GetCollection<DirectSalesDaily>("DirectSalesDaily");
                 collection.InsertOne(ds);
@@ -193,6 +207,7 @@ namespace FHSales.views
 
                 var filter = Builders<DirectSalesDaily>.Filter.And(
             Builders<DirectSalesDaily>.Filter.Where(p => p.Id == directSalesDailyToUpdate.Id));
+
                 var updte = Builders<DirectSalesDaily>.Update.Set("Client", slctdClients)
                     .Set("Bank", slctdBnk)
                     .Set("Courier", slctdCourier)
@@ -202,7 +217,10 @@ namespace FHSales.views
                     .Set("TrackingNo", txtTrackingNumber.Text)
                     .Set("DateOrdered", DateTime.Parse(deliveryDateDS.Text))
                     .Set("isConsolidated", false)
-                    .Set("ProductsOrdered", lstProductsOrderedDS);
+                    .Set("ProductsOrdered", lstProductsOrderedDS)
+                    .Set("isCancelled", chkCancelled.IsChecked.Value)
+                    .Set("isPaid", UserModel.isDSConsoAdmin ? chkPaid.IsChecked.Value : false)
+                    .Set("isConsolidated", UserModel.isDSConsoAdmin ? true : false);
 
                 var collection = db.GetCollection<DirectSalesDaily>("DirectSalesDaily");
                 collection.UpdateOne(filter, updte);
@@ -253,13 +271,13 @@ namespace FHSales.views
                 if (checkClient.IsChecked.Value)
                 {
                     filter = filter & Builders<DirectSalesDaily>.Filter.And(
-          Builders<DirectSalesDaily>.Filter.Eq("Client", cc));
+          Builders<DirectSalesDaily>.Filter.Where(d => d.Client.Id == cc.Id));
                 }
 
                 if (checkBank.IsChecked.Value)
                 {
                     filter = filter & Builders<DirectSalesDaily>.Filter.And(
-          Builders<DirectSalesDaily>.Filter.Eq("Bank", bb));
+          Builders<DirectSalesDaily>.Filter.Where(d => d.Bank.Id == bb.Id));
                 }
 
                 lstDS = collection.Find(filter).ToList();
@@ -285,6 +303,10 @@ namespace FHSales.views
                             {
                                 p.Qty = p.Qty + Convert.ToInt32(pp.Qty);
                             }
+                            if (ds.isCancelled && (p.Qty > 0))
+                            {
+                                p.Qty -= Convert.ToInt32(pp.Qty);
+                            }
                         }
                     }
 
@@ -292,7 +314,7 @@ namespace FHSales.views
                     iTotalExpenses += Convert.ToInt32(ds.Expenses);
                     iTotalPads += Convert.ToInt32(ds.FreePads);
                     iTotaljuice += Convert.ToInt32(ds.FreeJuice);
-
+                    ds.strCancelled = ds.isCancelled ? "YES" : "NO";
                     ds.strDateOrdered = ds.DateOrdered.ToShortDateString();
                     ds.Client.strFullName = ds.Client.LastName + ", " + ds.Client.FirstName;
 
@@ -522,6 +544,13 @@ namespace FHSales.views
                 txtRemarks.Text = directSalesDailyToUpdate.Remarks;
                 txtTrackingNumber.Text = directSalesDailyToUpdate.TrackingNo;
                 lstProductsOrderedDS = directSalesDailyToUpdate.ProductsOrdered;
+                chkCancelled.IsChecked = directSalesDailyToUpdate.isCancelled;
+
+                if (UserModel.isDSConsoAdmin)
+                {
+                    chkPaid.IsChecked = directSalesDailyToUpdate.isPaid;
+                }
+
                 dgvDirectSales.IsEnabled = false;
             }
 
@@ -620,8 +649,11 @@ namespace FHSales.views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            ReportForm rf = new ReportForm(lstDS, iTotalAmount, iTotalExpenses, iTotaljuice, iTotalPads, iTotalGuavaBox, iTotalGuyabanoBox);
-            rf.ShowDialog();
+            //ReportForm rf = new ReportForm(lstDS, iTotalAmount, iTotalExpenses, iTotaljuice, iTotalPads, iTotalGuavaBox, iTotalGuyabanoBox);
+            //rf.ShowDialog();
+
+            FHBoxes_Report boxesReport = new FHBoxes_Report();
+            boxesReport.ShowDialog();
         }
 
         private void txtExpenses_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -682,6 +714,8 @@ namespace FHSales.views
             btnUpdate.Visibility = Visibility.Hidden;
             btnSave.Visibility = Visibility.Visible;
             dgvDirectSales.IsEnabled = true;
+            chkPaid.IsChecked = false;
+            chkCancelled.IsChecked = false;
         }
 
         private void CheckIsNumeric(TextCompositionEventArgs e)

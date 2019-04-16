@@ -5,17 +5,9 @@ using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -88,13 +80,11 @@ namespace FHSales.views
                 MongoClient client = conDB.initializeMongoDB();
                 var db = client.GetDatabase("DBFH");
 
-                agentToUpdate.AgentName = txtAgentName.Text;
-
                 var filter = Builders<Agents>.Filter.And(
             Builders<Agents>.Filter.Where(p => p.Id == agentToUpdate.Id));
-                var updte = Builders<Agents>.Update.Set("AgentName", agentToUpdate.AgentName);
+                var updte = Builders<Agents>.Update.Set("AgentName", txtAgentName.Text);
 
-                var collection = db.GetCollection<Agents>("AgentName");
+                var collection = db.GetCollection<Agents>("Agents");
                 collection.UpdateOne(filter, updte);
             }
             catch (Exception ex)

@@ -6,10 +6,11 @@
              xmlns:local="clr-namespace:FHSales.views"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks" 
-             mc:Ignorable="d" Width="1075.533" Background="White" Height="608" Loaded="UserControl_Loaded" >
+             mc:Ignorable="d" Width="1075.533" Background="Transparent" Height="608" Loaded="UserControl_Loaded" 
+             >
     <Grid>
         <DockPanel Margin="0,0,0,570">
-            <Menu DockPanel.Dock="Top">
+            <Menu DockPanel.Dock="Top" Background="Transparent">
                 <MenuItem x:Name="menuReports" Header="Reports" FontFamily="Consolas" FontSize="15" FontWeight="Bold">
                     <MenuItem Header="_Print Report" Click="MenuItem_Click" />
                     <Separator />
@@ -30,7 +31,7 @@
                 <DataGridTextColumn Header="AREA" Binding="{Binding SubArea}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Total" Binding="{Binding Path=Product.ProductName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
+                <DataGridTextColumn Header="Total" Binding="{Binding Total}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True">
 
                 </DataGridTextColumn>
             </DataGrid.Columns>
@@ -39,9 +40,9 @@
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,432,0,0" 
                             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnEdit_Click"/>
 
-        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="648,171,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
-        <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="798,171,0,0" VerticalAlignment="Top" Width="253" Height="31" FontSize="16" FontFamily="Consolas"/>
-        <Label x:Name="label" Content="Small Drugstore:" HorizontalAlignment="Left" Margin="648,207,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
+        <Label x:Name="label1" Content="Delivery Date:" HorizontalAlignment="Left" Margin="648,137,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
+        <DatePicker x:Name="deliveryDate" HorizontalAlignment="Left" Margin="798,137,0,0" VerticalAlignment="Top" Width="253" Height="31" FontSize="16" FontFamily="Consolas" TabIndex="2"/>
+        <Label x:Name="label" Content="Drugstore Name:" HorizontalAlignment="Left" Margin="648,173,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
 
         <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="898,432,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
@@ -51,27 +52,32 @@
         <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="968,432,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
 
-        <CheckBox x:Name="checkDate" Content="by Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
-        <DatePicker x:Name="searchDateFrom" HorizontalAlignment="Left" Margin="131,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184"/>
-        <Label x:Name="label8" Content="-" HorizontalAlignment="Left" Margin="315,67,0,0" VerticalAlignment="Top"/>
-        <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,67,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
-        <CheckBox x:Name="checkCategory" Content="by Product:" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
-        <ComboBox x:Name="searchProduct" HorizontalAlignment="Left" Margin="131,98,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
+        <CheckBox x:Name="checkDate" Content="by Date:" HorizontalAlignment="Left" Margin="10,51,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkDate_Checked" Unchecked="checkDate_Unchecked"/>
+        <DatePicker x:Name="searchDateFrom" HorizontalAlignment="Left" Margin="131,51,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184"/>
+        <Label x:Name="label8" Content="-" HorizontalAlignment="Left" Margin="315,51,0,0" VerticalAlignment="Top"/>
+        <DatePicker x:Name="searchDateTo" HorizontalAlignment="Left" Margin="330,51,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Width="184" Height="26"/>
+        <CheckBox x:Name="checkCategory" Content="by Product:" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" FontSize="13" FontFamily="Consolas" Height="26" Width="116" HorizontalContentAlignment="Right" Checked="checkCategory_Checked" Unchecked="checkCategory_Unchecked" />
+        <ComboBox x:Name="searchProduct" HorizontalAlignment="Left" Margin="131,82,0,0" VerticalAlignment="Top" Width="184" ItemsSource="{Binding CategoryModel}" DisplayMemberPath="Description" SelectedValuePath="ID" FontSize="16" FontFamily="Consolas"/>
 
-        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="519,93,0,0" 
+        <Button x:Name="btnSearch" Content="Search" HorizontalAlignment="Left" Margin="425,121,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnSearch_Click"/>
-        <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="589,93,0,0" 
+        <Button x:Name="btnReset" Content="Reset" HorizontalAlignment="Left" Margin="495,121,0,0" 
             VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#2196f3" BorderBrush="Black" Click="btnReset_Click" />
-        <Button x:Name="btnAdd" Content="Add Product" HorizontalAlignment="Left" Margin="798,383,0,0" VerticalAlignment="Top" Width="253" Height="41" Background="#FF85CD35" FontSize="14" BorderBrush="#FFC52A51" Click="btnAdd_Click" />
+        <Button x:Name="btnAdd" Content="Add Product" HorizontalAlignment="Left" Margin="648,383,0,0" VerticalAlignment="Top" Width="198" Height="41" Background="#FF85CD35" FontSize="14" BorderBrush="#FFC52A51" Click="btnAdd_Click" />
         <Label x:Name="label_Copy" Content="Total:" HorizontalAlignment="Left" Margin="648,349,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
-        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="29" Margin="798,349,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas" IsEnabled="False"/>
-        <TextBox x:Name="txtSmallDrugstore" HorizontalAlignment="Left" Height="29" Margin="798,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas"/>
+        <TextBox x:Name="txtTotal" HorizontalAlignment="Left" Height="29" Margin="798,349,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas" IsEnabled="False" TabIndex="8"/>
+        <TextBox x:Name="txtSmallDrugstore" HorizontalAlignment="Left" Height="29" Margin="798,173,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas" TabIndex="3"/>
         <Label x:Name="label_Copy1" Content="Area:" HorizontalAlignment="Left" Margin="648,241,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
         <Label x:Name="label_Copy2" Content="Sub-area:" HorizontalAlignment="Left" Margin="648,275,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
         <Label x:Name="label_Copy3" Content="Agent:" HorizontalAlignment="Left" Margin="648,309,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
-        <ComboBox x:Name="cmbArea" HorizontalAlignment="Left" Margin="798,241,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding Area}" DisplayMemberPath="AreaName" SelectedValuePath="ID" SelectionChanged="cmbArea_SelectionChanged"/>
-        <ComboBox x:Name="cmbSubarea" HorizontalAlignment="Left" Margin="798,275,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding SubArea}" DisplayMemberPath="SubAreaName" SelectedValuePath="SubAreaName"/>
-        <ComboBox x:Name="cmbAgent" HorizontalAlignment="Left" Margin="798,309,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding Agents}" DisplayMemberPath="AgentName" SelectedValuePath="ID"/>
+        <ComboBox x:Name="cmbArea" HorizontalAlignment="Left" Margin="798,241,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding Area}" DisplayMemberPath="AreaName" SelectedValuePath="ID" SelectionChanged="cmbArea_SelectionChanged" TabIndex="5"/>
+        <ComboBox x:Name="cmbSubarea" HorizontalAlignment="Left" Margin="798,275,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding SubArea}" DisplayMemberPath="SubAreaName" SelectedValuePath="SubAreaName" TabIndex="6"/>
+        <ComboBox x:Name="cmbAgent" HorizontalAlignment="Left" Margin="798,309,0,0" VerticalAlignment="Top" Width="253" Height="29" ItemsSource="{Binding Agents}" DisplayMemberPath="AgentName" SelectedValuePath="ID" TabIndex="7"/>
+        <Label x:Name="label1_Copy" Content="D.R. No.:" HorizontalAlignment="Left" Margin="648,99,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Height="31" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
+        <TextBox x:Name="txtDRNo" HorizontalAlignment="Left" Height="31" Margin="798,99,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas" TabIndex="1"/>
+        <Button x:Name="btnAddPayment" Content="Add Payment" HorizontalAlignment="Left" Margin="853,383,0,0" VerticalAlignment="Top" Width="198" Height="41" Background="#FF85CD35" FontSize="14" BorderBrush="#FFC52A51" Click="BtnAddPayment_Click" />
+        <Label x:Name="label_Copy4" Content="Contact No.:" HorizontalAlignment="Left" Margin="648,207,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Background="Blue" Foreground="White" Width="150"/>
+        <TextBox x:Name="TxtContactNo" HorizontalAlignment="Left" Height="29" Margin="798,207,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontSize="16" FontFamily="Consolas" TabIndex="4"/>
 
     </Grid>
 

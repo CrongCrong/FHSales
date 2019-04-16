@@ -5,30 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FHSales"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="DRUGSTORES REPORT" Height="348" Width="644.846" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" Background="#7e57c2">
+        Title="DRUGSTORES REPORT" Height="348" Width="644.846" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen" Background="#7e57c2" Loaded="MetroWindow_Loaded">
     <Grid>
-        <Label x:Name="label" Content="Date from:" HorizontalAlignment="Left" Margin="42,55,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas"/>
-        <DatePicker x:Name="dateFrom" HorizontalAlignment="Left" Margin="145,57,0,0" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16" Height="27"/>
-        <Label x:Name="label1" Content="Date to:" HorizontalAlignment="Left" Margin="281,55,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
-        <DatePicker x:Name="dateTo" HorizontalAlignment="Left" Margin="366,55,0,0" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
-        <Label x:Name="label2" Content="Drugstore:" HorizontalAlignment="Left" Margin="33,89,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" Width="107" HorizontalContentAlignment="Right"/>
-        <ComboBox x:Name="cmbDrugstore" HorizontalAlignment="Left" Margin="145,89,0,0" VerticalAlignment="Top" Width="259" FontFamily="Consolas" FontSize="16" Height="29" ItemsSource="{Binding DrugstoreModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="80,224,0,0" 
-                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black" />
-        <Button x:Name="btnGenerate" Content="Generate" HorizontalAlignment="Left" Margin="10,224,0,0" 
-            VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnGenerate_Click" BorderBrush="Black" />
-        <Label x:Name="label3" Content="Report Date:" HorizontalAlignment="Left" Margin="24,21,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
-        <ComboBox x:Name="cmbReportDate" HorizontalAlignment="Left" Margin="145,21,0,0" VerticalAlignment="Top" Width="162" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ReportDate}" DisplayMemberPath="DateReport" SelectedValuePath="DateReport" SelectionChanged="cmbReportDate_SelectionChanged" Height="29"/>
-        <Label x:Name="label4" Content="Year from:" HorizontalAlignment="Left" Margin="42,55,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
-        <TextBox x:Name="txtYearFrom" HorizontalAlignment="Left" Height="29" Margin="145,55,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
-        <Label x:Name="label5" Content="Year To:" HorizontalAlignment="Left" Margin="281,53,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
-        <TextBox x:Name="txtYearTo" HorizontalAlignment="Left" Height="31" Margin="366,53,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="131" FontFamily="Consolas" FontSize="16"/>
-        <Label x:Name="label6" Content="Chart Type:" HorizontalAlignment="Left" Margin="33,157,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16"/>
-        <ComboBox x:Name="cmbChartType" HorizontalAlignment="Left" Margin="145,157,0,0" VerticalAlignment="Top" Width="259" ItemsSource="{Binding ChartType}" DisplayMemberPath="Type" SelectedValuePath="Type" Height="29"/>
-        <Label x:Name="label7" Content="Product:" HorizontalAlignment="Left" Margin="42,123,0,0" VerticalAlignment="Top" FontFamily="Consolas" FontSize="16" HorizontalContentAlignment="Right" Width="98"/>
-        <ComboBox x:Name="cmbProduct" HorizontalAlignment="Left" Margin="145,123,0,0" VerticalAlignment="Top" Width="259" Height="29" FontFamily="Consolas" FontSize="16" ItemsSource="{Binding ProductModel}" DisplayMemberPath="Description" SelectedValuePath="ID"/>
+        <Label x:Name="label" Content="From Date:" HorizontalAlignment="Left" Margin="134,34,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <DatePicker x:Name="dateFrom" HorizontalAlignment="Left" Margin="232,34,0,0" VerticalAlignment="Top" Height="34" FontSize="18" Width="225"/>
+        <Label x:Name="label1" Content="To Date:" HorizontalAlignment="Left" Margin="158,80,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <DatePicker x:Name="dateTo" HorizontalAlignment="Left" Margin="232,80,0,0" VerticalAlignment="Top" Height="34" Width="225" FontSize="18"/>
+        <Label x:Name="label2" Content="Area:" HorizontalAlignment="Left" Margin="182,128,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <ComboBox x:Name="cmbArea" HorizontalAlignment="Left" Margin="232,128,0,0" VerticalAlignment="Top" Width="225" Height="34" FontSize="18" ItemsSource="{Binding Area}" DisplayMemberPath="AreaName" SelectedValuePath="ID" />
+        <Button x:Name="btnGenerate" Content="Generate" HorizontalAlignment="Left" Margin="551,232,0,0" 
+            VerticalAlignment="Top" Width="77" Height="76" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black" FontSize="14" Click="btnGenerate_Click"/>
+
 
     </Grid>
+
+
 </controls:MetroWindow>

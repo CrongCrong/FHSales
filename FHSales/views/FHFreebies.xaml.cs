@@ -3,18 +3,10 @@ using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -83,7 +75,7 @@ namespace FHSales.views
             clearFields();
             btnSave.Visibility = Visibility.Visible;
             btnUpdate.Visibility = Visibility.Hidden;
-            
+
         }
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
@@ -91,22 +83,22 @@ namespace FHSales.views
             freebiesModel = dgvFreebies.SelectedItem as FreebiesModel;
             btnUpdate.Visibility = Visibility.Visible;
             btnSave.Visibility = Visibility.Hidden;
-            
-            if(freebiesModel != null)
+
+            if (freebiesModel != null)
             {
                 deliveryDate.Text = freebiesModel.DeliveryDate;
                 txtClientName.Text = freebiesModel.ClientName;
                 txtQuantity.Text = freebiesModel.Quantity.ToString();
-                foreach(CategoryModel ct in cmbCategory.Items)
+                foreach (CategoryModel ct in cmbCategory.Items)
                 {
                     if (ct.ID.Equals(freebiesModel.CategoryID))
                     {
                         cmbCategory.SelectedItem = ct;
-                        
+
                     }
                 }
 
-                foreach(ProductModel pm in cmbProduct.Items)
+                foreach (ProductModel pm in cmbProduct.Items)
                 {
                     if (pm.ID.Equals(freebiesModel.ProductID))
                     {
@@ -238,7 +230,7 @@ namespace FHSales.views
                 freebies.CategoryID = reader["catID"].ToString();
                 freebies.ProductName = reader["prod"].ToString();
                 freebies.ProductID = reader["prodID"].ToString();
-                
+
                 lstFreebies.Add(freebies);
                 freebies = new FreebiesModel();
             }
@@ -280,7 +272,7 @@ namespace FHSales.views
 
             MySqlDataReader reader = conDB.getSelectConnection(queryString, null);
             cmbProduct.Items.Clear();
-            
+
             while (reader.Read())
             {
                 prod.ID = reader["ID"].ToString();
@@ -288,7 +280,7 @@ namespace FHSales.views
                 prod.Description = reader["description"].ToString();
 
                 cmbProduct.Items.Add(prod);
-                
+
                 prod = new ProductModel();
             }
 

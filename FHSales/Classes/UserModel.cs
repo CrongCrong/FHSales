@@ -27,5 +27,7 @@ namespace FHSales.Classes
         public static bool isPOAdmin { get; set; }
 
         public static bool isDSAdmin { get; set; }
+
+        public static bool isDSConsoAdmin { get; set; }
     }
 }

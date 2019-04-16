@@ -2,7 +2,6 @@
 using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
 using MongoDB.Driver;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -41,6 +40,7 @@ namespace FHSales.views
                 MongoClient client = conDB.initializeMongoDB();
                 var db = client.GetDatabase("DBFH");
                 var collection = db.GetCollection<Drugstores>("Drugstores");
+
                 var filter = Builders<Drugstores>.Filter.And(
         Builders<Drugstores>.Filter.Where(p => p.isDeleted == false));
                 lstDrgs = collection.Find(filter).ToList();
@@ -85,7 +85,8 @@ namespace FHSales.views
                 drugstoreToUpdate.Terms = txtdues.Text;
 
                 var filter = Builders<Drugstores>.Filter.And(
-            Builders<Drugstores>.Filter.Where(p => p.Id == drugstoreToUpdate.Id));
+                Builders<Drugstores>.Filter.Where(p => p.Id == drugstoreToUpdate.Id));
+
                 var updte = Builders<Drugstores>.Update.Set("DrugstoreName", drugstoreToUpdate.DrugstoreName)
                     .Set("Description", drugstoreToUpdate.Description)
                     .Set("Terms", drugstoreToUpdate.Terms);
@@ -225,14 +226,14 @@ namespace FHSales.views
 
         private void btnEdit_Click(object sender, RoutedEventArgs e)
         {
-            Drugstores dd = dgvDrugstore.SelectedItem as Drugstores;
+            drugstoreToUpdate = dgvDrugstore.SelectedItem as Drugstores;
 
-            if(dd != null)
+            if (drugstoreToUpdate != null)
             {
                 dgvDrugstore.IsEnabled = false;
-                txtDescription.Text = dd.Description;
-                txtDrugstore.Text = dd.DrugstoreName;
-                txtdues.Text = dd.Terms;
+                txtDescription.Text = drugstoreToUpdate.Description;
+                txtDrugstore.Text = drugstoreToUpdate.DrugstoreName;
+                txtdues.Text = drugstoreToUpdate.Terms;
                 btnSave.Visibility = Visibility.Hidden;
                 btnUpdate.Visibility = Visibility.Visible;
             }

@@ -14,7 +14,7 @@
                 </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Label x:Name="label" Content="Area Name:" HorizontalAlignment="Left" Margin="451,83,0,0" VerticalAlignment="Top" 
+        <Label x:Name="label" Content="Agent Name:" HorizontalAlignment="Left" Margin="451,83,0,0" VerticalAlignment="Top" 
                FontSize="15" RenderTransformOrigin="0.87,0.607" Foreground="#FF57C33B" Width="124" HorizontalContentAlignment="Right"/>
         <TextBox x:Name="txtAgentName" HorizontalAlignment="Left" Height="28" Margin="575,83,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="202" FontSize="15" FontFamily="Consolas" VerticalContentAlignment="Center"/>
         <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,200,0,0" 

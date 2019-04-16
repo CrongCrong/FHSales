@@ -1,7 +1,5 @@
 ﻿using FHSales.Classes;
-using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
-using MongoDB.Driver;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -78,7 +76,7 @@ namespace FHSales.views
             loadCourierCombo();
             loadOfficeSalesCombo();
             loadCashBankonCombo();
-            
+
             //loadCourierOnCombo();
             //loadSalesOfficesOnCombo();
             //loadPaymentModeOnCombo();
@@ -91,10 +89,9 @@ namespace FHSales.views
                 btnEditDirectSales.Visibility = Visibility.Hidden;
                 btnCancel.Visibility = Visibility.Hidden;
                 btnDelete.Visibility = Visibility.Hidden;
-                
+
             }
         }
-
 
         //private async Task<List<DirectSales>> loadDataGridDetails()
         //{
@@ -131,7 +128,7 @@ namespace FHSales.views
         //        List<SalesOffices> lstPayments = collection.Find(filter).ToList();
         //        foreach (SalesOffices p in lstPayments)
         //        {
-                    
+
         //            cmbSalesOffice.Items.Add(p);
         //        }
         //    }
@@ -179,7 +176,7 @@ namespace FHSales.views
         //    try
         //    {
         //        cmbCourier.Items.Clear();
-                
+
         //        conDB = new ConnectionDB();
         //        MongoClient client = conDB.initializeMongoDB();
         //        var db = client.GetDatabase("DBFH");
@@ -245,7 +242,6 @@ namespace FHSales.views
                 {
                     int id = saveDirectSalesRecord();
                     saveProductsOnList(id.ToString());
-                    //saveRecord();
                     await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                     dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
                     lstProductModel = new List<ProductModel>();
@@ -300,11 +296,11 @@ namespace FHSales.views
 
             if (blCorrect)
             {
-                //updateDirectSalesRecord(selected);
-                //updateProductsOnList(selected.ID);
+                updateDirectSalesRecord(selected);
+                updateProductsOnList(selected.ID);
                 clearFields();
                 await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
-                //dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
+                dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
                 btnUpdate.Visibility = Visibility.Hidden;
                 dgvDirectSales.IsEnabled = true;
                 btnSave.Visibility = Visibility.Visible;
@@ -345,7 +341,7 @@ namespace FHSales.views
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
- 
+
             if (checkDate.IsChecked == true || checkClient.IsChecked == true || checkBank.IsChecked == true || checkPaidSearch.IsChecked == true)
             {
                 if ((string.IsNullOrEmpty(searchDateFrom.Text) || string.IsNullOrEmpty(searchDateTo.Text)) && checkDate.IsChecked == true)
@@ -374,7 +370,7 @@ namespace FHSales.views
         private bool verifySearchFields()
         {
             bool ifAllCorrect = false;
-   
+
             if (checkDate.IsChecked == true)
             {
                 if (string.IsNullOrEmpty(searchDateFrom.Text) && string.IsNullOrEmpty(searchDateTo.Text))
@@ -512,7 +508,7 @@ namespace FHSales.views
             if (result == MessageDialogResult.Affirmative)
             {
                 DirectSalesModel dsm = dgvDirectSales.SelectedItem as DirectSalesModel;
-                if(dsm != null)
+                if (dsm != null)
                 {
                     //deleteRecord(dsm.ID);
                     //dgvDirectSales.ItemsSource = loadDataGridDetailsDirectSales();
@@ -810,6 +806,10 @@ namespace FHSales.views
         private void updateDirectSalesRecord(DirectSalesModel directSalesModel)
         {
             conDB = new ConnectionDB();
+
+            BankModel bb = cmbCashBank.SelectedItem as BankModel;
+            CourierModel cc = cmbCourier.SelectedItem as CourierModel;
+
             string queryString = "UPDATE dbfh.tbldirectsales SET deliverydate = ?, clientname = ?, cashbankID = ?, " +
                 "courierID = ?, expenses = ?, totalprice = ?, officeID = ?, remarks = ?, isPaid = ? WHERE ID = ?";
 
@@ -818,8 +818,8 @@ namespace FHSales.views
             parameters.Add(date.Year + "/" + date.Month + "/" + date.Day);
 
             parameters.Add(txtClientName.Text);
-            parameters.Add(cmbCashBank.SelectedValue.ToString());
-            parameters.Add(cmbCourier.SelectedValue.ToString());
+            parameters.Add(bb.ID);
+            parameters.Add(cc.ID);
             parameters.Add(txtExpenses.Text);
             parameters.Add(txtTotalPrice.Text);
             parameters.Add(cmbSalesOffice.SelectedValue.ToString());

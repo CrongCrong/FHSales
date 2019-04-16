@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:local="clr-namespace:FHSales.views"
              mc:Ignorable="d" Width="1203.533" Background="Transparent" Height="680" Loaded="UserControl_Loaded">
+
 
     <Grid Loaded="Grid_Loaded">
         <DockPanel Margin="0,0,0,570">
@@ -26,35 +26,32 @@
 
         </DockPanel>
 
-        <DataGrid x:Name="dgvDirectSales" HorizontalAlignment="Left" Margin="10,216,0,0" VerticalAlignment="Top" Height="236" Width="561" AutoGenerateColumns="False" FontFamily="Abel" FontSize="15">
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Black"/>
-                    <Setter Property="BorderThickness" Value="0,0,0.5,0"/>
-                </Style>
-
-            </DataGrid.Resources>
-            <DataGrid.RowStyle>
+        <DataGrid x:Name="dgvDirectSales" HorizontalAlignment="Left" 
+                  Margin="10,216,0,0" VerticalAlignment="Top" Height="236" Width="561" 
+                  AutoGenerateColumns="False" FontFamily="Abel" FontSize="15">
+            <!--<DataGrid.RowStyle>
                 <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="{x:Type DataGridRow}">
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding isPaid}" Value="0" >
-                            <Setter Property="Background" Value="Red" />
+                        
+                        <DataTrigger Binding="{Binding isConsolidated}" Value="true" >
+                            <Setter Property="IsEnabled" Value="False" />
                         </DataTrigger>
                     </Style.Triggers>
+                    
 
                 </Style>
-            </DataGrid.RowStyle>
+            </DataGrid.RowStyle>-->
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Date Ordered" Binding="{Binding strDateOrdered}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="CLIENT" Binding="{Binding Path=Client.strFullName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="CASH/BANK" Binding="{Binding Path=Bank.BankName}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Remarks" Binding="{Binding Remarks}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
+                <DataGridTextColumn Header="CANCELLED" Binding="{Binding strCancelled}" CanUserResize="False" FontFamily="Arial Rounded MT" IsReadOnly="True"/>
             </DataGrid.Columns>
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Edit..." Click="EditRecord_Click"/>
+                    <MenuItem Header="Edit..." Click="EditRecord_Click" />
                     <MenuItem Header="Delete..." Click="DeleteRecord_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
@@ -71,12 +68,12 @@
         <TextBox x:Name="txtExpenses" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="30" Margin="858,293,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Abel" FontSize="16" PreviewTextInput="txtExpenses_PreviewTextInput" Text="0"/>
         <Label x:Name="label7" Content="Total Price:" HorizontalAlignment="Left" Margin="725,333,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Abel" HorizontalContentAlignment="Right" Foreground="#FF57C33B" Width="133"/>
         <TextBox x:Name="txtTotalPrice" Controls:TextBoxHelper.Watermark="Total price" Controls:TextBoxHelper.ClearTextButton="True" HorizontalAlignment="Left" Height="29" Margin="858,333,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="253" FontFamily="Abel" FontSize="16" IsEnabled="False" Text="0"/>
-        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="977,497,0,0" 
+        <Button x:Name="btnSave" Content="Save" HorizontalAlignment="Left" Margin="976,555,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Click="btnSave_Click" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" BorderBrush="Black"/>
-        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="977,497,0,0" 
-                VerticalAlignment="Top" Width="64" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
+        <Button x:Name="btnUpdate" Content="Update" HorizontalAlignment="Left" Margin="976,555,0,0" 
+                VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnUpdate_Click" BorderBrush="Black"/>
 
-        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="1046,497,0,0" 
+        <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Margin="1046,555,0,0" 
                 VerticalAlignment="Top" Width="65" Height="65" Style="{DynamicResource MetroCircleButtonStyle}" Background="#FF2196F3" Click="btnCancel_Click" BorderBrush="Black"/>
         <Label x:Name="label" Content="Search:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Consolas" Foreground="#FF57C33B"/>
         <CheckBox x:Name="checkDate" Content="by Date:" HorizontalAlignment="Left" Margin="10,67,0,0" VerticalAlignment="Top" Foreground="#FF57C33B"
@@ -118,6 +115,8 @@
         <Label x:Name="lblExpenseToday" Content="" HorizontalAlignment="Left" Margin="594,557,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Abel" Foreground="#FFF02B47"/>
         <Label x:Name="lblExpenseMonth" Content="" HorizontalAlignment="Left" Margin="594,604,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Abel" Foreground="#FFF02B47"/>
         <Label x:Name="lblExpenseToday_Copy" Content="EXPENSES" HorizontalAlignment="Left" Margin="594,517,0,0" VerticalAlignment="Top" FontSize="20" FontFamily="Abel" Foreground="#FFF02B47"/>
+        <CheckBox x:Name="chkPaid" Content="Paid" HorizontalAlignment="Left" Margin="1009,449,0,0" VerticalAlignment="Top" Height="35" Width="102" FontFamily="Abel" FontSize="20"/>
+        <CheckBox x:Name="chkCancelled" Content="Cancelled" HorizontalAlignment="Left" Margin="1009,489,0,0" VerticalAlignment="Top" Height="35" Width="102" FontFamily="Abel" FontSize="20"/>
 
 
     </Grid>

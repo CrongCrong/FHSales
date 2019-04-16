@@ -32,5 +32,7 @@ namespace FHSales.MongoClasses
         public bool isPOAdmin { get; set; }
 
         public bool isDSAdmin { get; set; }
+
+        public bool isDSConsoAdmin { get; set; }
     }
 }

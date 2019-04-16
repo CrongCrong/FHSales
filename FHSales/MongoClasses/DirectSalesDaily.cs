@@ -2,9 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace FHSales.MongoClasses
 {
@@ -37,6 +35,10 @@ namespace FHSales.MongoClasses
 
         public bool isConsolidated { get; set; }
 
+        public bool isPaid { get; set; }
+
+        public bool isCancelled { get; set; }
+
         public List<ProductsOrderedDS> ProductsOrdered { get; set; }
 
         [BsonIgnore]
@@ -47,6 +49,9 @@ namespace FHSales.MongoClasses
 
         [BsonIgnore]
         public string strClientFullName { get; set; }
+
+        [BsonIgnore]
+        public string strProductName { get; set; }
 
         [BsonIgnore]
         public string strBankName { get; set; }
@@ -63,6 +68,8 @@ namespace FHSales.MongoClasses
         [BsonIgnore]
         public string strTotalGuyabano { get; set; }
 
+        [BsonIgnore]
+        public string strCancelled { get; set; }
 
     }
 }

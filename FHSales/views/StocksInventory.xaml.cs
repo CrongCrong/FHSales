@@ -3,18 +3,9 @@ using MahApps.Metro.Controls.Dialogs;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace FHSales.views
 {
@@ -85,7 +76,7 @@ namespace FHSales.views
                 tollPacker.TollpackerName = reader["name"].ToString();
                 tollPacker.Description = reader["description"].ToString();
                 cmbTollpacker.Items.Add(tollPacker);
-                
+
                 tollPacker = new TollPackerModel();
             }
 
@@ -105,7 +96,7 @@ namespace FHSales.views
             parameters.Add(txtQty.Text);
 
             conDB.AddRecordToDatabase(queryString, parameters);
-            conDB.closeConnection();     
+            conDB.closeConnection();
 
         }
 
@@ -139,10 +130,12 @@ namespace FHSales.views
             else if (cmbTollpacker.SelectedItem == null)
             {
                 await window.ShowMessageAsync("Toll packer", "Please select toll packer.");
-            }else if (string.IsNullOrEmpty(txtItemDescription.Text))
+            }
+            else if (string.IsNullOrEmpty(txtItemDescription.Text))
             {
                 await window.ShowMessageAsync("Description", "Please input value.");
-            }else if (string.IsNullOrEmpty(txtQty.Text))
+            }
+            else if (string.IsNullOrEmpty(txtQty.Text))
             {
                 await window.ShowMessageAsync("Quantity", "Please input value.");
             }

@@ -34,13 +34,13 @@ namespace FHSales
         {
             getCourierList();
             getBankList();
-            if(directSalesModel != null)
+            if (directSalesModel != null)
             {
                 deliveryDateDS.Text = directSalesModel.DeliveryDate;
                 txtClientName.Text = directSalesModel.ClientName;
                 txtQuantity.Text = directSalesModel.Quantity;
                 txtExpenses.Text = directSalesModel.Expenses.ToString();
-                txtTotalPrice.Text = directSalesModel.TotalPrice.ToString();     
+                txtTotalPrice.Text = directSalesModel.TotalPrice.ToString();
             }
         }
 
@@ -73,25 +73,32 @@ namespace FHSales
             if (string.IsNullOrEmpty(deliveryDateDS.Text))
             {
                 await this.ShowMessageAsync("Date", "Please select date.");
-            }else if (string.IsNullOrEmpty(txtClientName.Text))
+            }
+            else if (string.IsNullOrEmpty(txtClientName.Text))
             {
                 await this.ShowMessageAsync("Client Nam", "Please input client name.");
-            }else if (string.IsNullOrEmpty(txtQuantity.Text))
+            }
+            else if (string.IsNullOrEmpty(txtQuantity.Text))
             {
                 await this.ShowMessageAsync("Quantity", "Please input quantity.");
-            }else if(cmbCashBank.SelectedItem == null)
+            }
+            else if (cmbCashBank.SelectedItem == null)
             {
                 await this.ShowMessageAsync("Cash/Bank", "Please select if cash or bank.");
-            }else if(cmbCourier.SelectedItem == null)
+            }
+            else if (cmbCourier.SelectedItem == null)
             {
                 await this.ShowMessageAsync("Courier", "Please select courier.");
-            }else if (string.IsNullOrEmpty(txtExpenses.Text))
+            }
+            else if (string.IsNullOrEmpty(txtExpenses.Text))
             {
                 await this.ShowMessageAsync("Expenses", "Please input expenses.");
-            }else if (string.IsNullOrEmpty(txtTotalPrice.Text))
+            }
+            else if (string.IsNullOrEmpty(txtTotalPrice.Text))
             {
                 await this.ShowMessageAsync("Total Price", "Please input total price");
-            }else
+            }
+            else
             {
 
                 ifAllCorrect = true;

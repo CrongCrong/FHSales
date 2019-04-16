@@ -2,9 +2,9 @@
 using FHSales.MongoClasses;
 using MahApps.Metro.Controls.Dialogs;
 using MongoDB.Driver;
-using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +25,9 @@ namespace FHSales.views
         ConnectionDB conDB;
         MahApps.Metro.Controls.MetroWindow window;
         DrugstoresSales drugstoreSaleToUpdate;
+
         public List<ProductsOrdered> lstProductsOrdered = new List<ProductsOrdered>();
+        public List<PaymentsDrugstores> lstPayments = new List<PaymentsDrugstores>();
 
         private async void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
@@ -38,6 +40,7 @@ namespace FHSales.views
                 btnSearch.Visibility = Visibility.Hidden;
                 btnEdit.Visibility = Visibility.Hidden;
                 btnReset.Visibility = Visibility.Hidden;
+                btnAddPayment.Visibility = Visibility.Hidden;
                 dgvSales.IsEnabled = false;
             }
 
@@ -62,7 +65,9 @@ namespace FHSales.views
             {
                 MongoClient client = conDB.initializeMongoDB();
                 var db = client.GetDatabase("DBFH");
+
                 var collection = db.GetCollection<DrugstoresSales>("DrugstoresSales");
+
                 var filter = Builders<DrugstoresSales>.Filter.And(
         Builders<DrugstoresSales>.Filter.Where(p => p.isDeleted == false));
                 lstDrgs = collection.Find(filter).ToList();
@@ -114,7 +119,7 @@ namespace FHSales.views
                 var collection = db.GetCollection<Area>("Area");
                 var filter = Builders<Area>.Filter.And(
         Builders<Area>.Filter.Where(p => p.isDeleted == false));
-                List<Area> lstPayments = collection.Find(filter).ToList();
+                List<Area> lstPayments = collection.Find(filter).ToList().OrderBy(a => a.AreaName).ToList();
                 foreach (Area p in lstPayments)
                 {
                     cmbArea.Items.Add(p);
@@ -140,7 +145,7 @@ namespace FHSales.views
 
                 var filter = Builders<Agents>.Filter.And(
         Builders<Agents>.Filter.Where(p => p.isDeleted == false));
-                List<Agents> lstPayments = collection.Find(filter).ToList();
+                List<Agents> lstPayments = collection.Find(filter).ToList().OrderBy(a => a.AgentName).ToList();
 
                 foreach (Agents p in lstPayments)
                 {
@@ -165,13 +170,19 @@ namespace FHSales.views
                 var db = client.GetDatabase("DBFH");
                 DrugstoresSales ds = new DrugstoresSales();
                 DateTime dte = DateTime.Parse(deliveryDate.Text);
+
+                ds.DRNo = txtDRNo.Text;
                 ds.DeliveryDate = DateTime.Parse(dte.ToLocalTime().ToShortDateString());
                 ds.Drugstorename = txtSmallDrugstore.Text;
                 ds.Agent = slctdAgent;
                 ds.Areas = slctdArea;
                 ds.SubArea = cmbSubarea.SelectedValue.ToString();
-                ds.Total = Convert.ToDouble( txtTotal.Text);
+                ds.Payments = lstPayments;
+                ds.Total = Convert.ToDouble(txtTotal.Text);
+                ds.ContactNo = TxtContactNo.Text;
                 ds.ProductsOrdered = lstProductsOrdered;
+                ds.Payments = lstPayments;
+
 
                 var collection = db.GetCollection<DrugstoresSales>("DrugstoresSales");
                 collection.InsertOne(ds);
@@ -184,6 +195,8 @@ namespace FHSales.views
 
         private async void updateRecord()
         {
+            Agents slctdAgent = cmbAgent.SelectedItem as Agents;
+            Area slctdArea = cmbArea.SelectedItem as Area;
             try
             {
                 conDB = new ConnectionDB();
@@ -196,13 +209,17 @@ namespace FHSales.views
 
                 var filter = Builders<DrugstoresSales>.Filter.And(
             Builders<DrugstoresSales>.Filter.Where(p => p.Id == drugstoreSaleToUpdate.Id));
-                var updte = Builders<DrugstoresSales>.Update.Set("DeliveryDate", drugstoreSaleToUpdate.DeliveryDate)
-                    .Set("Drugstorename", drugstoreSaleToUpdate.Drugstorename)
-                    .Set("Agent", drugstoreSaleToUpdate.Agent)
-                    .Set("Areas", drugstoreSaleToUpdate.Areas)
-                    .Set("SubArea", drugstoreSaleToUpdate.SubArea)
-                    .Set("Total", drugstoreSaleToUpdate.Total)
-                    .Set("ProductsOrdered", drugstoreSaleToUpdate.ProductsOrdered);
+
+                var updte = Builders<DrugstoresSales>.Update.Set("DeliveryDate", deliveryDate.Text)
+                    .Set("Drugstorename", txtSmallDrugstore.Text)
+                    .Set("Agent", slctdAgent)
+                    .Set("Areas", slctdArea)
+                    .Set("SubArea", cmbSubarea.SelectedValue.ToString())
+                    .Set("Total", txtTotal.Text)
+                    .Set("ProductsOrdered", lstProductsOrdered)
+                    .Set("Payments", lstPayments)
+                    .Set("DRNo", txtDRNo.Text)
+                    .Set("ContactNo", TxtContactNo.Text);
 
                 var collection = db.GetCollection<DrugstoresSales>("DrugstoresSales");
                 collection.UpdateOne(filter, updte);
@@ -231,7 +248,7 @@ namespace FHSales.views
 
                 if (checkDate.IsChecked.Value)
                 {
-                    filter = Builders<DrugstoresSales>.Filter.And(
+                    filter = filter & Builders<DrugstoresSales>.Filter.And(
           Builders<DrugstoresSales>.Filter.Gte("DeliveryDate", dteNow),
          Builders<DrugstoresSales>.Filter.Lte("DeliveryDate", dteFirstDay));
                 }
@@ -239,13 +256,16 @@ namespace FHSales.views
                 if (checkCategory.IsChecked.Value)
                 {
                     Products dd = searchProduct.SelectedItem as Products;
-                    filter = Builders<DrugstoresSales>.Filter.And(
+                    filter = filter & Builders<DrugstoresSales>.Filter.And(
          Builders<DrugstoresSales>.Filter.Eq("Products", dd));
                 }
 
                 lstDrgSales = collection.Find(filter).ToList();
 
-
+                foreach (DrugstoresSales ds in lstDrgSales)
+                {
+                    ds.strDate = ds.DeliveryDate.ToShortDateString();
+                }
             }
             catch (Exception ex)
             {
@@ -265,12 +285,15 @@ namespace FHSales.views
                 btnUpdate.Visibility = Visibility.Visible;
                 btnSave.Visibility = Visibility.Hidden;
 
+                txtDRNo.Text = drugstoreSaleToUpdate.DRNo;
                 deliveryDate.Text = drugstoreSaleToUpdate.DeliveryDate.ToShortDateString();
                 txtSmallDrugstore.Text = drugstoreSaleToUpdate.Drugstorename;
                 txtTotal.Text = drugstoreSaleToUpdate.Total.ToString();
                 lstProductsOrdered = drugstoreSaleToUpdate.ProductsOrdered;
+                lstPayments = drugstoreSaleToUpdate.Payments;
+                TxtContactNo.Text = drugstoreSaleToUpdate.ContactNo;
 
-                foreach(Area aa in cmbArea.Items)
+                foreach (Area aa in cmbArea.Items)
                 {
                     if (aa.Id.Equals(drugstoreSaleToUpdate.Areas.Id))
                     {
@@ -286,7 +309,7 @@ namespace FHSales.views
                     }
                 }
 
-                foreach(Agents ag in cmbAgent.Items)
+                foreach (Agents ag in cmbAgent.Items)
                 {
                     if (ag.Id.Equals(drugstoreSaleToUpdate.Agent.Id))
                     {
@@ -306,6 +329,8 @@ namespace FHSales.views
                 clearFields();
                 await window.ShowMessageAsync("SAVE RECORD", "Record saved successfully!");
                 dgvSales.ItemsSource = await loadDataGridDetails();
+                lstPayments = new List<PaymentsDrugstores>();
+                lstProductsOrdered = new List<ProductsOrdered>();
             }
         }
 
@@ -318,6 +343,8 @@ namespace FHSales.views
                 clearFields();
                 await window.ShowMessageAsync("UPDATE RECORD", "Record updated successfully!");
                 dgvSales.ItemsSource = await loadDataGridDetails();
+                lstPayments = new List<PaymentsDrugstores>();
+                lstProductsOrdered = new List<ProductsOrdered>();
             }
         }
 
@@ -328,6 +355,7 @@ namespace FHSales.views
             btnSave.Visibility = Visibility.Visible;
             dgvSales.IsEnabled = true;
             lstProductsOrdered = new List<ProductsOrdered>();
+            lstPayments = new List<PaymentsDrugstores>();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -344,6 +372,9 @@ namespace FHSales.views
             cmbArea.SelectedItem = null;
             cmbSubarea.SelectedItem = null;
             txtTotal.Text = "";
+            txtDRNo.Text = "";
+            dgvSales.IsEnabled = true;
+            TxtContactNo.Text = "";
         }
 
         private async Task<bool> checkFields()
@@ -615,12 +646,11 @@ namespace FHSales.views
         //    conDB.closeConnection();
         //    return lstDrugstores;
         //}
-
         #endregion
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            AddProducts addProducts = new FHSales.AddProducts(this, lstProductsOrdered);
+            AddProducts addProducts = new AddProducts(this, lstProductsOrdered, lstPayments);
             addProducts.ShowDialog();
         }
 
@@ -628,13 +658,25 @@ namespace FHSales.views
         {
             Area aa = cmbArea.SelectedItem as Area;
             cmbSubarea.Items.Clear();
+
             if (aa != null)
             {
-                foreach(SubArea sa in aa.SubArea)
+                List<SubArea> lstSA = aa.SubArea.OrderBy(a => a.SubAreaName).ToList();
+                foreach (SubArea sa in lstSA)
                 {
                     cmbSubarea.Items.Add(sa);
                 }
             }
+        }
+
+        private void BtnAddPayment_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (PaymentsDrugstores pd in lstPayments)
+            {
+                pd.strDate = pd.PaymentDate.ToShortDateString();
+            }
+            AddPaymentDrugstores addPay = new AddPaymentDrugstores(this, lstPayments, lstProductsOrdered);
+            addPay.ShowDialog();
         }
     }
 }
